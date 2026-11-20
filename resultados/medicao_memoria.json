@@ -1,0 +1,236 @@
+{
+  "sem_memoria": {
+    "configuracao": "Sem memória (add_history_to_context=False, update_memory_on_run=False)",
+    "soma_input_tokens_turno_1": 9558,
+    "soma_input_tokens_turno_2": 9279,
+    "soma_total_tokens": 20850,
+    "complementacoes_aplicadas_corretamente": "0/2",
+    "casos": {
+      "DIA-2026-0111": {
+        "numero_pedido": "DIA-2026-0111",
+        "solicitante": "Beatriz Moraes Cunha",
+        "matricula_protocolada": "206689",
+        "matricula_correta": "206689",
+        "turno_1_pedido": {
+          "input_tokens_total_turno": 4780,
+          "input_tokens_primeira_chamada": 2345,
+          "output_tokens": 531,
+          "total_tokens": 5311,
+          "tempo_segundos": 5.4838,
+          "custo_usd": 0.001036,
+          "num_chamadas_modelo": 2,
+          "aprovado_barreira": true,
+          "recomendacao": "diligencia",
+          "acertou_gabarito_turno_1": true
+        },
+        "turno_2_complementacao": {
+          "input_tokens_total_turno": 4617,
+          "input_tokens_primeira_chamada": 2283,
+          "output_tokens": 475,
+          "total_tokens": 5092,
+          "tempo_segundos": 5.5279,
+          "custo_usd": 0.000978,
+          "num_chamadas_modelo": 2,
+          "aprovado_barreira": false,
+          "motivos_recusa_barreira": [
+            "Matrícula '' consultada em 'consultar_servidor' não consta do pedido nem da complementação (permitidas: ['206689']).",
+            "Matrícula na instrução ('') não consta do pedido nem da complementação (['206689'])."
+          ],
+          "recomendacao": null,
+          "matricula_final": null,
+          "quantidade_diarias": null,
+          "valor_total": null,
+          "aplicada_ao_pedido_certo": false
+        }
+      },
+      "DIA-2026-0112": {
+        "numero_pedido": "DIA-2026-0112",
+        "solicitante": "Carla Regina Souza",
+        "matricula_protocolada": "207481",
+        "matricula_correta": "207418",
+        "turno_1_pedido": {
+          "input_tokens_total_turno": 4778,
+          "input_tokens_primeira_chamada": 2343,
+          "output_tokens": 520,
+          "total_tokens": 5298,
+          "tempo_segundos": 6.2237,
+          "custo_usd": 0.001029,
+          "num_chamadas_modelo": 2,
+          "aprovado_barreira": true,
+          "recomendacao": "diligencia",
+          "acertou_gabarito_turno_1": true
+        },
+        "turno_2_complementacao": {
+          "input_tokens_total_turno": 4662,
+          "input_tokens_primeira_chamada": 2286,
+          "output_tokens": 487,
+          "total_tokens": 5149,
+          "tempo_segundos": 4.692,
+          "custo_usd": 0.000991,
+          "num_chamadas_modelo": 2,
+          "aprovado_barreira": true,
+          "motivos_recusa_barreira": [],
+          "recomendacao": "diligencia",
+          "matricula_final": "207418",
+          "quantidade_diarias": null,
+          "valor_total": null,
+          "aplicada_ao_pedido_certo": false
+        }
+      }
+    }
+  },
+  "historico_sessao": {
+    "configuracao": "Com histórico da sessão (SqliteDb, add_history_to_context=True, num_history_runs=3)",
+    "soma_input_tokens_turno_1": 9558,
+    "soma_input_tokens_turno_2": 32400,
+    "soma_total_tokens": 44352,
+    "complementacoes_aplicadas_corretamente": "2/2",
+    "casos": {
+      "DIA-2026-0111": {
+        "numero_pedido": "DIA-2026-0111",
+        "solicitante": "Beatriz Moraes Cunha",
+        "matricula_protocolada": "206689",
+        "matricula_correta": "206689",
+        "turno_1_pedido": {
+          "input_tokens_total_turno": 4780,
+          "input_tokens_primeira_chamada": 2345,
+          "output_tokens": 476,
+          "total_tokens": 5256,
+          "tempo_segundos": 4.6277,
+          "custo_usd": 0.001003,
+          "num_chamadas_modelo": 2,
+          "aprovado_barreira": true,
+          "recomendacao": "diligencia",
+          "acertou_gabarito_turno_1": true
+        },
+        "turno_2_complementacao": {
+          "input_tokens_total_turno": 16145,
+          "input_tokens_primeira_chamada": 2345,
+          "output_tokens": 719,
+          "total_tokens": 16864,
+          "tempo_segundos": 9.0249,
+          "custo_usd": 0.002853,
+          "num_chamadas_modelo": 7,
+          "aprovado_barreira": true,
+          "motivos_recusa_barreira": [],
+          "recomendacao": "apto_para_autorizacao",
+          "matricula_final": "206689",
+          "quantidade_diarias": 3.5,
+          "valor_total": 980.0,
+          "aplicada_ao_pedido_certo": true
+        }
+      },
+      "DIA-2026-0112": {
+        "numero_pedido": "DIA-2026-0112",
+        "solicitante": "Carla Regina Souza",
+        "matricula_protocolada": "207481",
+        "matricula_correta": "207418",
+        "turno_1_pedido": {
+          "input_tokens_total_turno": 4778,
+          "input_tokens_primeira_chamada": 2343,
+          "output_tokens": 495,
+          "total_tokens": 5273,
+          "tempo_segundos": 4.9118,
+          "custo_usd": 0.001014,
+          "num_chamadas_modelo": 2,
+          "aprovado_barreira": true,
+          "recomendacao": "diligencia",
+          "acertou_gabarito_turno_1": true
+        },
+        "turno_2_complementacao": {
+          "input_tokens_total_turno": 16255,
+          "input_tokens_primeira_chamada": 2343,
+          "output_tokens": 704,
+          "total_tokens": 16959,
+          "tempo_segundos": 8.5982,
+          "custo_usd": 0.002861,
+          "num_chamadas_modelo": 7,
+          "aprovado_barreira": true,
+          "motivos_recusa_barreira": [],
+          "recomendacao": "apto_para_autorizacao",
+          "matricula_final": "207418",
+          "quantidade_diarias": 3.5,
+          "valor_total": 770.0,
+          "aplicada_ao_pedido_certo": true
+        }
+      }
+    }
+  },
+  "historico_e_memorias_usuario": {
+    "configuracao": "Histórico da sessão + memórias do usuário (update_memory_on_run=True)",
+    "soma_input_tokens_turno_1": 11976,
+    "soma_input_tokens_turno_2": 36305,
+    "soma_total_tokens": 51749,
+    "complementacoes_aplicadas_corretamente": "2/2",
+    "casos": {
+      "DIA-2026-0111": {
+        "numero_pedido": "DIA-2026-0111",
+        "solicitante": "Beatriz Moraes Cunha",
+        "matricula_protocolada": "206689",
+        "matricula_correta": "206689",
+        "turno_1_pedido": {
+          "input_tokens_total_turno": 6049,
+          "input_tokens_primeira_chamada": 2370,
+          "output_tokens": 787,
+          "total_tokens": 6836,
+          "tempo_segundos": 6.2891,
+          "custo_usd": 0.00138,
+          "num_chamadas_modelo": 2,
+          "aprovado_barreira": true,
+          "recomendacao": "diligencia",
+          "acertou_gabarito_turno_1": true
+        },
+        "turno_2_complementacao": {
+          "input_tokens_total_turno": 18678,
+          "input_tokens_primeira_chamada": 2370,
+          "output_tokens": 1212,
+          "total_tokens": 19890,
+          "tempo_segundos": 10.6887,
+          "custo_usd": 0.003529,
+          "num_chamadas_modelo": 7,
+          "aprovado_barreira": true,
+          "motivos_recusa_barreira": [],
+          "recomendacao": "apto_para_autorizacao",
+          "matricula_final": "206689",
+          "quantidade_diarias": 3.5,
+          "valor_total": 980.0,
+          "aplicada_ao_pedido_certo": true
+        }
+      },
+      "DIA-2026-0112": {
+        "numero_pedido": "DIA-2026-0112",
+        "solicitante": "Carla Regina Souza",
+        "matricula_protocolada": "207481",
+        "matricula_correta": "207418",
+        "turno_1_pedido": {
+          "input_tokens_total_turno": 5927,
+          "input_tokens_primeira_chamada": 2368,
+          "output_tokens": 539,
+          "total_tokens": 6466,
+          "tempo_segundos": 5.421,
+          "custo_usd": 0.001212,
+          "num_chamadas_modelo": 2,
+          "aprovado_barreira": true,
+          "recomendacao": "diligencia",
+          "acertou_gabarito_turno_1": true
+        },
+        "turno_2_complementacao": {
+          "input_tokens_total_turno": 17627,
+          "input_tokens_primeira_chamada": 2368,
+          "output_tokens": 930,
+          "total_tokens": 18557,
+          "tempo_segundos": 9.2267,
+          "custo_usd": 0.003202,
+          "num_chamadas_modelo": 7,
+          "aprovado_barreira": true,
+          "motivos_recusa_barreira": [],
+          "recomendacao": "apto_para_autorizacao",
+          "matricula_final": "207418",
+          "quantidade_diarias": 3.5,
+          "valor_total": 770.0,
+          "aplicada_ao_pedido_certo": true
+        }
+      }
+    }
+  }
+}

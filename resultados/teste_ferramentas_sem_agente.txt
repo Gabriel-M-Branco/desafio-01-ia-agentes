@@ -1,0 +1,99 @@
+================================================================================
+ETAPA 2 - TESTE DAS FERRAMENTAS SEM AGENTE E SEM CHAVE DE API
+================================================================================
+
+[OK] 1. Minimização de dados verificada em todos os 40 servidores (0 CPFs, 0 e-mails).
+
+--- Caso 1: Matrícula trocada do DIA-2026-0112 ---
+Pedido DIA-2026-0112 (solicitante Carla Regina Souza, digitou 207481):
+  consultar_servidor('207481') -> Matrícula 207481: nome='Rafael Lima Antunes', cargo='Analista de Meio Ambiente', grupo_diaria='B', unidade='CFA', municipio_sede='Cuiabá' (art. 3º e art. 9º).
+  consultar_servidor('207418') -> Matrícula 207418: nome='Carla Regina Souza', cargo='Técnica Ambiental', grupo_diaria='C', unidade='CUC', municipio_sede='Cuiabá' (art. 3º e art. 9º).
+  consultar_servidor('999999') -> Matrícula '999999' não localizada no cadastro funcional (art. 9º).
+
+--- Caso 2: Prestação vencida do DIA-2026-0108 vs. no prazo do DIA-2026-0102 e limite do DIA-2026-0109 ---
+  DIA-2026-0108 (Gustavo, 203648): Prestação de contas: NÃO ATENDE (VENCIDA) - pedido DIA-2026-0023 (Juara/MT, retorno 2026-09-18, prazo de 5 dias úteis venceu em 2026-09-25) (data da análise 2026-10-09, art. 7º). Limite mensal (2026-11): ATENDE - 0.0 diárias já concedidas (nenhuma diária anterior no mês) + 3.5 pedidas = 3.5 diárias (limite máximo de 10.0 diárias/mês, art. 6º).
+  DIA-2026-0102 (Marcos, 205882):  Prestação de contas: ATENDE - há prestação pedido DIA-2026-0041 (Cáceres/MT, retorno 2026-10-06, pendente DENTRO DO PRAZO até 2026-10-13), ainda não vencida na data da análise 2026-10-09 (art. 7º). Limite mensal (2026-11): ATENDE - 0.0 diárias já concedidas (nenhuma diária anterior no mês) + 3.5 pedidas = 3.5 diárias (limite máximo de 10.0 diárias/mês, art. 6º).
+  DIA-2026-0109 (Larissa, 208114): Prestação de contas: ATENDE - sem prestações pendentes ou vencidas na data da análise 2026-10-09 (art. 7º). Limite mensal (2026-11): NÃO ATENDE (LIMITE MENSAL EXCEDIDO) - 8.0 diárias já concedidas (DIA-2026-0062 (4.5 diárias), DIA-2026-0063 (3.5 diárias)) + 3.5 pedidas = 11.5 diárias (limite máximo de 10.0 diárias/mês, art. 6º).
+
+--- Caso 3: Meia diária do DIA-2026-0103 ---
+  DIA-2026-0103 (Juliana, ida e volta 2026-11-05): Quantidade: 0.5 diárias (deslocamento sem pernoite = 0.5 diária, art. 4º). Valor: grupo B, destino MT (interior_mt), R$ 280.00/diária, total = R$ 140.00 (art. 3º, Anexo I). Antecedência: 29 dias corridos entre o pedido (2026-10-07) e a partida (2026-11-05) - ATENDE o mínimo de 10 dias (art. 5º).
+  DIA-2026-0105 (Fernanda, 5 dias antecedência):   Quantidade: 2.5 diárias (2 pernoite(s) + 0.5 no retorno = 2.5 diárias, art. 4º). Valor: grupo B, destino MT (interior_mt), R$ 280.00/diária, total = R$ 700.00 (art. 3º, Anexo I). Antecedência: 5 dias corridos entre o pedido (2026-10-08) e a partida (2026-10-13) - INFERIOR ao mínimo de 10 dias (art. 5º). Só atende se a justificativa caracterizar urgência legítima imprevisível (art. 5º, § 1º), hipótese que exige autorização expressa e escrita do Secretário Adjunto (art. 5º, § 2º, exige_autorizacao_superior=True).
+
+--- Caso 4: Saldo insuficiente do DIA-2026-0110 ---
+  DIA-2026-0110 cálculo: Quantidade: 4.5 diárias (4 pernoite(s) + 0.5 no retorno = 4.5 diárias, art. 4º). Valor: grupo B, destino RO (outra_uf), R$ 400.00/diária, total = R$ 1800.00 (art. 3º, Anexo I). Antecedência: 39 dias corridos entre o pedido (2026-10-02) e a partida (2026-11-10) - ATENDE o mínimo de 10 dias (art. 5º).
+  DIA-2026-0110 saldo:   Saldo da unidade CRH: R$ 640.00. Saldo INSUFICIENTE para R$ 1800.00 (art. 8º).
+  DIA-2026-0101 saldo:   Saldo da unidade CFF: R$ 18400.00. Saldo suficiente para R$ 980.00 (art. 8º).
+
+--- Varredura Completa dos 12 Pedidos e 2 Complementações ---
+
+[DIA-2026-0101] Solicitante: Ana Paula Figueiredo (matrícula 204317)
+  1. consultar_servidor -> Matrícula 204317: nome='Ana Paula Figueiredo', cargo='Fiscal Ambiental', grupo_diaria='B', unidade='CFF', municipio_sede='Cuiabá' (art. 3º e art. 9º).
+  2. consultar_historico_diarias -> Prestação de contas: ATENDE - sem prestações pendentes ou vencidas na data da análise 2026-10-09 (art. 7º). Limite mensal (2026-11): ATENDE - 0.0 diárias já concedidas (nenhuma diária anterior no mês) + 3.5 pedidas = 3.5 diárias (limite máximo de 10.0 diárias/mês, art. 6º).
+  3. calcular_diarias -> Quantidade: 3.5 diárias (3 pernoite(s) + 0.5 no retorno = 3.5 diárias, art. 4º). Valor: grupo B, destino MT (interior_mt), R$ 280.00/diária, total = R$ 980.00 (art. 3º, Anexo I). Antecedência: 32 dias corridos entre o pedido (2026-10-08) e a partida (2026-11-09) - ATENDE o mínimo de 10 dias (art. 5º).
+  4. consultar_saldo_diarias -> Saldo da unidade CFF: R$ 18400.00. Saldo suficiente para R$ 980.00 (art. 8º).
+
+[DIA-2026-0102] Solicitante: Marcos Antônio Rezende (matrícula 205882)
+  1. consultar_servidor -> Matrícula 205882: nome='Marcos Antônio Rezende', cargo='Motorista', grupo_diaria='C', unidade='CFF', municipio_sede='Cuiabá' (art. 3º e art. 9º).
+  2. consultar_historico_diarias -> Prestação de contas: ATENDE - há prestação pedido DIA-2026-0041 (Cáceres/MT, retorno 2026-10-06, pendente DENTRO DO PRAZO até 2026-10-13), ainda não vencida na data da análise 2026-10-09 (art. 7º). Limite mensal (2026-11): ATENDE - 0.0 diárias já concedidas (nenhuma diária anterior no mês) + 3.5 pedidas = 3.5 diárias (limite máximo de 10.0 diárias/mês, art. 6º).
+  3. calcular_diarias -> Quantidade: 3.5 diárias (3 pernoite(s) + 0.5 no retorno = 3.5 diárias, art. 4º). Valor: grupo C, destino MT (interior_mt), R$ 220.00/diária, total = R$ 770.00 (art. 3º, Anexo I). Antecedência: 32 dias corridos entre o pedido (2026-10-08) e a partida (2026-11-09) - ATENDE o mínimo de 10 dias (art. 5º).
+  4. consultar_saldo_diarias -> Saldo da unidade CFF: R$ 18400.00. Saldo suficiente para R$ 770.00 (art. 8º).
+
+[DIA-2026-0103] Solicitante: Juliana Campos Arruda (matrícula 203156)
+  1. consultar_servidor -> Matrícula 203156: nome='Juliana Campos Arruda', cargo='Analista de Meio Ambiente', grupo_diaria='B', unidade='CUC', municipio_sede='Cuiabá' (art. 3º e art. 9º).
+  2. consultar_historico_diarias -> Prestação de contas: ATENDE - sem prestações pendentes ou vencidas na data da análise 2026-10-09 (art. 7º). Limite mensal (2026-11): ATENDE - 0.0 diárias já concedidas (nenhuma diária anterior no mês) + 0.5 pedidas = 0.5 diárias (limite máximo de 10.0 diárias/mês, art. 6º).
+  3. calcular_diarias -> Quantidade: 0.5 diárias (deslocamento sem pernoite = 0.5 diária, art. 4º). Valor: grupo B, destino MT (interior_mt), R$ 280.00/diária, total = R$ 140.00 (art. 3º, Anexo I). Antecedência: 29 dias corridos entre o pedido (2026-10-07) e a partida (2026-11-05) - ATENDE o mínimo de 10 dias (art. 5º).
+  4. consultar_saldo_diarias -> Saldo da unidade CUC: R$ 7800.00. Saldo suficiente para R$ 140.00 (art. 8º).
+
+[DIA-2026-0104] Solicitante: Heitor Vasconcelos Lima (matrícula 200941)
+  1. consultar_servidor -> Matrícula 200941: nome='Heitor Vasconcelos Lima', cargo='Secretário Adjunto de Gestão Ambiental', grupo_diaria='A', unidade='GAB', municipio_sede='Cuiabá' (art. 3º e art. 9º).
+  2. consultar_historico_diarias -> Prestação de contas: ATENDE - sem prestações pendentes ou vencidas na data da análise 2026-10-09 (art. 7º). Limite mensal (2026-11): ATENDE - 0.0 diárias já concedidas (nenhuma diária anterior no mês) + 2.5 pedidas = 2.5 diárias (limite máximo de 10.0 diárias/mês, art. 6º).
+  3. calcular_diarias -> Quantidade: 2.5 diárias (2 pernoite(s) + 0.5 no retorno = 2.5 diárias, art. 4º). Valor: grupo A, destino DF (distrito_federal), R$ 600.00/diária, total = R$ 1500.00 (art. 3º, Anexo I). Antecedência: 41 dias corridos entre o pedido (2026-10-06) e a partida (2026-11-16) - ATENDE o mínimo de 10 dias (art. 5º).
+  4. consultar_saldo_diarias -> Saldo da unidade GAB: R$ 12000.00. Saldo suficiente para R$ 1500.00 (art. 8º).
+
+[DIA-2026-0105] Solicitante: Fernanda Lopes Martins (matrícula 206230)
+  1. consultar_servidor -> Matrícula 206230: nome='Fernanda Lopes Martins', cargo='Analista de Meio Ambiente', grupo_diaria='B', unidade='CFA', municipio_sede='Cuiabá' (art. 3º e art. 9º).
+  2. consultar_historico_diarias -> Prestação de contas: ATENDE - sem prestações pendentes ou vencidas na data da análise 2026-10-09 (art. 7º). Limite mensal (2026-10): ATENDE - 0.0 diárias já concedidas (nenhuma diária anterior no mês) + 2.5 pedidas = 2.5 diárias (limite máximo de 10.0 diárias/mês, art. 6º).
+  3. calcular_diarias -> Quantidade: 2.5 diárias (2 pernoite(s) + 0.5 no retorno = 2.5 diárias, art. 4º). Valor: grupo B, destino MT (interior_mt), R$ 280.00/diária, total = R$ 700.00 (art. 3º, Anexo I). Antecedência: 5 dias corridos entre o pedido (2026-10-08) e a partida (2026-10-13) - INFERIOR ao mínimo de 10 dias (art. 5º). Só atende se a justificativa caracterizar urgência legítima imprevisível (art. 5º, § 1º), hipótese que exige autorização expressa e escrita do Secretário Adjunto (art. 5º, § 2º, exige_autorizacao_superior=True).
+  4. consultar_saldo_diarias -> Saldo da unidade CFA: R$ 9250.00. Saldo suficiente para R$ 700.00 (art. 8º).
+
+[DIA-2026-0106] Solicitante: Diego Almeida Pires (matrícula 204775)
+  1. consultar_servidor -> Matrícula 204775: nome='Diego Almeida Pires', cargo='Fiscal Ambiental', grupo_diaria='B', unidade='CUC', municipio_sede='Cuiabá' (art. 3º e art. 9º).
+  2. consultar_historico_diarias -> Prestação de contas: ATENDE - sem prestações pendentes ou vencidas na data da análise 2026-10-09 (art. 7º). Limite mensal (2026-10): ATENDE - 0.0 diárias já concedidas (nenhuma diária anterior no mês) + 4.5 pedidas = 4.5 diárias (limite máximo de 10.0 diárias/mês, art. 6º).
+  3. calcular_diarias -> Quantidade: 4.5 diárias (4 pernoite(s) + 0.5 no retorno = 4.5 diárias, art. 4º). Valor: grupo B, destino MT (interior_mt), R$ 280.00/diária, total = R$ 1260.00 (art. 3º, Anexo I). Antecedência: 1 dias corridos entre o pedido (2026-10-09) e a partida (2026-10-10) - INFERIOR ao mínimo de 10 dias (art. 5º). Só atende se a justificativa caracterizar urgência legítima imprevisível (art. 5º, § 1º), hipótese que exige autorização expressa e escrita do Secretário Adjunto (art. 5º, § 2º, exige_autorizacao_superior=True).
+  4. consultar_saldo_diarias -> Saldo da unidade CUC: R$ 7800.00. Saldo suficiente para R$ 1260.00 (art. 8º).
+
+[DIA-2026-0107] Solicitante: Patrícia Nunes Barreto (matrícula 207093)
+  1. consultar_servidor -> Matrícula 207093: nome='Patrícia Nunes Barreto', cargo='Técnica Ambiental', grupo_diaria='C', unidade='CFA', municipio_sede='Cuiabá' (art. 3º e art. 9º).
+  2. consultar_historico_diarias -> Prestação de contas: ATENDE - sem prestações pendentes ou vencidas na data da análise 2026-10-09 (art. 7º). Limite mensal (2026-10): ATENDE - 0.0 diárias já concedidas (nenhuma diária anterior no mês) + 2.5 pedidas = 2.5 diárias (limite máximo de 10.0 diárias/mês, art. 6º).
+  3. calcular_diarias -> Quantidade: 2.5 diárias (2 pernoite(s) + 0.5 no retorno = 2.5 diárias, art. 4º). Valor: grupo C, destino MT (interior_mt), R$ 220.00/diária, total = R$ 550.00 (art. 3º, Anexo I). Antecedência: 5 dias corridos entre o pedido (2026-10-07) e a partida (2026-10-12) - INFERIOR ao mínimo de 10 dias (art. 5º). Só atende se a justificativa caracterizar urgência legítima imprevisível (art. 5º, § 1º), hipótese que exige autorização expressa e escrita do Secretário Adjunto (art. 5º, § 2º, exige_autorizacao_superior=True).
+  4. consultar_saldo_diarias -> Saldo da unidade CFA: R$ 9250.00. Saldo suficiente para R$ 550.00 (art. 8º).
+
+[DIA-2026-0108] Solicitante: Gustavo Henrique Prado (matrícula 203648)
+  1. consultar_servidor -> Matrícula 203648: nome='Gustavo Henrique Prado', cargo='Fiscal Ambiental', grupo_diaria='B', unidade='CFF', municipio_sede='Cuiabá' (art. 3º e art. 9º).
+  2. consultar_historico_diarias -> Prestação de contas: NÃO ATENDE (VENCIDA) - pedido DIA-2026-0023 (Juara/MT, retorno 2026-09-18, prazo de 5 dias úteis venceu em 2026-09-25) (data da análise 2026-10-09, art. 7º). Limite mensal (2026-11): ATENDE - 0.0 diárias já concedidas (nenhuma diária anterior no mês) + 3.5 pedidas = 3.5 diárias (limite máximo de 10.0 diárias/mês, art. 6º).
+  3. calcular_diarias -> Quantidade: 3.5 diárias (3 pernoite(s) + 0.5 no retorno = 3.5 diárias, art. 4º). Valor: grupo B, destino MT (interior_mt), R$ 280.00/diária, total = R$ 980.00 (art. 3º, Anexo I). Antecedência: 29 dias corridos entre o pedido (2026-10-05) e a partida (2026-11-03) - ATENDE o mínimo de 10 dias (art. 5º).
+  4. consultar_saldo_diarias -> Saldo da unidade CFF: R$ 18400.00. Saldo suficiente para R$ 980.00 (art. 8º).
+
+[DIA-2026-0109] Solicitante: Larissa Teixeira Moura (matrícula 208114)
+  1. consultar_servidor -> Matrícula 208114: nome='Larissa Teixeira Moura', cargo='Analista de Meio Ambiente', grupo_diaria='B', unidade='URS', municipio_sede='Sinop' (art. 3º e art. 9º).
+  2. consultar_historico_diarias -> Prestação de contas: ATENDE - sem prestações pendentes ou vencidas na data da análise 2026-10-09 (art. 7º). Limite mensal (2026-11): NÃO ATENDE (LIMITE MENSAL EXCEDIDO) - 8.0 diárias já concedidas (DIA-2026-0062 (4.5 diárias), DIA-2026-0063 (3.5 diárias)) + 3.5 pedidas = 11.5 diárias (limite máximo de 10.0 diárias/mês, art. 6º).
+  3. calcular_diarias -> Quantidade: 3.5 diárias (3 pernoite(s) + 0.5 no retorno = 3.5 diárias, art. 4º). Valor: grupo B, destino MT (interior_mt), R$ 280.00/diária, total = R$ 980.00 (art. 3º, Anexo I). Antecedência: 48 dias corridos entre o pedido (2026-10-06) e a partida (2026-11-23) - ATENDE o mínimo de 10 dias (art. 5º).
+  4. consultar_saldo_diarias -> Saldo da unidade URS: R$ 5300.00. Saldo suficiente para R$ 980.00 (art. 8º).
+
+[DIA-2026-0110] Solicitante: Rodrigo Siqueira Campos (matrícula 205507)
+  1. consultar_servidor -> Matrícula 205507: nome='Rodrigo Siqueira Campos', cargo='Analista de Recursos Hídricos', grupo_diaria='B', unidade='CRH', municipio_sede='Cuiabá' (art. 3º e art. 9º).
+  2. consultar_historico_diarias -> Prestação de contas: ATENDE - sem prestações pendentes ou vencidas na data da análise 2026-10-09 (art. 7º). Limite mensal (2026-11): ATENDE - 0.0 diárias já concedidas (nenhuma diária anterior no mês) + 4.5 pedidas = 4.5 diárias (limite máximo de 10.0 diárias/mês, art. 6º).
+  3. calcular_diarias -> Quantidade: 4.5 diárias (4 pernoite(s) + 0.5 no retorno = 4.5 diárias, art. 4º). Valor: grupo B, destino RO (outra_uf), R$ 400.00/diária, total = R$ 1800.00 (art. 3º, Anexo I). Antecedência: 39 dias corridos entre o pedido (2026-10-02) e a partida (2026-11-10) - ATENDE o mínimo de 10 dias (art. 5º).
+  4. consultar_saldo_diarias -> Saldo da unidade CRH: R$ 640.00. Saldo INSUFICIENTE para R$ 1800.00 (art. 8º).
+
+[DIA-2026-0111] Solicitante: Beatriz Moraes Cunha (matrícula 206689)
+  1. consultar_servidor -> Matrícula 206689: nome='Beatriz Moraes Cunha', cargo='Fiscal Ambiental', grupo_diaria='B', unidade='CFF', municipio_sede='Cuiabá' (art. 3º e art. 9º).
+  2. data_retorno ausente -> devolução em diligência (art. 9º)
+
+[DIA-2026-0112] Solicitante: Carla Regina Souza (matrícula 207481)
+  1. consultar_servidor -> Matrícula 207481: nome='Rafael Lima Antunes', cargo='Analista de Meio Ambiente', grupo_diaria='B', unidade='CFA', municipio_sede='Cuiabá' (art. 3º e art. 9º).
+  2. nome diverge do cadastro -> devolução em diligência (art. 9º)
+
+================================================================================
+TODOS OS TESTES DETERMINÍSTICOS DAS FERRAMENTAS FORAM APROVADOS COM SUCESSO!
+================================================================================

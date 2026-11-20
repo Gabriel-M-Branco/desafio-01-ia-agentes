@@ -1,0 +1,323 @@
+{
+  "DIA-2026-0111": {
+    "matricula_titular": "206689",
+    "nome_titular": "Beatriz Moraes Cunha",
+    "auditoria_antes": {
+      "banco_existe": true,
+      "caminho_db": "C:\\Users\\branco\\Downloads\\exemplos-20261119T193257Z-1-001\\exemplos\\resultados\\memoria_historico_e_memorias_usuario.db",
+      "matricula_procurada": "206689",
+      "nome_procurado": "Beatriz Moraes Cunha",
+      "tabelas": {
+        "agno_memories": {
+          "total_linhas_tabela": 1,
+          "ocorrencias_titular": 1,
+          "registros": [
+            {
+              "session_id": null,
+              "run_id": null,
+              "memory_id": "0ba4c17d-86a9-495d-bc69-e808668fda3a",
+              "user_id": "206689",
+              "termos_encontrados": [
+                "206689",
+                "beatriz moraes cunha"
+              ]
+            }
+          ]
+        },
+        "agno_runs": {
+          "total_linhas_tabela": 4,
+          "ocorrencias_titular": 2,
+          "registros": [
+            {
+              "session_id": "DIA-2026-0111",
+              "run_id": "5f2e76ee-6af4-4186-bf1f-0ee62df9d654",
+              "memory_id": null,
+              "user_id": "206689",
+              "termos_encontrados": [
+                "206689",
+                "beatriz moraes cunha"
+              ]
+            },
+            {
+              "session_id": "DIA-2026-0111",
+              "run_id": "03beb2d4-8010-40bb-8a1a-ddf1d122bc86",
+              "memory_id": null,
+              "user_id": "206689",
+              "termos_encontrados": [
+                "206689",
+                "beatriz moraes cunha"
+              ]
+            }
+          ]
+        },
+        "agno_schema_versions": {
+          "total_linhas_tabela": 3,
+          "ocorrencias_titular": 0,
+          "registros": []
+        },
+        "agno_sessions": {
+          "total_linhas_tabela": 2,
+          "ocorrencias_titular": 1,
+          "registros": [
+            {
+              "session_id": "DIA-2026-0111",
+              "run_id": null,
+              "memory_id": null,
+              "user_id": "206689",
+              "termos_encontrados": [
+                "206689"
+              ]
+            }
+          ]
+        }
+      },
+      "total_ocorrencias": 4
+    },
+    "eliminacao_por_user_id": {
+      "sessoes_removidas": [
+        "DIA-2026-0111"
+      ],
+      "memorias_removidas": [
+        "0ba4c17d-86a9-495d-bc69-e808668fda3a"
+      ]
+    },
+    "auditoria_apos_busca_apenas_user_id": {
+      "banco_existe": true,
+      "caminho_db": "C:\\Users\\branco\\Downloads\\exemplos-20261119T193257Z-1-001\\exemplos\\resultados\\memoria_historico_e_memorias_usuario.db",
+      "matricula_procurada": "206689",
+      "nome_procurado": "Beatriz Moraes Cunha",
+      "tabelas": {
+        "agno_memories": {
+          "total_linhas_tabela": 0,
+          "ocorrencias_titular": 0,
+          "registros": []
+        },
+        "agno_runs": {
+          "total_linhas_tabela": 2,
+          "ocorrencias_titular": 0,
+          "registros": []
+        },
+        "agno_schema_versions": {
+          "total_linhas_tabela": 3,
+          "ocorrencias_titular": 0,
+          "registros": []
+        },
+        "agno_sessions": {
+          "total_linhas_tabela": 1,
+          "ocorrencias_titular": 0,
+          "registros": []
+        }
+      },
+      "total_ocorrencias": 0
+    },
+    "eliminacao_complementar_por_conferencia_tabela": {
+      "sessoes_removidas": [],
+      "memorias_removidas": []
+    },
+    "auditoria_final_tabela_por_tabela": {
+      "banco_existe": true,
+      "caminho_db": "C:\\Users\\branco\\Downloads\\exemplos-20261119T193257Z-1-001\\exemplos\\resultados\\memoria_historico_e_memorias_usuario.db",
+      "matricula_procurada": "206689",
+      "nome_procurado": "Beatriz Moraes Cunha",
+      "tabelas": {
+        "agno_memories": {
+          "total_linhas_tabela": 0,
+          "ocorrencias_titular": 0,
+          "registros": []
+        },
+        "agno_runs": {
+          "total_linhas_tabela": 2,
+          "ocorrencias_titular": 0,
+          "registros": []
+        },
+        "agno_schema_versions": {
+          "total_linhas_tabela": 3,
+          "ocorrencias_titular": 0,
+          "registros": []
+        },
+        "agno_sessions": {
+          "total_linhas_tabela": 1,
+          "ocorrencias_titular": 0,
+          "registros": []
+        }
+      },
+      "total_ocorrencias": 0
+    },
+    "eliminacao_completa_verificada": true
+  },
+  "DIA-2026-0112": {
+    "matricula_titular": "207418",
+    "nome_titular": "Carla Regina Souza",
+    "auditoria_antes": {
+      "banco_existe": true,
+      "caminho_db": "C:\\Users\\branco\\Downloads\\exemplos-20261119T193257Z-1-001\\exemplos\\resultados\\memoria_historico_e_memorias_usuario.db",
+      "matricula_procurada": "207418",
+      "nome_procurado": "Carla Regina Souza",
+      "tabelas": {
+        "agno_memories": {
+          "total_linhas_tabela": 0,
+          "ocorrencias_titular": 0,
+          "registros": []
+        },
+        "agno_runs": {
+          "total_linhas_tabela": 2,
+          "ocorrencias_titular": 2,
+          "registros": [
+            {
+              "session_id": "DIA-2026-0112",
+              "run_id": "acb1c80b-58e3-4048-a845-94cde8a9b1df",
+              "memory_id": null,
+              "user_id": "207481",
+              "termos_encontrados": [
+                "carla regina souza"
+              ]
+            },
+            {
+              "session_id": "DIA-2026-0112",
+              "run_id": "f79a0977-8d00-45a7-a5ce-992e08b70aa4",
+              "memory_id": null,
+              "user_id": "207481",
+              "termos_encontrados": [
+                "207418",
+                "carla regina souza"
+              ]
+            }
+          ]
+        },
+        "agno_schema_versions": {
+          "total_linhas_tabela": 3,
+          "ocorrencias_titular": 0,
+          "registros": []
+        },
+        "agno_sessions": {
+          "total_linhas_tabela": 1,
+          "ocorrencias_titular": 0,
+          "registros": []
+        }
+      },
+      "total_ocorrencias": 2
+    },
+    "eliminacao_por_user_id": {
+      "sessoes_removidas": [],
+      "memorias_removidas": []
+    },
+    "auditoria_apos_busca_apenas_user_id": {
+      "banco_existe": true,
+      "caminho_db": "C:\\Users\\branco\\Downloads\\exemplos-20261119T193257Z-1-001\\exemplos\\resultados\\memoria_historico_e_memorias_usuario.db",
+      "matricula_procurada": "207418",
+      "nome_procurado": "Carla Regina Souza",
+      "tabelas": {
+        "agno_memories": {
+          "total_linhas_tabela": 0,
+          "ocorrencias_titular": 0,
+          "registros": []
+        },
+        "agno_runs": {
+          "total_linhas_tabela": 2,
+          "ocorrencias_titular": 2,
+          "registros": [
+            {
+              "session_id": "DIA-2026-0112",
+              "run_id": "acb1c80b-58e3-4048-a845-94cde8a9b1df",
+              "memory_id": null,
+              "user_id": "207481",
+              "termos_encontrados": [
+                "carla regina souza"
+              ]
+            },
+            {
+              "session_id": "DIA-2026-0112",
+              "run_id": "f79a0977-8d00-45a7-a5ce-992e08b70aa4",
+              "memory_id": null,
+              "user_id": "207481",
+              "termos_encontrados": [
+                "207418",
+                "carla regina souza"
+              ]
+            }
+          ]
+        },
+        "agno_schema_versions": {
+          "total_linhas_tabela": 3,
+          "ocorrencias_titular": 0,
+          "registros": []
+        },
+        "agno_sessions": {
+          "total_linhas_tabela": 1,
+          "ocorrencias_titular": 0,
+          "registros": []
+        }
+      },
+      "total_ocorrencias": 2
+    },
+    "eliminacao_complementar_por_conferencia_tabela": {
+      "sessoes_removidas": [
+        {
+          "session_id": "DIA-2026-0112",
+          "user_id_gravado": "207481",
+          "motivo": "Sessão do titular Carla Regina Souza (207418) estava gravada sob user_id='207481' devido a erro de digitação de matrícula no pedido original."
+        }
+      ],
+      "memorias_removidas": []
+    },
+    "auditoria_final_tabela_por_tabela": {
+      "banco_existe": true,
+      "caminho_db": "C:\\Users\\branco\\Downloads\\exemplos-20261119T193257Z-1-001\\exemplos\\resultados\\memoria_historico_e_memorias_usuario.db",
+      "matricula_procurada": "207418",
+      "nome_procurado": "Carla Regina Souza",
+      "tabelas": {
+        "agno_memories": {
+          "total_linhas_tabela": 0,
+          "ocorrencias_titular": 0,
+          "registros": []
+        },
+        "agno_runs": {
+          "total_linhas_tabela": 0,
+          "ocorrencias_titular": 0,
+          "registros": []
+        },
+        "agno_schema_versions": {
+          "total_linhas_tabela": 3,
+          "ocorrencias_titular": 0,
+          "registros": []
+        },
+        "agno_sessions": {
+          "total_linhas_tabela": 0,
+          "ocorrencias_titular": 0,
+          "registros": []
+        }
+      },
+      "total_ocorrencias": 0
+    },
+    "eliminacao_completa_verificada": true
+  },
+  "conferencia_cruzada_pos_eliminacao_carla": {
+    "banco_existe": true,
+    "caminho_db": "C:\\Users\\branco\\Downloads\\exemplos-20261119T193257Z-1-001\\exemplos\\resultados\\memoria_historico_e_memorias_usuario.db",
+    "matricula_procurada": "207418",
+    "nome_procurado": "Carla Regina Souza",
+    "tabelas": {
+      "agno_memories": {
+        "total_linhas_tabela": 0,
+        "ocorrencias_titular": 0,
+        "registros": []
+      },
+      "agno_runs": {
+        "total_linhas_tabela": 0,
+        "ocorrencias_titular": 0,
+        "registros": []
+      },
+      "agno_schema_versions": {
+        "total_linhas_tabela": 3,
+        "ocorrencias_titular": 0,
+        "registros": []
+      },
+      "agno_sessions": {
+        "total_linhas_tabela": 0,
+        "ocorrencias_titular": 0,
+        "registros": []
+      }
+    },
+    "total_ocorrencias": 0
+  }
+}

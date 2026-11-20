@@ -1,0 +1,12 @@
+[
+  {
+    "timestamp": "2026-11-19T19:42:07",
+    "numero_pedido": "DIA-2026-0101",
+    "matricula": "204317",
+    "encaminhamento_sugerido_agente": "apto_para_autorizacao",
+    "encaminhamento_decidido_servidor": "apto_para_autorizacao",
+    "houve_divergencia": false,
+    "justificativa_divergencia": "",
+    "minuta_despacho_final": "À consideração do Ordenador de Despesa. Instruído o pedido DIA-2026-0101, de interesse de Ana Paula Figueiredo, matrícula 204317, para deslocamento a Sinop/MT, no período de 09/11/2026 a 12/11/2026, com utilização de veículo oficial, conclui-se pelo atendimento dos requisitos preliminares e de mérito previstos na IN SEMA nº 07/2026. São devidas 3,5 diárias, no valor total de R$ 980,00, observados os arts. 3º, 4º, 5º, 6º, 7º e 8º. Encaminhe-se para decisão do Ordenador de Despesa, nos termos do art. 10."
+  }
+]
