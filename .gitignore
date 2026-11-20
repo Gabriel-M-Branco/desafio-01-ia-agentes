@@ -1,0 +1,21 @@
+# Credenciais e variáveis de ambiente
+.env
+
+# Bancos de dados locais (SQLite de memória do agente)
+*.db
+*.sqlite
+*.sqlite3
+*.db-journal
+*.db-wal
+*.db-shm
+
+# Bytecode e cache Python
+__pycache__/
+*.py[cod]
+*$py.class
+.pytest_cache/
+
+# Ambientes virtuais
+.venv/
+venv/
+env/
