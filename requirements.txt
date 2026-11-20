@@ -2,6 +2,6 @@ agno==3.0.9
 openai>=1.0.0
 python-dotenv>=1.0.0
 pydantic>=2.0.0
-streamlit>=1.30.0
+streamlit>=1.50.0
 sqlalchemy[asyncio]>=2.0.0
 pytest>=8.0.0

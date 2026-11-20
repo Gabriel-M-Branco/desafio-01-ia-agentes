@@ -45,15 +45,15 @@ def executar_testes_ferramentas() -> str:
 
     # 2. Caso obrigatório 1: Matrícula trocada do DIA-2026-0112
     linhas.append("\n--- Caso 1: Matrícula trocada do DIA-2026-0112 ---")
-    s_errada = consultar_servidor("207481")
-    s_correta = consultar_servidor("207418")
+    s_errada = consultar_servidor("207481", "Carla Regina Souza")
+    s_correta = consultar_servidor("207418", "Carla Regina Souza")
     s_inexistente = consultar_servidor("999999")
     linhas.append(f"Pedido DIA-2026-0112 (solicitante Carla Regina Souza, digitou 207481):")
-    linhas.append(f"  consultar_servidor('207481') -> {s_errada}")
-    linhas.append(f"  consultar_servidor('207418') -> {s_correta}")
+    linhas.append(f"  consultar_servidor('207481', 'Carla Regina Souza') -> {s_errada}")
+    linhas.append(f"  consultar_servidor('207418', 'Carla Regina Souza') -> {s_correta}")
     linhas.append(f"  consultar_servidor('999999') -> {s_inexistente}")
-    assert "Rafael Lima Antunes" in s_errada
-    assert "Carla Regina Souza" in s_correta
+    assert "Rafael Lima Antunes" in s_errada and "DIVERGÊNCIA CADASTRAL" in s_errada
+    assert "Carla Regina Souza" in s_correta and "Titularidade cadastral: ATENDE" in s_correta
     assert "não localizada" in s_inexistente
 
     # 3. Caso obrigatório 2: Prestação vencida do DIA-2026-0108 (e pendente no prazo do DIA-2026-0102 + limite do DIA-2026-0109)
@@ -112,6 +112,44 @@ def executar_testes_ferramentas() -> str:
         # Extrair valor total do texto calculado
         valor_str = calc.split("total = R$ ")[1].split(" ")[0]
         saldo = consultar_saldo_diarias(srv["unidade"], float(valor_str))
+        linhas.append(f"  2. consultar_historico_diarias -> {hist}")
+        linhas.append(f"  3. calcular_diarias -> {calc}")
+        linhas.append(f"  4. consultar_saldo_diarias -> {saldo}")
+
+    # Varredura das 2 complementações após diligência
+    complementacoes = json.loads((PASTA_BASE / "dados" / "complementacoes.json").read_text(encoding="utf-8"))
+    por_numero = {p["numero"]: p for p in pedidos}
+    ajustes_comp = {
+        "DIA-2026-0111": {"data_retorno": "2026-11-20"},
+        "DIA-2026-0112": {"matricula": "207418"},
+    }
+    esperados_comp = {
+        "DIA-2026-0111": ("3.5 diárias", "R$ 980.00", "suficiente para R$ 980.00"),
+        "DIA-2026-0112": ("3.5 diárias", "R$ 770.00", "suficiente para R$ 770.00"),
+    }
+    for comp in complementacoes:
+        num = comp["numero"]
+        p_comp = {**por_numero[num], **ajustes_comp[num]}
+        mat = p_comp["matricula"]
+        srv = SERVIDORES[mat]
+        cad = consultar_servidor(mat)
+        hist = consultar_historico_diarias(mat, p_comp["data_partida"], p_comp["data_retorno"])
+        calc = calcular_diarias(
+            srv["grupo_diaria"],
+            p_comp["destino_uf"],
+            p_comp["data_pedido"],
+            p_comp["data_partida"],
+            p_comp["data_retorno"],
+        )
+        valor_str = calc.split("total = R$ ")[1].split(" ")[0]
+        saldo = consultar_saldo_diarias(srv["unidade"], float(valor_str))
+        esp_qtd, esp_val, esp_saldo = esperados_comp[num]
+        assert f"nome='{p_comp['nome']}'" in cad
+        assert esp_qtd in calc and esp_val in calc
+        assert esp_saldo in saldo
+        linhas.append(f"\n[{num} (complementacao)] Solicitante: {p_comp['nome']} (matrícula {mat})")
+        linhas.append(f"  Texto: {comp['texto']}")
+        linhas.append(f"  1. consultar_servidor -> {cad}")
         linhas.append(f"  2. consultar_historico_diarias -> {hist}")
         linhas.append(f"  3. calcular_diarias -> {calc}")
         linhas.append(f"  4. consultar_saldo_diarias -> {saldo}")

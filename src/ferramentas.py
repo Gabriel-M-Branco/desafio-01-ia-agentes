@@ -61,25 +61,44 @@ def calcular_quantidade_diarias(partida: date, retorno: date) -> float:
     return 0.5 if pernoites == 0 else pernoites + 0.5
 
 
-def consultar_servidor(matricula: str) -> str:
-    """Consulta o cadastro funcional de um servidor pela matrícula.
+def consultar_servidor(matricula: str, nome_solicitante: str = "") -> str:
+    """Consulta o cadastro funcional de um servidor pela matrícula e confere titularidade.
 
     Use como primeira consulta ao instruir um pedido ou complementação para conferir
     se a matrícula existe e se o nome no cadastro confere com o nome do solicitante no pedido.
     `matricula` é o código numérico de 6 dígitos informado no pedido ou complementação, como '204317'.
+    `nome_solicitante` é o nome do solicitante informado no pedido (opcional; quando fornecido,
+    a ferramenta já sinaliza se há coincidência exata ou divergência cadastral pelo art. 9º).
     Devolve nome, cargo, grupo de diária (A, B ou C), sigla da unidade de lotação e município-sede,
     omitindo CPF e e-mail por minimização de dados.
     """
     codigo = str(matricula).strip()
     servidor = SERVIDORES.get(codigo)
     if servidor is None:
-        return f"Matrícula '{codigo}' não localizada no cadastro funcional (art. 9º)."
-    return (
+        return (
+            f"CADASTRO NÃO ATENDE (art. 9º): Matrícula '{codigo}' não localizada no cadastro funcional. "
+            f"Devolva em diligência sem análise de mérito (quantidade_diarias=null, valor_total=null)."
+        )
+
+    base = (
         f"Matrícula {servidor['matricula']}: nome='{servidor['nome']}', "
         f"cargo='{servidor['cargo']}', grupo_diaria='{servidor['grupo_diaria']}', "
         f"unidade='{servidor['unidade']}', municipio_sede='{servidor['municipio_sede']}' "
         f"(art. 3º e art. 9º)."
     )
+
+    nome_inf = str(nome_solicitante).strip() if nome_solicitante else ""
+    if nome_inf:
+        if servidor["nome"].strip().lower() != nome_inf.lower():
+            return (
+                f"DIVERGÊNCIA CADASTRAL - CADASTRO NÃO ATENDE (art. 9º): {base} "
+                f"O nome no cadastro ('{servidor['nome']}') DIVERGE do solicitante informado "
+                f"no pedido ('{nome_inf}'). PARE AGORA: NÃO consulte histórico, cálculo nem saldo; "
+                f"devolva em diligência com quantidade_diarias=null e valor_total=null."
+            )
+        return f"{base} Titularidade cadastral: ATENDE (nome coincide com o solicitante)."
+
+    return base
 
 
 def consultar_historico_diarias(

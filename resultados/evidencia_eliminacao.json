@@ -9,13 +9,13 @@
       "nome_procurado": "Beatriz Moraes Cunha",
       "tabelas": {
         "agno_memories": {
-          "total_linhas_tabela": 1,
+          "total_linhas_tabela": 2,
           "ocorrencias_titular": 1,
           "registros": [
             {
               "session_id": null,
               "run_id": null,
-              "memory_id": "0ba4c17d-86a9-495d-bc69-e808668fda3a",
+              "memory_id": "70bc5335-846c-4ba5-a2cb-7017f9374818",
               "user_id": "206689",
               "termos_encontrados": [
                 "206689",
@@ -30,7 +30,7 @@
           "registros": [
             {
               "session_id": "DIA-2026-0111",
-              "run_id": "5f2e76ee-6af4-4186-bf1f-0ee62df9d654",
+              "run_id": "253cdeb8-ecbe-4e21-88a4-f4d4da227b64",
               "memory_id": null,
               "user_id": "206689",
               "termos_encontrados": [
@@ -40,7 +40,7 @@
             },
             {
               "session_id": "DIA-2026-0111",
-              "run_id": "03beb2d4-8010-40bb-8a1a-ddf1d122bc86",
+              "run_id": "f2a39146-fd1c-47ae-8b9a-77070a9ac3f3",
               "memory_id": null,
               "user_id": "206689",
               "termos_encontrados": [
@@ -78,7 +78,7 @@
         "DIA-2026-0111"
       ],
       "memorias_removidas": [
-        "0ba4c17d-86a9-495d-bc69-e808668fda3a"
+        "70bc5335-846c-4ba5-a2cb-7017f9374818"
       ]
     },
     "auditoria_apos_busca_apenas_user_id": {
@@ -88,7 +88,7 @@
       "nome_procurado": "Beatriz Moraes Cunha",
       "tabelas": {
         "agno_memories": {
-          "total_linhas_tabela": 0,
+          "total_linhas_tabela": 1,
           "ocorrencias_titular": 0,
           "registros": []
         },
@@ -121,7 +121,7 @@
       "nome_procurado": "Beatriz Moraes Cunha",
       "tabelas": {
         "agno_memories": {
-          "total_linhas_tabela": 0,
+          "total_linhas_tabela": 1,
           "ocorrencias_titular": 0,
           "registros": []
         },
@@ -155,9 +155,20 @@
       "nome_procurado": "Carla Regina Souza",
       "tabelas": {
         "agno_memories": {
-          "total_linhas_tabela": 0,
-          "ocorrencias_titular": 0,
-          "registros": []
+          "total_linhas_tabela": 1,
+          "ocorrencias_titular": 1,
+          "registros": [
+            {
+              "session_id": null,
+              "run_id": null,
+              "memory_id": "1f16a316-b80c-4086-8b63-9313ce2ccf9e",
+              "user_id": "207481",
+              "termos_encontrados": [
+                "207418",
+                "carla regina souza"
+              ]
+            }
+          ]
         },
         "agno_runs": {
           "total_linhas_tabela": 2,
@@ -165,7 +176,7 @@
           "registros": [
             {
               "session_id": "DIA-2026-0112",
-              "run_id": "acb1c80b-58e3-4048-a845-94cde8a9b1df",
+              "run_id": "30840673-653d-4dd4-9272-0f83ae204fc6",
               "memory_id": null,
               "user_id": "207481",
               "termos_encontrados": [
@@ -174,7 +185,7 @@
             },
             {
               "session_id": "DIA-2026-0112",
-              "run_id": "f79a0977-8d00-45a7-a5ce-992e08b70aa4",
+              "run_id": "22e1c241-4eaa-4368-9526-abf4a09e181a",
               "memory_id": null,
               "user_id": "207481",
               "termos_encontrados": [
@@ -195,7 +206,7 @@
           "registros": []
         }
       },
-      "total_ocorrencias": 2
+      "total_ocorrencias": 3
     },
     "eliminacao_por_user_id": {
       "sessoes_removidas": [],
@@ -208,9 +219,20 @@
       "nome_procurado": "Carla Regina Souza",
       "tabelas": {
         "agno_memories": {
-          "total_linhas_tabela": 0,
-          "ocorrencias_titular": 0,
-          "registros": []
+          "total_linhas_tabela": 1,
+          "ocorrencias_titular": 1,
+          "registros": [
+            {
+              "session_id": null,
+              "run_id": null,
+              "memory_id": "1f16a316-b80c-4086-8b63-9313ce2ccf9e",
+              "user_id": "207481",
+              "termos_encontrados": [
+                "207418",
+                "carla regina souza"
+              ]
+            }
+          ]
         },
         "agno_runs": {
           "total_linhas_tabela": 2,
@@ -218,7 +240,7 @@
           "registros": [
             {
               "session_id": "DIA-2026-0112",
-              "run_id": "acb1c80b-58e3-4048-a845-94cde8a9b1df",
+              "run_id": "30840673-653d-4dd4-9272-0f83ae204fc6",
               "memory_id": null,
               "user_id": "207481",
               "termos_encontrados": [
@@ -227,7 +249,7 @@
             },
             {
               "session_id": "DIA-2026-0112",
-              "run_id": "f79a0977-8d00-45a7-a5ce-992e08b70aa4",
+              "run_id": "22e1c241-4eaa-4368-9526-abf4a09e181a",
               "memory_id": null,
               "user_id": "207481",
               "termos_encontrados": [
@@ -248,7 +270,7 @@
           "registros": []
         }
       },
-      "total_ocorrencias": 2
+      "total_ocorrencias": 3
     },
     "eliminacao_complementar_por_conferencia_tabela": {
       "sessoes_removidas": [
@@ -258,7 +280,12 @@
           "motivo": "Sessão do titular Carla Regina Souza (207418) estava gravada sob user_id='207481' devido a erro de digitação de matrícula no pedido original."
         }
       ],
-      "memorias_removidas": []
+      "memorias_removidas": [
+        {
+          "memory_id": "1f16a316-b80c-4086-8b63-9313ce2ccf9e",
+          "user_id_gravado": "207481"
+        }
+      ]
     },
     "auditoria_final_tabela_por_tabela": {
       "banco_existe": true,

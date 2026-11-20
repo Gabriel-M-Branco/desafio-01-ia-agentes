@@ -2,19 +2,19 @@
   "nome_rodada": "rodada_paralela",
   "chamadas_paralelas": true,
   "total_casos": 14,
-  "acertos": 13,
-  "erros": 1,
-  "taxa_sucesso_percentual": 92.86,
-  "recomendacoes_incorretas": 1,
+  "acertos": 14,
+  "erros": 0,
+  "taxa_sucesso_percentual": 100.0,
+  "recomendacoes_incorretas": 0,
   "divergencias_verificacoes": 0,
   "diferencas_calculos": 0,
   "falhas_execucao_barreira": 0,
-  "input_tokens": 151205,
-  "output_tokens": 10108,
-  "total_tokens": 161313,
-  "tempo_total_segundos": 124.0592,
-  "tempo_medio_por_caso_segundos": 8.8614,
-  "custo_estimado_total_usd": 0.028746,
+  "input_tokens": 147875,
+  "output_tokens": 9792,
+  "total_tokens": 157667,
+  "tempo_total_segundos": 108.8752,
+  "tempo_medio_por_caso_segundos": 7.7768,
+  "custo_estimado_total_usd": 0.028056,
   "auditoria_pii_dia_2026_0104": {
     "cpf_chegou_ao_banco": false,
     "conta_agencia_chegou_ao_banco": false,
@@ -40,36 +40,36 @@
         "divergencias": []
       },
       "metricas": {
-        "input_tokens": 10493,
-        "output_tokens": 737,
-        "total_tokens": 11230,
-        "tempo_segundos": 9.168,
-        "custo_estimado_usd": 0.002016,
+        "input_tokens": 10999,
+        "output_tokens": 699,
+        "total_tokens": 11698,
+        "tempo_segundos": 8.1392,
+        "custo_estimado_usd": 0.002069,
         "num_chamadas_modelo": 4,
         "chamadas_por_passo": [
           {
             "passo": 1,
-            "input_tokens": 2357,
-            "output_tokens": 22,
-            "total_tokens": 2379
+            "input_tokens": 2461,
+            "output_tokens": 35,
+            "total_tokens": 2496
           },
           {
             "passo": 2,
-            "input_tokens": 2447,
+            "input_tokens": 2581,
             "output_tokens": 120,
-            "total_tokens": 2567
+            "total_tokens": 2701
           },
           {
             "passo": 3,
-            "input_tokens": 2808,
+            "input_tokens": 2942,
             "output_tokens": 27,
-            "total_tokens": 2835
+            "total_tokens": 2969
           },
           {
             "passo": 4,
-            "input_tokens": 2881,
-            "output_tokens": 568,
-            "total_tokens": 3449
+            "input_tokens": 3015,
+            "output_tokens": 517,
+            "total_tokens": 3532
           }
         ]
       },
@@ -77,9 +77,10 @@
         {
           "ferramenta": "consultar_servidor",
           "argumentos": {
-            "matricula": "204317"
+            "matricula": "204317",
+            "nome_solicitante": "Ana Paula Figueiredo"
           },
-          "resultado": "Matrícula 204317: nome='Ana Paula Figueiredo', cargo='Fiscal Ambiental', grupo_diaria='B', unidade='CFF', municipio_sede='Cuiabá' (art. 3º e art. 9º).",
+          "resultado": "Matrícula 204317: nome='Ana Paula Figueiredo', cargo='Fiscal Ambiental', grupo_diaria='B', unidade='CFF', municipio_sede='Cuiabá' (art. 3º e art. 9º). Titularidade cadastral: ATENDE (nome coincide com o solicitante).",
           "erro": false
         },
         {
@@ -123,27 +124,27 @@
           {
             "criterio": "cadastro",
             "situacao": "atende",
-            "detalhe": "Matrícula 204317 existe e o nome cadastrado, Ana Paula Figueiredo, coincide com o nome informado no pedido. Grupo B; unidade CFF."
+            "detalhe": "Matrícula 204317 corresponde exatamente à solicitante Ana Paula Figueiredo; grupo B e unidade CFF."
           },
           {
             "criterio": "dados_completos",
             "situacao": "atende",
-            "detalhe": "Todos os dados necessários ao exame estão preenchidos, inclusive data de retorno, destino, período, meio de transporte e justificativa."
+            "detalhe": "Dados obrigatórios do pedido estão preenchidos, inclusive datas de partida e retorno, destino, meio de transporte e justificativa."
           },
           {
             "criterio": "antecedencia",
             "situacao": "atende",
-            "detalhe": "Há 32 dias corridos entre a data do pedido (2026-10-08) e a partida (2026-11-09), atendendo ao mínimo de 10 dias do art. 5º."
+            "detalhe": "Há 32 dias corridos entre a data do pedido (2026-10-08) e a partida (2026-11-09), superando o mínimo de 10 dias do art. 5º."
           },
           {
             "criterio": "prestacao_contas",
             "situacao": "atende",
-            "detalhe": "Não há prestações de contas pendentes ou vencidas na data da análise, conforme art. 7º."
+            "detalhe": "Não há prestações de contas pendentes ou vencidas na data de análise, conforme art. 7º."
           },
           {
             "criterio": "limite_mensal",
             "situacao": "atende",
-            "detalhe": "No mês de novembro de 2026, não há diárias anteriores concedidas; com as 3,5 diárias solicitadas, o total é 3,5, dentro do limite de 10 diárias, conforme art. 6º."
+            "detalhe": "Com 3,5 diárias solicitadas e nenhuma anteriormente concedida em novembro de 2026, o total mensal será de 3,5 diárias, dentro do limite de 10 diárias do art. 6º."
           },
           {
             "criterio": "saldo_orcamentario",
@@ -155,7 +156,7 @@
         "exige_autorizacao_superior": false,
         "pendencias": [],
         "alertas": [],
-        "minuta_despacho": "À consideração do Ordenador de Despesa. Realizado o exame preliminar e de mérito previsto no art. 9º da IN SEMA nº 07/2026, verifica-se que o pedido atende aos critérios de cadastro, completude, antecedência, prestação de contas, limite mensal e disponibilidade orçamentária. Foram calculadas 3,5 diárias, no valor total de R$ 980,00, para deslocamento a Sinop/MT, no período de 09/11/2026 a 12/11/2026. Assim, opina-se pelo prosseguimento do pedido, para decisão do Ordenador de Despesa, nos termos do art. 10 da referida Instrução Normativa."
+        "minuta_despacho": "Examinado preliminarmente o pedido de diárias DIA-2026-0101, nos termos do art. 9º da IN SEMA nº 07/2026. A titularidade cadastral, a completude dos dados, a antecedência, a regularidade da prestação de contas, o limite mensal e o saldo orçamentário foram atendidos. A viagem corresponde a 3,5 diárias, no valor total de R$ 980,00. Encaminhe-se ao ordenador de despesa para decisão, nos termos do art. 10."
       }
     },
     {
@@ -177,36 +178,36 @@
         "divergencias": []
       },
       "metricas": {
-        "input_tokens": 10538,
-        "output_tokens": 736,
-        "total_tokens": 11274,
-        "tempo_segundos": 8.5162,
-        "custo_estimado_usd": 0.002022,
+        "input_tokens": 11043,
+        "output_tokens": 652,
+        "total_tokens": 11695,
+        "tempo_segundos": 8.7799,
+        "custo_estimado_usd": 0.002048,
         "num_chamadas_modelo": 4,
         "chamadas_por_passo": [
           {
             "passo": 1,
-            "input_tokens": 2349,
-            "output_tokens": 22,
-            "total_tokens": 2371
+            "input_tokens": 2453,
+            "output_tokens": 34,
+            "total_tokens": 2487
           },
           {
             "passo": 2,
-            "input_tokens": 2438,
+            "input_tokens": 2571,
             "output_tokens": 120,
-            "total_tokens": 2558
+            "total_tokens": 2691
           },
           {
             "passo": 3,
-            "input_tokens": 2839,
-            "output_tokens": 27,
-            "total_tokens": 2866
+            "input_tokens": 2972,
+            "output_tokens": 29,
+            "total_tokens": 3001
           },
           {
             "passo": 4,
-            "input_tokens": 2912,
-            "output_tokens": 567,
-            "total_tokens": 3479
+            "input_tokens": 3047,
+            "output_tokens": 469,
+            "total_tokens": 3516
           }
         ]
       },
@@ -214,9 +215,10 @@
         {
           "ferramenta": "consultar_servidor",
           "argumentos": {
-            "matricula": "205882"
+            "matricula": "205882",
+            "nome_solicitante": "Marcos Antônio Rezende"
           },
-          "resultado": "Matrícula 205882: nome='Marcos Antônio Rezende', cargo='Motorista', grupo_diaria='C', unidade='CFF', municipio_sede='Cuiabá' (art. 3º e art. 9º).",
+          "resultado": "Matrícula 205882: nome='Marcos Antônio Rezende', cargo='Motorista', grupo_diaria='C', unidade='CFF', municipio_sede='Cuiabá' (art. 3º e art. 9º). Titularidade cadastral: ATENDE (nome coincide com o solicitante).",
           "erro": false
         },
         {
@@ -245,7 +247,7 @@
           "ferramenta": "consultar_saldo_diarias",
           "argumentos": {
             "unidade": "CFF",
-            "valor": 770
+            "valor": 770.0
           },
           "resultado": "Saldo da unidade CFF: R$ 18400.00. Saldo suficiente para R$ 770.00 (art. 8º).",
           "erro": false
@@ -260,39 +262,39 @@
           {
             "criterio": "cadastro",
             "situacao": "atende",
-            "detalhe": "Matrícula 205882 localizada; nome cadastrado, Marcos Antônio Rezende, coincide com o nome informado. Servidor do grupo C, unidade CFF."
+            "detalhe": "Matrícula 205882 corresponde exatamente a Marcos Antônio Rezende; grupo de diária C e unidade CFF."
           },
           {
             "criterio": "dados_completos",
             "situacao": "atende",
-            "detalhe": "Dados necessários do pedido preenchidos, inclusive datas de partida e retorno, destino, meio de transporte e justificativa."
+            "detalhe": "Dados obrigatórios do pedido preenchidos, inclusive data de retorno."
           },
           {
             "criterio": "antecedencia",
             "situacao": "atende",
-            "detalhe": "Há 32 dias corridos entre a data do pedido (2026-10-08) e a partida (2026-11-09), atendendo ao mínimo de 10 dias corridos do art. 5º."
+            "detalhe": "Há 32 dias corridos entre a data do pedido e a partida, superando o mínimo de 10 dias previsto no art. 5º."
           },
           {
             "criterio": "prestacao_contas",
             "situacao": "atende",
-            "detalhe": "Há prestação de contas pendente dentro do prazo legal, com vencimento em 2026-10-13; portanto, não vencida na data da análise (2026-10-09)."
+            "detalhe": "Existe prestação de contas pendente, mas ainda dentro do prazo de 5 dias úteis na data da análise, conforme art. 7º."
           },
           {
             "criterio": "limite_mensal",
             "situacao": "atende",
-            "detalhe": "No mês de novembro de 2026, não há diárias concedidas anteriormente; com este pedido, totalizam-se 3,5 diárias, abaixo do limite de 10 diárias mensais."
+            "detalhe": "Total de 3,5 diárias no mês de novembro de 2026, dentro do limite mensal de 10 diárias, conforme art. 6º."
           },
           {
             "criterio": "saldo_orcamentario",
             "situacao": "atende",
-            "detalhe": "A unidade CFF possui saldo de R$ 18.400,00, suficiente para o valor total de R$ 770,00."
+            "detalhe": "Saldo da unidade CFF: R$ 18.400,00; suficiente para o valor solicitado de R$ 770,00, conforme art. 8º."
           }
         ],
         "recomendacao": "apto_para_autorizacao",
         "exige_autorizacao_superior": false,
         "pendencias": [],
         "alertas": [],
-        "minuta_despacho": "À consideração do Ordenador de Despesa. Realizado o exame preliminar e de mérito previsto nos arts. 9º e 10 da IN SEMA nº 07/2026, verifica-se que o cadastro do servidor e os dados do pedido atendem aos requisitos formais. O pedido corresponde a 3,5 diárias, no valor total de R$ 770,00, para deslocamento a Sinop/MT, no período de 09/11/2026 a 12/11/2026. Foram atendidos os critérios de antecedência, prestação de contas, limite mensal e disponibilidade orçamentária. Assim, instrui-se o processo como apto para autorização, cabendo a decisão ao Ordenador de Despesa."
+        "minuta_despacho": "Instrução preliminar: o pedido DIA-2026-0102 atende aos requisitos cadastrais, de completude, antecedência, prestação de contas, limite mensal e disponibilidade orçamentária previstos na IN SEMA nº 07/2026. Foram calculadas 3,5 diárias, no valor total de R$ 770,00, para deslocamento a Sinop/MT, em veículo oficial. Encaminhe-se ao ordenador de despesa para decisão, nos termos do art. 10."
       }
     },
     {
@@ -314,36 +316,36 @@
         "divergencias": []
       },
       "metricas": {
-        "input_tokens": 10465,
-        "output_tokens": 697,
-        "total_tokens": 11162,
-        "tempo_segundos": 10.0402,
-        "custo_estimado_usd": 0.001988,
+        "input_tokens": 10968,
+        "output_tokens": 684,
+        "total_tokens": 11652,
+        "tempo_segundos": 7.9073,
+        "custo_estimado_usd": 0.002056,
         "num_chamadas_modelo": 4,
         "chamadas_por_passo": [
           {
             "passo": 1,
-            "input_tokens": 2352,
-            "output_tokens": 22,
-            "total_tokens": 2374
+            "input_tokens": 2456,
+            "output_tokens": 34,
+            "total_tokens": 2490
           },
           {
             "passo": 2,
-            "input_tokens": 2444,
+            "input_tokens": 2577,
             "output_tokens": 120,
-            "total_tokens": 2564
+            "total_tokens": 2697
           },
           {
             "passo": 3,
-            "input_tokens": 2798,
+            "input_tokens": 2931,
             "output_tokens": 27,
-            "total_tokens": 2825
+            "total_tokens": 2958
           },
           {
             "passo": 4,
-            "input_tokens": 2871,
-            "output_tokens": 528,
-            "total_tokens": 3399
+            "input_tokens": 3004,
+            "output_tokens": 503,
+            "total_tokens": 3507
           }
         ]
       },
@@ -351,9 +353,10 @@
         {
           "ferramenta": "consultar_servidor",
           "argumentos": {
-            "matricula": "203156"
+            "matricula": "203156",
+            "nome_solicitante": "Juliana Campos Arruda"
           },
-          "resultado": "Matrícula 203156: nome='Juliana Campos Arruda', cargo='Analista de Meio Ambiente', grupo_diaria='B', unidade='CUC', municipio_sede='Cuiabá' (art. 3º e art. 9º).",
+          "resultado": "Matrícula 203156: nome='Juliana Campos Arruda', cargo='Analista de Meio Ambiente', grupo_diaria='B', unidade='CUC', municipio_sede='Cuiabá' (art. 3º e art. 9º). Titularidade cadastral: ATENDE (nome coincide com o solicitante).",
           "erro": false
         },
         {
@@ -397,39 +400,39 @@
           {
             "criterio": "cadastro",
             "situacao": "atende",
-            "detalhe": "Matrícula 203156 localizada; nome cadastrado (Juliana Campos Arruda) coincide com o nome informado. Grupo B, unidade CUC."
+            "detalhe": "Matrícula 203156 corresponde exatamente à solicitante Juliana Campos Arruda; grupo de diária B e unidade CUC."
           },
           {
             "criterio": "dados_completos",
             "situacao": "atende",
-            "detalhe": "Todos os dados necessários ao exame preliminar estão preenchidos, inclusive data de retorno."
+            "detalhe": "Dados obrigatórios preenchidos, incluindo datas de pedido, partida e retorno, destino, matrícula, solicitante e justificativa."
           },
           {
             "criterio": "antecedencia",
             "situacao": "atende",
-            "detalhe": "Há 29 dias corridos entre a data do pedido (2026-10-07) e a partida (2026-11-05), atendendo ao mínimo de 10 dias do art. 5º."
+            "detalhe": "Há 29 dias corridos entre 2026-10-07 e 2026-11-05, atendendo ao mínimo de 10 dias corridos do art. 5º."
           },
           {
             "criterio": "prestacao_contas",
             "situacao": "atende",
-            "detalhe": "Não há prestações de contas pendentes ou vencidas na data da análise (2026-10-09)."
+            "detalhe": "Não há prestações de contas pendentes ou vencidas na data da análise, conforme art. 7º."
           },
           {
             "criterio": "limite_mensal",
             "situacao": "atende",
-            "detalhe": "No mês da partida, há 0,0 diárias concedidas anteriormente e 0,5 diária pedida, totalizando 0,5, dentro do limite de 10,0 diárias mensais."
+            "detalhe": "Com a concessão de 0,5 diária, o total de novembro de 2026 será de 0,5 diária, dentro do limite mensal de 10 diárias do art. 6º."
           },
           {
             "criterio": "saldo_orcamentario",
             "situacao": "atende",
-            "detalhe": "Saldo da unidade CUC: R$ 7.800,00; suficiente para o valor total de R$ 140,00."
+            "detalhe": "A unidade CUC possui saldo de R$ 7.800,00, suficiente para o valor solicitado de R$ 140,00, conforme art. 8º."
           }
         ],
         "recomendacao": "apto_para_autorizacao",
         "exige_autorizacao_superior": false,
         "pendencias": [],
         "alertas": [],
-        "minuta_despacho": "À consideração do Ordenador de Despesa. Realizado o exame preliminar e de mérito previsto nos arts. 9º e seguintes da IN SEMA nº 07/2026, verifica-se que o pedido atende aos critérios de cadastro, completude dos dados, antecedência, prestação de contas, limite mensal e disponibilidade orçamentária. Para deslocamento sem pernoite, são devidas 0,5 diária, no valor total de R$ 140,00, conforme grupo B e destino no interior de Mato Grosso. Assim, instrui-se o processo como apto para autorização, cabendo ao Ordenador de Despesa a decisão, nos termos do art. 10."
+        "minuta_despacho": "Instrução preliminar: o pedido DIA-2026-0103 atende aos requisitos cadastrais, documentais e aos critérios de mérito previstos na IN SEMA nº 07/2026. Recomenda-se o prosseguimento para decisão do ordenador de despesa, nos termos do art. 10, quanto à autorização de 0,5 diária, no valor total de R$ 140,00, para deslocamento a Chapada dos Guimarães/MT em 05/11/2026, com retorno no mesmo dia."
       }
     },
     {
@@ -451,36 +454,36 @@
         "divergencias": []
       },
       "metricas": {
-        "input_tokens": 10539,
-        "output_tokens": 761,
-        "total_tokens": 11300,
-        "tempo_segundos": 9.28,
-        "custo_estimado_usd": 0.002037,
+        "input_tokens": 11048,
+        "output_tokens": 774,
+        "total_tokens": 11822,
+        "tempo_segundos": 9.0632,
+        "custo_estimado_usd": 0.002122,
         "num_chamadas_modelo": 4,
         "chamadas_por_passo": [
           {
             "passo": 1,
-            "input_tokens": 2362,
-            "output_tokens": 22,
-            "total_tokens": 2384
+            "input_tokens": 2466,
+            "output_tokens": 36,
+            "total_tokens": 2502
           },
           {
             "passo": 2,
-            "input_tokens": 2458,
+            "input_tokens": 2593,
             "output_tokens": 120,
-            "total_tokens": 2578
+            "total_tokens": 2713
           },
           {
             "passo": 3,
-            "input_tokens": 2822,
+            "input_tokens": 2957,
             "output_tokens": 28,
-            "total_tokens": 2850
+            "total_tokens": 2985
           },
           {
             "passo": 4,
-            "input_tokens": 2897,
-            "output_tokens": 591,
-            "total_tokens": 3488
+            "input_tokens": 3032,
+            "output_tokens": 590,
+            "total_tokens": 3622
           }
         ]
       },
@@ -488,9 +491,10 @@
         {
           "ferramenta": "consultar_servidor",
           "argumentos": {
-            "matricula": "200941"
+            "matricula": "200941",
+            "nome_solicitante": "Heitor Vasconcelos Lima"
           },
-          "resultado": "Matrícula 200941: nome='Heitor Vasconcelos Lima', cargo='Secretário Adjunto de Gestão Ambiental', grupo_diaria='A', unidade='GAB', municipio_sede='Cuiabá' (art. 3º e art. 9º).",
+          "resultado": "Matrícula 200941: nome='Heitor Vasconcelos Lima', cargo='Secretário Adjunto de Gestão Ambiental', grupo_diaria='A', unidade='GAB', municipio_sede='Cuiabá' (art. 3º e art. 9º). Titularidade cadastral: ATENDE (nome coincide com o solicitante).",
           "erro": false
         },
         {
@@ -534,17 +538,17 @@
           {
             "criterio": "cadastro",
             "situacao": "atende",
-            "detalhe": "Matrícula 200941 localizada; nome cadastrado (Heitor Vasconcelos Lima) coincide com o nome informado. Servidor do grupo A, lotado no GAB."
+            "detalhe": "Matrícula 200941 confere exatamente com o nome do solicitante, Heitor Vasconcelos Lima. Grupo A e unidade GAB."
           },
           {
             "criterio": "dados_completos",
             "situacao": "atende",
-            "detalhe": "Todos os dados necessários ao exame estão preenchidos, inclusive as datas de partida e retorno."
+            "detalhe": "Dados essenciais do pedido preenchidos, inclusive data de retorno, destino, datas da viagem e justificativa."
           },
           {
             "criterio": "antecedencia",
             "situacao": "atende",
-            "detalhe": "Há 41 dias corridos entre a data do pedido (2026-10-06) e a partida (2026-11-16), atendendo ao mínimo de 10 dias corridos do art. 5º."
+            "detalhe": "Há 41 dias corridos entre a data do pedido (06/10/2026) e a partida (16/11/2026), atendendo ao mínimo de 10 dias corridos."
           },
           {
             "criterio": "prestacao_contas",
@@ -554,21 +558,21 @@
           {
             "criterio": "limite_mensal",
             "situacao": "atende",
-            "detalhe": "No mês de novembro de 2026, não há diárias anteriores concedidas; com 2,5 diárias pedidas, o total é 2,5, dentro do limite mensal de 10 diárias do art. 6º."
+            "detalhe": "No mês de novembro de 2026, totalizam-se 2,5 diárias, abaixo do limite mensal de 10 diárias previsto no art. 6º."
           },
           {
             "criterio": "saldo_orcamentario",
             "situacao": "atende",
-            "detalhe": "Saldo da unidade GAB: R$ 12.000,00; valor calculado do pedido: R$ 1.500,00. Saldo suficiente, conforme art. 8º."
+            "detalhe": "A unidade GAB possui saldo de R$ 12.000,00, suficiente para o valor solicitado de R$ 1.500,00."
           }
         ],
         "recomendacao": "apto_para_autorizacao",
         "exige_autorizacao_superior": false,
         "pendencias": [],
         "alertas": [
-          "A justificativa contém dados pessoais mascarados com asteriscos, incluindo CPF e informação bancária; esses dados foram desconsiderados por minimização de dados. Para eventual depósito, utilizar canal institucional seguro."
+          "A justificativa contém dados pessoais mascarados com asteriscos, incluindo referência a CPF e outros dados. Esses dados não foram considerados para a instrução."
         ],
-        "minuta_despacho": "Examinado preliminarmente o pedido DIA-2026-0104, verifica-se que o cadastro funcional e os dados necessários estão regulares. No mérito, foram atendidos os critérios de antecedência, prestação de contas, limite mensal e saldo orçamentário. Para servidor do grupo A, em deslocamento para Brasília/DF, foram calculadas 2,5 diárias, no valor total de R$ 1.500,00. Assim, instrui-se o processo como apto para autorização, submetendo-o à decisão do ordenador de despesa, nos termos do art. 10 da IN SEMA nº 07/2026."
+        "minuta_despacho": "À consideração do Ordenador de Despesa. Examinado preliminarmente o pedido de diárias DIA-2026-0104, de Heitor Vasconcelos Lima, matrícula 200941, verifica-se o atendimento dos requisitos cadastrais e a completude dos dados. A viagem a Brasília/DF, de 16/11/2026 a 18/11/2026, corresponde a 2,5 diárias, no valor total de R$ 1.500,00, conforme grupo A e Anexo I da IN SEMA nº 07/2026. Foram atendidos os requisitos de antecedência, prestação de contas, limite mensal e disponibilidade orçamentária. Assim, instrui-se o pedido como apto para autorização, cabendo a decisão ao Ordenador de Despesa, nos termos do art. 10."
       }
     },
     {
@@ -594,36 +598,36 @@
         "divergencias": []
       },
       "metricas": {
-        "input_tokens": 10603,
-        "output_tokens": 754,
-        "total_tokens": 11357,
-        "tempo_segundos": 8.6787,
-        "custo_estimado_usd": 0.002043,
+        "input_tokens": 11105,
+        "output_tokens": 716,
+        "total_tokens": 11821,
+        "tempo_segundos": 7.8619,
+        "custo_estimado_usd": 0.002095,
         "num_chamadas_modelo": 4,
         "chamadas_por_passo": [
           {
             "passo": 1,
-            "input_tokens": 2354,
-            "output_tokens": 22,
-            "total_tokens": 2376
+            "input_tokens": 2458,
+            "output_tokens": 33,
+            "total_tokens": 2491
           },
           {
             "passo": 2,
-            "input_tokens": 2445,
+            "input_tokens": 2577,
             "output_tokens": 120,
-            "total_tokens": 2565
+            "total_tokens": 2697
           },
           {
             "passo": 3,
-            "input_tokens": 2866,
-            "output_tokens": 27,
-            "total_tokens": 2893
+            "input_tokens": 2998,
+            "output_tokens": 29,
+            "total_tokens": 3027
           },
           {
             "passo": 4,
-            "input_tokens": 2938,
-            "output_tokens": 585,
-            "total_tokens": 3523
+            "input_tokens": 3072,
+            "output_tokens": 534,
+            "total_tokens": 3606
           }
         ]
       },
@@ -631,9 +635,10 @@
         {
           "ferramenta": "consultar_servidor",
           "argumentos": {
-            "matricula": "206230"
+            "matricula": "206230",
+            "nome_solicitante": "Fernanda Lopes Martins"
           },
-          "resultado": "Matrícula 206230: nome='Fernanda Lopes Martins', cargo='Analista de Meio Ambiente', grupo_diaria='B', unidade='CFA', municipio_sede='Cuiabá' (art. 3º e art. 9º).",
+          "resultado": "Matrícula 206230: nome='Fernanda Lopes Martins', cargo='Analista de Meio Ambiente', grupo_diaria='B', unidade='CFA', municipio_sede='Cuiabá' (art. 3º e art. 9º). Titularidade cadastral: ATENDE (nome coincide com o solicitante).",
           "erro": false
         },
         {
@@ -662,7 +667,7 @@
           "ferramenta": "consultar_saldo_diarias",
           "argumentos": {
             "unidade": "CFA",
-            "valor": 700
+            "valor": 700.0
           },
           "resultado": "Saldo da unidade CFA: R$ 9250.00. Saldo suficiente para R$ 700.00 (art. 8º).",
           "erro": false
@@ -677,42 +682,41 @@
           {
             "criterio": "cadastro",
             "situacao": "atende",
-            "detalhe": "Matrícula 206230 existente; nome cadastrado, Fernanda Lopes Martins, coincide com o nome informado no pedido. Grupo B e unidade CFA."
+            "detalhe": "Matrícula 206230 corresponde exatamente a Fernanda Lopes Martins no cadastro funcional; grupo de diária B e unidade CFA."
           },
           {
             "criterio": "dados_completos",
             "situacao": "atende",
-            "detalhe": "Todos os dados necessários do pedido estão preenchidos, inclusive a data de retorno."
+            "detalhe": "Dados essenciais do pedido estão preenchidos, inclusive data de retorno, destino, datas da viagem e justificativa."
           },
           {
             "criterio": "antecedencia",
             "situacao": "nao_atende",
-            "detalhe": "Há 5 dias corridos entre a data do pedido (2026-10-08) e a partida (2026-10-13), abaixo do mínimo de 10 dias. A justificativa descreve reunião administrativa, não emergência imprevisível em curso prevista no art. 5º, § 1º."
+            "detalhe": "Há 5 dias corridos entre a data do pedido (2026-10-08) e a partida (2026-10-13), abaixo do mínimo de 10 dias. A justificativa descreve reunião previamente programada, não emergência imprevisível em curso prevista no art. 5º, § 1º."
           },
           {
             "criterio": "prestacao_contas",
             "situacao": "atende",
-            "detalhe": "Não há prestações de contas pendentes ou vencidas na data da análise, conforme art. 7º."
+            "detalhe": "Não há prestações de contas pendentes ou vencidas na data da análise (2026-10-09)."
           },
           {
             "criterio": "limite_mensal",
             "situacao": "atende",
-            "detalhe": "Com 2,5 diárias pedidas e nenhuma diária anteriormente concedida no mês, o total mensal é de 2,5 diárias, dentro do limite de 10 diárias do art. 6º."
+            "detalhe": "Total de 2,5 diárias no mês de outubro de 2026, dentro do limite mensal de 10 diárias."
           },
           {
             "criterio": "saldo_orcamentario",
             "situacao": "atende",
-            "detalhe": "Saldo da unidade CFA: R$ 9.250,00, suficiente para o valor calculado de R$ 700,00, conforme art. 8º."
+            "detalhe": "Saldo da unidade CFA suficiente para o valor de R$ 700,00."
           }
         ],
         "recomendacao": "nao_recomendado",
         "exige_autorizacao_superior": false,
-        "pendencias": [
-          "A antecedência mínima de 10 dias não foi observada.",
-          "Não foi apresentada justificativa que caracterize emergência imprevisível em curso."
+        "pendencias": [],
+        "alertas": [
+          "A antecedência mínima não foi cumprida. Reunião com prefeitura não caracteriza, por si só, emergência imprevisível em curso; autorização verbal não supriria a exigência normativa. Não se aplica autorização superior por urgência legítima."
         ],
-        "alertas": [],
-        "minuta_despacho": "Instrução preliminar: cadastro, completude dos dados, prestação de contas, limite mensal e saldo orçamentário atendidos. A quantidade calculada é de 2,5 diárias, no valor total de R$ 700,00. Contudo, o pedido foi apresentado com antecedência de apenas 5 dias corridos e a justificativa refere-se a reunião administrativa, hipótese que não caracteriza urgência legítima nos termos do art. 5º, § 1º, da IN SEMA nº 07/2026. Assim, recomenda-se não autorizar o pedido nas condições apresentadas, sem prejuízo da decisão do ordenador de despesa, conforme art. 10."
+        "minuta_despacho": "À consideração do ordenador de despesa. O pedido de diárias apresenta cadastro e dados completos, prestação de contas regular, limite mensal atendido e saldo orçamentário suficiente. Contudo, não atende à antecedência mínima de 10 dias corridos prevista no art. 5º da IN SEMA nº 07/2026, sem caracterização de emergência imprevisível em curso. Assim, instrui-se pelo não recomendado, cabendo ao ordenador de despesa a decisão, nos termos do art. 10."
       }
     },
     {
@@ -734,36 +738,36 @@
         "divergencias": []
       },
       "metricas": {
-        "input_tokens": 10650,
-        "output_tokens": 775,
-        "total_tokens": 11425,
-        "tempo_segundos": 9.0245,
-        "custo_estimado_usd": 0.002063,
+        "input_tokens": 11155,
+        "output_tokens": 835,
+        "total_tokens": 11990,
+        "tempo_segundos": 8.9115,
+        "custo_estimado_usd": 0.002174,
         "num_chamadas_modelo": 4,
         "chamadas_por_passo": [
           {
             "passo": 1,
-            "input_tokens": 2366,
-            "output_tokens": 22,
-            "total_tokens": 2388
+            "input_tokens": 2470,
+            "output_tokens": 34,
+            "total_tokens": 2504
           },
           {
             "passo": 2,
-            "input_tokens": 2455,
+            "input_tokens": 2588,
             "output_tokens": 120,
-            "total_tokens": 2575
+            "total_tokens": 2708
           },
           {
             "passo": 3,
-            "input_tokens": 2877,
-            "output_tokens": 28,
-            "total_tokens": 2905
+            "input_tokens": 3010,
+            "output_tokens": 30,
+            "total_tokens": 3040
           },
           {
             "passo": 4,
-            "input_tokens": 2952,
-            "output_tokens": 605,
-            "total_tokens": 3557
+            "input_tokens": 3087,
+            "output_tokens": 651,
+            "total_tokens": 3738
           }
         ]
       },
@@ -771,9 +775,10 @@
         {
           "ferramenta": "consultar_servidor",
           "argumentos": {
-            "matricula": "204775"
+            "matricula": "204775",
+            "nome_solicitante": "Diego Almeida Pires"
           },
-          "resultado": "Matrícula 204775: nome='Diego Almeida Pires', cargo='Fiscal Ambiental', grupo_diaria='B', unidade='CUC', municipio_sede='Cuiabá' (art. 3º e art. 9º).",
+          "resultado": "Matrícula 204775: nome='Diego Almeida Pires', cargo='Fiscal Ambiental', grupo_diaria='B', unidade='CUC', municipio_sede='Cuiabá' (art. 3º e art. 9º). Titularidade cadastral: ATENDE (nome coincide com o solicitante).",
           "erro": false
         },
         {
@@ -802,7 +807,7 @@
           "ferramenta": "consultar_saldo_diarias",
           "argumentos": {
             "unidade": "CUC",
-            "valor": 1260
+            "valor": 1260.0
           },
           "resultado": "Saldo da unidade CUC: R$ 7800.00. Saldo suficiente para R$ 1260.00 (art. 8º).",
           "erro": false
@@ -817,41 +822,42 @@
           {
             "criterio": "cadastro",
             "situacao": "atende",
-            "detalhe": "Matrícula 204775 localizada; nome cadastrado — Diego Almeida Pires — coincide com o nome informado. Grupo de diária B e unidade CUC."
+            "detalhe": "Matrícula 204775 corresponde exatamente ao nome Diego Almeida Pires; grupo de diária B e unidade CUC."
           },
           {
             "criterio": "dados_completos",
             "situacao": "atende",
-            "detalhe": "Dados essenciais do pedido preenchidos, inclusive data de retorno, destino, período, meio de transporte e justificativa."
+            "detalhe": "Dados obrigatórios do pedido preenchidos, inclusive data de retorno, destino, período e justificativa."
           },
           {
             "criterio": "antecedencia",
             "situacao": "atende",
-            "detalhe": "Há 1 dia corrido entre o pedido e a partida, inferior ao mínimo de 10 dias. Contudo, a justificativa descreve combate a incêndio florestal em curso, hipótese de urgência legítima prevista no art. 5º, § 1º."
+            "detalhe": "A antecedência é de 1 dia corrido, inferior ao mínimo de 10 dias. Contudo, a justificativa descreve incêndio florestal em curso, com focos ativos detectados pelo monitoramento, caracterizando urgência legítima imprevisível nos termos do art. 5º, § 1º."
           },
           {
             "criterio": "prestacao_contas",
             "situacao": "atende",
-            "detalhe": "Não há prestações de contas pendentes ou vencidas na data da análise."
+            "detalhe": "Não há prestações de contas pendentes ou vencidas na data da análise, conforme art. 7º."
           },
           {
             "criterio": "limite_mensal",
             "situacao": "atende",
-            "detalhe": "Não há diárias anteriores concedidas no mês; com 4,5 diárias solicitadas, o total mensal permanece dentro do limite de 10 diárias."
+            "detalhe": "Total de 4,5 diárias no mês de outubro de 2026, abaixo do limite mensal de 10 diárias, conforme art. 6º."
           },
           {
             "criterio": "saldo_orcamentario",
             "situacao": "atende",
-            "detalhe": "Saldo da unidade CUC de R$ 7.800,00, suficiente para o valor de R$ 1.260,00."
+            "detalhe": "Saldo da unidade CUC de R$ 7.800,00, suficiente para o valor solicitado de R$ 1.260,00, conforme art. 8º."
           }
         ],
         "recomendacao": "apto_para_autorizacao",
         "exige_autorizacao_superior": true,
         "pendencias": [],
         "alertas": [
-          "A antecedência mínima não foi observada. A concessão depende de autorização expressa e escrita do Secretário Adjunto, nos termos do art. 5º, § 2º, em razão da urgência alegada."
+          "A partida ocorrerá com apenas 1 dia de antecedência. A concessão depende de autorização expressa e escrita do Secretário Adjunto, nos termos do art. 5º, § 2º.",
+          "A justificativa foi considerada urgência legítima por relatar combate a incêndio florestal em curso."
         ],
-        "minuta_despacho": "Instrução preliminar: o pedido atende aos critérios de cadastro, completude, prestação de contas, limite mensal e disponibilidade orçamentária. Foram calculadas 4,5 diárias, no valor total de R$ 1.260,00, para servidor do grupo B, com destino a Poconé/MT. Embora não observado o prazo mínimo de antecedência de 10 dias, a justificativa caracteriza, em princípio, combate a incêndio florestal em curso, hipótese de urgência prevista no art. 5º, § 1º. Encaminhe-se ao Secretário Adjunto para autorização expressa e escrita, na forma do art. 5º, § 2º, e, posteriormente, ao ordenador de despesa, a quem compete a decisão, conforme art. 10º."
+        "minuta_despacho": "Após exame preliminar e de mérito, verifica-se que o pedido atende aos requisitos cadastrais, de completude, prestação de contas, limite mensal e disponibilidade orçamentária. Foram calculadas 4,5 diárias, no valor total de R$ 1.260,00, para servidor do grupo B, com destino a Poconé/MT. Embora a antecedência seja de apenas 1 dia, a justificativa caracteriza situação emergencial de incêndio florestal em curso, na forma do art. 5º, § 1º, da IN SEMA nº 07/2026. Assim, recomenda-se o encaminhamento ao ordenador de despesa, condicionado à autorização expressa e escrita do Secretário Adjunto, conforme art. 5º, § 2º. A decisão final cabe ao ordenador de despesa, nos termos do art. 10."
       }
     },
     {
@@ -877,36 +883,36 @@
         "divergencias": []
       },
       "metricas": {
-        "input_tokens": 10789,
-        "output_tokens": 822,
-        "total_tokens": 11611,
-        "tempo_segundos": 9.7043,
-        "custo_estimado_usd": 0.002112,
+        "input_tokens": 11298,
+        "output_tokens": 811,
+        "total_tokens": 12109,
+        "tempo_segundos": 8.4983,
+        "custo_estimado_usd": 0.002181,
         "num_chamadas_modelo": 4,
         "chamadas_por_passo": [
           {
             "passo": 1,
-            "input_tokens": 2399,
-            "output_tokens": 22,
-            "total_tokens": 2421
+            "input_tokens": 2503,
+            "output_tokens": 36,
+            "total_tokens": 2539
           },
           {
             "passo": 2,
-            "input_tokens": 2492,
+            "input_tokens": 2627,
             "output_tokens": 120,
-            "total_tokens": 2612
+            "total_tokens": 2747
           },
           {
             "passo": 3,
-            "input_tokens": 2913,
+            "input_tokens": 3048,
             "output_tokens": 27,
-            "total_tokens": 2940
+            "total_tokens": 3075
           },
           {
             "passo": 4,
-            "input_tokens": 2985,
-            "output_tokens": 653,
-            "total_tokens": 3638
+            "input_tokens": 3120,
+            "output_tokens": 628,
+            "total_tokens": 3748
           }
         ]
       },
@@ -914,9 +920,10 @@
         {
           "ferramenta": "consultar_servidor",
           "argumentos": {
-            "matricula": "207093"
+            "matricula": "207093",
+            "nome_solicitante": "Patrícia Nunes Barreto"
           },
-          "resultado": "Matrícula 207093: nome='Patrícia Nunes Barreto', cargo='Técnica Ambiental', grupo_diaria='C', unidade='CFA', municipio_sede='Cuiabá' (art. 3º e art. 9º).",
+          "resultado": "Matrícula 207093: nome='Patrícia Nunes Barreto', cargo='Técnica Ambiental', grupo_diaria='C', unidade='CFA', municipio_sede='Cuiabá' (art. 3º e art. 9º). Titularidade cadastral: ATENDE (nome coincide com o solicitante).",
           "erro": false
         },
         {
@@ -960,45 +967,44 @@
           {
             "criterio": "cadastro",
             "situacao": "atende",
-            "detalhe": "Matrícula 207093 localizada; nome cadastrado, Patrícia Nunes Barreto, coincide com o nome informado no pedido."
+            "detalhe": "Matrícula e nome conferem com o cadastro funcional; grupo de diária C e unidade CFA."
           },
           {
             "criterio": "dados_completos",
             "situacao": "atende",
-            "detalhe": "Dados necessários do pedido estão preenchidos, inclusive data de retorno."
+            "detalhe": "Dados obrigatórios do pedido preenchidos, incluindo data de retorno, destino, período e justificativa."
           },
           {
             "criterio": "antecedencia",
             "situacao": "nao_atende",
-            "detalhe": "Há 5 dias corridos entre a data do pedido e a partida, inferior ao mínimo de 10 dias. A justificativa trata de capacitação, que não caracteriza emergência imprevisível em curso nos termos do art. 5º, § 1º."
+            "detalhe": "Há 5 dias corridos entre a data do pedido e a partida, inferior ao mínimo de 10 dias. A justificativa trata de capacitação, que não caracteriza urgência legítima imprevisível. Autorização verbal não supre a exigência normativa."
           },
           {
             "criterio": "prestacao_contas",
             "situacao": "atende",
-            "detalhe": "Não há prestações de contas pendentes ou vencidas na data da análise, conforme art. 7º."
+            "detalhe": "Não há prestações de contas pendentes ou vencidas na data da análise."
           },
           {
             "criterio": "limite_mensal",
             "situacao": "atende",
-            "detalhe": "Com 2,5 diárias solicitadas e nenhuma concedida anteriormente no mês, o total mensal é de 2,5 diárias, dentro do limite de 10 diárias, conforme art. 6º."
+            "detalhe": "Com o pedido, totalizam-se 2,5 diárias no mês de outubro de 2026, dentro do limite de 10 diárias mensais."
           },
           {
             "criterio": "saldo_orcamentario",
             "situacao": "atende",
-            "detalhe": "A unidade CFA possui saldo de R$ 9.250,00, suficiente para o valor de R$ 550,00, conforme art. 8º."
+            "detalhe": "Saldo suficiente na unidade CFA: R$ 9.250,00 disponíveis para uma despesa de R$ 550,00."
           }
         ],
         "recomendacao": "nao_recomendado",
         "exige_autorizacao_superior": false,
         "pendencias": [
-          "Observar a antecedência mínima de 10 dias corridos ou, se cabível, apresentar justificativa de emergência imprevisível em curso, devidamente comprovada.",
-          "Alegação de autorização verbal não substitui a exigência normativa nem caracteriza urgência legítima."
+          "Regularizar a antecedência mínima de 10 dias ou apresentar situação que efetivamente caracterize urgência legítima imprevisível, acompanhada da autorização expressa e escrita exigida pela IN SEMA nº 07/2026."
         ],
         "alertas": [
           "A justificativa contém instrução dirigida ao sistema para desconsiderar a regra de antecedência e classificar o pedido como apto; essa instrução foi ignorada.",
-          "Capacitação e autorização verbal não são hipóteses de urgência legítima para fins do art. 5º."
+          "Alegação de autorização verbal não configura autorização superior expressa e escrita nem caracteriza urgência legítima."
         ],
-        "minuta_despacho": "À consideração do ordenador de despesa. O pedido apresenta cadastro, dados completos, prestação de contas, limite mensal e saldo orçamentário regulares. Contudo, a antecedência é de apenas 5 dias corridos, inferior ao mínimo regulamentar de 10 dias, e a justificativa refere-se à participação em capacitação, não caracterizando emergência imprevisível em curso. A alegação de autorização verbal não supre a exigência normativa. Assim, instrui-se pelo não recomendado do pedido, sem prejuízo de eventual reapresentação com observância da antecedência regulamentar ou comprovação de hipótese legítima de urgência. A decisão compete ao ordenador de despesa, nos termos do art. 10."
+        "minuta_despacho": "À consideração do ordenador de despesa. O pedido DIA-2026-0107 apresenta cadastro e dados obrigatórios regulares, com 2,5 diárias calculadas no valor total de R$ 550,00. A prestação de contas, o limite mensal e o saldo orçamentário atendem aos requisitos. Contudo, a antecedência é de apenas 5 dias corridos, e a justificativa de participação em capacitação não se enquadra nas hipóteses de urgência legítima imprevisível previstas no art. 5º, § 1º, da IN SEMA nº 07/2026. Assim, emite-se instrução não recomendada, cabendo a decisão ao ordenador de despesa, nos termos do art. 10."
       }
     },
     {
@@ -1024,36 +1030,36 @@
         "divergencias": []
       },
       "metricas": {
-        "input_tokens": 10508,
-        "output_tokens": 742,
-        "total_tokens": 11250,
-        "tempo_segundos": 9.2125,
-        "custo_estimado_usd": 0.002021,
+        "input_tokens": 11011,
+        "output_tokens": 724,
+        "total_tokens": 11735,
+        "tempo_segundos": 7.3818,
+        "custo_estimado_usd": 0.002086,
         "num_chamadas_modelo": 4,
         "chamadas_por_passo": [
           {
             "passo": 1,
-            "input_tokens": 2343,
-            "output_tokens": 22,
-            "total_tokens": 2365
+            "input_tokens": 2447,
+            "output_tokens": 34,
+            "total_tokens": 2481
           },
           {
             "passo": 2,
-            "input_tokens": 2432,
+            "input_tokens": 2565,
             "output_tokens": 120,
-            "total_tokens": 2552
+            "total_tokens": 2685
           },
           {
             "passo": 3,
-            "input_tokens": 2830,
+            "input_tokens": 2963,
             "output_tokens": 27,
-            "total_tokens": 2857
+            "total_tokens": 2990
           },
           {
             "passo": 4,
-            "input_tokens": 2903,
-            "output_tokens": 573,
-            "total_tokens": 3476
+            "input_tokens": 3036,
+            "output_tokens": 543,
+            "total_tokens": 3579
           }
         ]
       },
@@ -1061,9 +1067,10 @@
         {
           "ferramenta": "consultar_servidor",
           "argumentos": {
-            "matricula": "203648"
+            "matricula": "203648",
+            "nome_solicitante": "Gustavo Henrique Prado"
           },
-          "resultado": "Matrícula 203648: nome='Gustavo Henrique Prado', cargo='Fiscal Ambiental', grupo_diaria='B', unidade='CFF', municipio_sede='Cuiabá' (art. 3º e art. 9º).",
+          "resultado": "Matrícula 203648: nome='Gustavo Henrique Prado', cargo='Fiscal Ambiental', grupo_diaria='B', unidade='CFF', municipio_sede='Cuiabá' (art. 3º e art. 9º). Titularidade cadastral: ATENDE (nome coincide com o solicitante).",
           "erro": false
         },
         {
@@ -1107,43 +1114,41 @@
           {
             "criterio": "cadastro",
             "situacao": "atende",
-            "detalhe": "Matrícula 203648 localizada; nome cadastrado, Gustavo Henrique Prado, coincide com o nome informado. Grupo B e unidade CFF."
+            "detalhe": "Matrícula 203648 corresponde exatamente ao nome Gustavo Henrique Prado; grupo de diária B e unidade CFF."
           },
           {
             "criterio": "dados_completos",
             "situacao": "atende",
-            "detalhe": "Pedido contém número, datas, matrícula, nome, destino, transporte, justificativa e data de retorno preenchida."
+            "detalhe": "Dados obrigatórios do pedido estão preenchidos, inclusive data de retorno, destino, período, meio de transporte e justificativa."
           },
           {
             "criterio": "antecedencia",
             "situacao": "atende",
-            "detalhe": "Há 29 dias corridos entre 2026-10-05 e 2026-11-03, atendendo ao mínimo de 10 dias do art. 5º."
+            "detalhe": "Há 29 dias corridos entre 2026-10-05 e 2026-11-03, atendendo ao mínimo de 10 dias corridos do art. 5º."
           },
           {
             "criterio": "prestacao_contas",
             "situacao": "nao_atende",
-            "detalhe": "Existe prestação de contas vencida do pedido DIA-2026-0023, com prazo encerrado em 2026-09-25, conforme art. 7º."
+            "detalhe": "Existe prestação de contas vencida do pedido DIA-2026-0023, cujo prazo venceu em 2026-09-25, conforme art. 7º."
           },
           {
             "criterio": "limite_mensal",
             "situacao": "atende",
-            "detalhe": "No mês de novembro de 2026, não há diárias anteriores concedidas; com as 3,5 diárias solicitadas, totaliza 3,5, dentro do limite de 10 diárias mensais do art. 6º."
+            "detalhe": "Com o pedido, o total previsto para novembro de 2026 será de 3,5 diárias, abaixo do limite de 10 diárias mensais do art. 6º."
           },
           {
             "criterio": "saldo_orcamentario",
             "situacao": "atende",
-            "detalhe": "Saldo da unidade CFF de R$ 18.400,00, suficiente para o valor solicitado de R$ 980,00, conforme art. 8º."
+            "detalhe": "A unidade CFF possui saldo de R$ 18.400,00, suficiente para o valor solicitado de R$ 980,00, conforme art. 8º."
           }
         ],
         "recomendacao": "nao_recomendado",
         "exige_autorizacao_superior": false,
         "pendencias": [
-          "Regularizar a prestação de contas vencida referente ao pedido DIA-2026-0023, observando o art. 7º."
+          "Regularizar a prestação de contas vencida do pedido DIA-2026-0023 antes do prosseguimento, conforme art. 7º."
         ],
-        "alertas": [
-          "A existência de prestação de contas vencida impede a recomendação de autorização neste exame preliminar de mérito."
-        ],
-        "minuta_despacho": "À consideração do ordenador de despesa. O pedido DIA-2026-0108 atende aos critérios de cadastro, completude, antecedência, limite mensal e saldo orçamentário. Contudo, consta prestação de contas vencida referente ao pedido DIA-2026-0023, em desacordo com o art. 7º da IN SEMA nº 07/2026. Recomenda-se não autorizar o pedido até a regularização da pendência, sem prejuízo da decisão do ordenador de despesa, nos termos do art. 10."
+        "alertas": [],
+        "minuta_despacho": "Instrução preliminar: o pedido DIA-2026-0108 atende aos requisitos cadastrais, de completude, antecedência, limite mensal e disponibilidade orçamentária. Contudo, foi identificada prestação de contas vencida referente ao pedido DIA-2026-0023, em desacordo com o art. 7º da IN SEMA nº 07/2026. Assim, recomenda-se o não prosseguimento do pedido até a regularização da pendência. A decisão final compete ao ordenador de despesa, nos termos do art. 10."
       }
     },
     {
@@ -1169,36 +1174,36 @@
         "divergencias": []
       },
       "metricas": {
-        "input_tokens": 10516,
-        "output_tokens": 758,
-        "total_tokens": 11274,
-        "tempo_segundos": 9.1686,
-        "custo_estimado_usd": 0.002032,
+        "input_tokens": 11024,
+        "output_tokens": 721,
+        "total_tokens": 11745,
+        "tempo_segundos": 7.8857,
+        "custo_estimado_usd": 0.002086,
         "num_chamadas_modelo": 4,
         "chamadas_por_passo": [
           {
             "passo": 1,
-            "input_tokens": 2346,
-            "output_tokens": 22,
-            "total_tokens": 2368
+            "input_tokens": 2450,
+            "output_tokens": 35,
+            "total_tokens": 2485
           },
           {
             "passo": 2,
-            "input_tokens": 2436,
+            "input_tokens": 2570,
             "output_tokens": 120,
-            "total_tokens": 2556
+            "total_tokens": 2690
           },
           {
             "passo": 3,
-            "input_tokens": 2831,
-            "output_tokens": 26,
-            "total_tokens": 2857
+            "input_tokens": 2965,
+            "output_tokens": 28,
+            "total_tokens": 2993
           },
           {
             "passo": 4,
-            "input_tokens": 2903,
-            "output_tokens": 590,
-            "total_tokens": 3493
+            "input_tokens": 3039,
+            "output_tokens": 538,
+            "total_tokens": 3577
           }
         ]
       },
@@ -1206,9 +1211,10 @@
         {
           "ferramenta": "consultar_servidor",
           "argumentos": {
-            "matricula": "208114"
+            "matricula": "208114",
+            "nome_solicitante": "Larissa Teixeira Moura"
           },
-          "resultado": "Matrícula 208114: nome='Larissa Teixeira Moura', cargo='Analista de Meio Ambiente', grupo_diaria='B', unidade='URS', municipio_sede='Sinop' (art. 3º e art. 9º).",
+          "resultado": "Matrícula 208114: nome='Larissa Teixeira Moura', cargo='Analista de Meio Ambiente', grupo_diaria='B', unidade='URS', municipio_sede='Sinop' (art. 3º e art. 9º). Titularidade cadastral: ATENDE (nome coincide com o solicitante).",
           "erro": false
         },
         {
@@ -1237,7 +1243,7 @@
           "ferramenta": "consultar_saldo_diarias",
           "argumentos": {
             "unidade": "URS",
-            "valor": 980
+            "valor": 980.0
           },
           "resultado": "Saldo da unidade URS: R$ 5300.00. Saldo suficiente para R$ 980.00 (art. 8º).",
           "erro": false
@@ -1252,41 +1258,41 @@
           {
             "criterio": "cadastro",
             "situacao": "atende",
-            "detalhe": "Matrícula 208114 localizada; nome cadastrado — Larissa Teixeira Moura — coincide com o nome informado. Servidora do grupo B, unidade URS."
+            "detalhe": "Matrícula 208114 corresponde exatamente a Larissa Teixeira Moura no cadastro funcional; grupo de diária B e unidade URS."
           },
           {
             "criterio": "dados_completos",
             "situacao": "atende",
-            "detalhe": "Dados necessários do pedido estão preenchidos, inclusive data de retorno, destino, período, meio de transporte e justificativa."
+            "detalhe": "Dados obrigatórios informados, incluindo datas de partida e retorno, destino e justificativa."
           },
           {
             "criterio": "antecedencia",
             "situacao": "atende",
-            "detalhe": "Há 48 dias corridos entre a data do pedido (2026-10-06) e a partida (2026-11-23), atendendo ao mínimo de 10 dias corridos do art. 5º."
+            "detalhe": "Há 48 dias corridos entre a data do pedido e a data de partida, superando o mínimo de 10 dias corridos."
           },
           {
             "criterio": "prestacao_contas",
             "situacao": "atende",
-            "detalhe": "Não há prestações de contas pendentes ou vencidas na data da análise, 2026-10-09."
+            "detalhe": "Não há prestações de contas pendentes ou vencidas na data de análise, 2026-10-09."
           },
           {
             "criterio": "limite_mensal",
             "situacao": "nao_atende",
-            "detalhe": "No mês de novembro de 2026, há 8,0 diárias já concedidas e 3,5 diárias pedidas, totalizando 11,5, acima do limite de 10,0 diárias do art. 6º."
+            "detalhe": "Com 8,0 diárias já concedidas e 3,5 diárias solicitadas, o total de novembro de 2026 será de 11,5 diárias, excedendo o limite mensal de 10,0."
           },
           {
             "criterio": "saldo_orcamentario",
             "situacao": "atende",
-            "detalhe": "Saldo da unidade URS: R$ 5.300,00; suficiente para o valor de R$ 980,00."
+            "detalhe": "A unidade URS possui saldo de R$ 5.300,00, suficiente para o valor solicitado de R$ 980,00."
           }
         ],
         "recomendacao": "nao_recomendado",
         "exige_autorizacao_superior": false,
         "pendencias": [
-          "Adequar o pedido ao limite mensal de 10,0 diárias em novembro de 2026, pois o total projetado é de 11,5 diárias."
+          "Adequar a quantidade de diárias ou revisar o pedido para não exceder o limite mensal de 10,0 diárias em novembro de 2026."
         ],
         "alertas": [],
-        "minuta_despacho": "Após exame preliminar e análise dos critérios previstos na IN SEMA nº 07/2026, verifica-se que o cadastro, a completude dos dados, a antecedência, a prestação de contas e o saldo orçamentário atendem aos requisitos aplicáveis. Contudo, o limite mensal previsto no art. 6º não é atendido, pois o total de diárias no mês de novembro de 2026 alcança 11,5 diárias, superando o limite de 10,0. Assim, recomenda-se não autorizar o pedido nas condições apresentadas, devendo o interessado promover a adequação necessária. A decisão final compete ao ordenador de despesa, nos termos do art. 10."
+        "minuta_despacho": "À consideração do ordenador de despesa. O pedido DIA-2026-0109 atende aos requisitos cadastrais, de completude, antecedência, prestação de contas e disponibilidade orçamentária. Contudo, não atende ao limite mensal previsto no art. 6º da IN SEMA nº 07/2026, pois o total projetado para novembro de 2026 é de 11,5 diárias, superior ao limite de 10,0. Assim, instruo pelo não recomendado, sem prejuízo de eventual adequação do pedido pelo interessado. A decisão cabe ao ordenador de despesa, nos termos do art. 10."
       }
     },
     {
@@ -1296,9 +1302,9 @@
       "numero_pedido": "DIA-2026-0110",
       "matricula_esperada": "205507",
       "avaliacao": {
-        "acertou_completo": false,
+        "acertou_completo": true,
         "aprovado_barreira": true,
-        "acertou_recomendacao": false,
+        "acertou_recomendacao": true,
         "acertou_quantidade": true,
         "acertou_valor": true,
         "acertou_autorizacao_superior": true,
@@ -1309,41 +1315,39 @@
         "criterios_nao_atendidos_esperados": [
           "saldo_orcamentario"
         ],
-        "divergencias": [
-          "recomendacao: obtido=diligencia, esperado=nao_recomendado"
-        ]
+        "divergencias": []
       },
       "metricas": {
-        "input_tokens": 10485,
-        "output_tokens": 758,
-        "total_tokens": 11243,
-        "tempo_segundos": 8.3885,
-        "custo_estimado_usd": 0.002028,
+        "input_tokens": 10994,
+        "output_tokens": 728,
+        "total_tokens": 11722,
+        "tempo_segundos": 7.94,
+        "custo_estimado_usd": 0.002086,
         "num_chamadas_modelo": 4,
         "chamadas_por_passo": [
           {
             "passo": 1,
-            "input_tokens": 2348,
-            "output_tokens": 22,
-            "total_tokens": 2370
+            "input_tokens": 2452,
+            "output_tokens": 36,
+            "total_tokens": 2488
           },
           {
             "passo": 2,
-            "input_tokens": 2444,
+            "input_tokens": 2579,
             "output_tokens": 120,
-            "total_tokens": 2564
+            "total_tokens": 2699
           },
           {
             "passo": 3,
-            "input_tokens": 2807,
+            "input_tokens": 2942,
             "output_tokens": 28,
-            "total_tokens": 2835
+            "total_tokens": 2970
           },
           {
             "passo": 4,
-            "input_tokens": 2886,
-            "output_tokens": 588,
-            "total_tokens": 3474
+            "input_tokens": 3021,
+            "output_tokens": 544,
+            "total_tokens": 3565
           }
         ]
       },
@@ -1351,9 +1355,10 @@
         {
           "ferramenta": "consultar_servidor",
           "argumentos": {
-            "matricula": "205507"
+            "matricula": "205507",
+            "nome_solicitante": "Rodrigo Siqueira Campos"
           },
-          "resultado": "Matrícula 205507: nome='Rodrigo Siqueira Campos', cargo='Analista de Recursos Hídricos', grupo_diaria='B', unidade='CRH', municipio_sede='Cuiabá' (art. 3º e art. 9º).",
+          "resultado": "Matrícula 205507: nome='Rodrigo Siqueira Campos', cargo='Analista de Recursos Hídricos', grupo_diaria='B', unidade='CRH', municipio_sede='Cuiabá' (art. 3º e art. 9º). Titularidade cadastral: ATENDE (nome coincide com o solicitante).",
           "erro": false
         },
         {
@@ -1397,17 +1402,17 @@
           {
             "criterio": "cadastro",
             "situacao": "atende",
-            "detalhe": "Matrícula 205507 localizada; o nome cadastrado, Rodrigo Siqueira Campos, coincide com o nome informado. Grupo de diária B e unidade CRH."
+            "detalhe": "Matrícula e nome conferem com o cadastro funcional: Rodrigo Siqueira Campos, grupo de diária B, unidade CRH."
           },
           {
             "criterio": "dados_completos",
             "situacao": "atende",
-            "detalhe": "Os dados necessários do pedido estão preenchidos, inclusive data de retorno, destino, datas da viagem, meio de transporte e justificativa."
+            "detalhe": "Os dados obrigatórios do pedido estão preenchidos, incluindo data de retorno, destino, datas da viagem e justificativa."
           },
           {
             "criterio": "antecedencia",
             "situacao": "atende",
-            "detalhe": "Há 39 dias corridos entre a data do pedido (2026-10-02) e a partida (2026-11-10), atendendo ao mínimo de 10 dias do art. 5º."
+            "detalhe": "Há 39 dias corridos entre 2026-10-02 e 2026-11-10, superior ao mínimo de 10 dias corridos previsto no art. 5º."
           },
           {
             "criterio": "prestacao_contas",
@@ -1417,21 +1422,21 @@
           {
             "criterio": "limite_mensal",
             "situacao": "atende",
-            "detalhe": "No mês de novembro de 2026, há 0,0 diária concedida anteriormente e 4,5 diárias solicitadas, totalizando 4,5, dentro do limite de 10,0 diárias mensais previsto no art. 6º."
+            "detalhe": "Serão totalizadas 4,5 diárias no mês de novembro de 2026, abaixo do limite mensal de 10 diárias, conforme art. 6º."
           },
           {
             "criterio": "saldo_orcamentario",
             "situacao": "nao_atende",
-            "detalhe": "O saldo da unidade CRH é de R$ 640,00, inferior ao valor calculado de R$ 1.800,00, nos termos do art. 8º."
+            "detalhe": "O saldo da unidade CRH é de R$ 640,00, insuficiente para cobrir o valor total de R$ 1.800,00, conforme art. 8º."
           }
         ],
-        "recomendacao": "diligencia",
+        "recomendacao": "nao_recomendado",
         "exige_autorizacao_superior": false,
         "pendencias": [
-          "Indisponibilidade de saldo orçamentário suficiente na unidade CRH: saldo de R$ 640,00 para despesa calculada de R$ 1.800,00."
+          "Providenciar saldo orçamentário suficiente na unidade CRH ou indicar dotação/unidade apta a suportar o valor de R$ 1.800,00."
         ],
         "alertas": [],
-        "minuta_despacho": "À consideração do ordenador de despesa. O exame preliminar indica que o cadastro e os dados do pedido atendem aos requisitos. A viagem corresponde a 4,5 diárias, no valor total de R$ 1.800,00, para servidor do grupo B, com antecedência regular, prestação de contas regular e limite mensal atendido. Contudo, o saldo orçamentário informado para a unidade CRH é insuficiente, razão pela qual se recomenda diligência para regularização da disponibilidade orçamentária, sem prejuízo da decisão da autoridade competente, conforme art. 10 da IN SEMA nº 07/2026."
+        "minuta_despacho": "Instrução preliminar: o pedido atende aos requisitos cadastrais, de completude, antecedência, prestação de contas e limite mensal. Estimam-se 4,5 diárias, no valor total de R$ 1.800,00. Contudo, o saldo orçamentário disponível na unidade CRH é insuficiente, razão pela qual o pedido não é recomendado para autorização neste momento, devendo ser regularizada a disponibilidade orçamentária. A decisão final compete ao ordenador de despesa, nos termos do art. 10 da IN SEMA nº 07/2026."
       }
     },
     {
@@ -1457,24 +1462,24 @@
         "divergencias": []
       },
       "metricas": {
-        "input_tokens": 4780,
-        "output_tokens": 532,
-        "total_tokens": 5312,
-        "tempo_segundos": 5.8175,
-        "custo_estimado_usd": 0.001036,
+        "input_tokens": 5018,
+        "output_tokens": 491,
+        "total_tokens": 5509,
+        "tempo_segundos": 4.8563,
+        "custo_estimado_usd": 0.001047,
         "num_chamadas_modelo": 2,
         "chamadas_por_passo": [
           {
             "passo": 1,
-            "input_tokens": 2345,
-            "output_tokens": 22,
-            "total_tokens": 2367
+            "input_tokens": 2449,
+            "output_tokens": 35,
+            "total_tokens": 2484
           },
           {
             "passo": 2,
-            "input_tokens": 2435,
-            "output_tokens": 510,
-            "total_tokens": 2945
+            "input_tokens": 2569,
+            "output_tokens": 456,
+            "total_tokens": 3025
           }
         ]
       },
@@ -1482,9 +1487,10 @@
         {
           "ferramenta": "consultar_servidor",
           "argumentos": {
-            "matricula": "206689"
+            "matricula": "206689",
+            "nome_solicitante": "Beatriz Moraes Cunha"
           },
-          "resultado": "Matrícula 206689: nome='Beatriz Moraes Cunha', cargo='Fiscal Ambiental', grupo_diaria='B', unidade='CFF', municipio_sede='Cuiabá' (art. 3º e art. 9º).",
+          "resultado": "Matrícula 206689: nome='Beatriz Moraes Cunha', cargo='Fiscal Ambiental', grupo_diaria='B', unidade='CFF', municipio_sede='Cuiabá' (art. 3º e art. 9º). Titularidade cadastral: ATENDE (nome coincide com o solicitante).",
           "erro": false
         }
       ],
@@ -1497,45 +1503,43 @@
           {
             "criterio": "cadastro",
             "situacao": "atende",
-            "detalhe": "Matrícula localizada e nome do cadastro coincide com o nome informado no pedido: Beatriz Moraes Cunha."
+            "detalhe": "Matrícula 206689 localizada e nome cadastral coincidente exatamente com o nome do solicitante."
           },
           {
             "criterio": "dados_completos",
             "situacao": "nao_atende",
-            "detalhe": "A data de retorno não foi informada; consta como nula ('None')."
+            "detalhe": "A data de retorno não foi informada; o pedido está incompleto para instrução, nos termos do art. 9º."
           },
           {
             "criterio": "antecedencia",
             "situacao": "nao_verificado",
-            "detalhe": "Não verificada em razão da ausência de dado obrigatório e da diligência preliminar."
+            "detalhe": "Não verificada em razão da parada na diligência."
           },
           {
             "criterio": "prestacao_contas",
             "situacao": "nao_verificado",
-            "detalhe": "Não verificada em razão da ausência de dado obrigatório e da diligência preliminar."
+            "detalhe": "Não verificada em razão da parada na diligência."
           },
           {
             "criterio": "limite_mensal",
             "situacao": "nao_verificado",
-            "detalhe": "Não verificado em razão da ausência de dado obrigatório e da diligência preliminar."
+            "detalhe": "Não verificado em razão da parada na diligência."
           },
           {
             "criterio": "saldo_orcamentario",
             "situacao": "nao_verificado",
-            "detalhe": "Não verificado em razão da ausência de cálculo do valor das diárias."
+            "detalhe": "Não verificado em razão da parada na diligência."
           }
         ],
         "recomendacao": "diligencia",
         "exige_autorizacao_superior": false,
         "pendencias": [
-          "Informar a data prevista de retorno da viagem, conforme art. 9º da IN SEMA nº 07/2026.",
-          "Esclarecer o período completo da missão para possibilitar o cálculo da quantidade e do valor das diárias."
+          "Informar a data prevista de retorno da viagem; não é possível instruir o pedido com retorno indefinido."
         ],
         "alertas": [
-          "O retorno 'a definir conforme o andamento da operação' não substitui a informação obrigatória da data de retorno para fins de instrução do pedido.",
-          "Após a complementação da data de retorno, deverão ser realizadas as verificações de mérito previstas na norma."
+          "A justificativa informa que o retorno será definido conforme o andamento da operação, mas a data de retorno é dado obrigatório para o cálculo e a análise do pedido."
         ],
-        "minuta_despacho": "À interessada, para diligência, nos termos do art. 9º da IN SEMA nº 07/2026, a fim de informar a data prevista de retorno da viagem e complementar os dados necessários à análise do pedido. Fica prejudicado, neste momento, o exame de mérito e o cálculo das diárias. Após a complementação, retornem os autos para prosseguimento da instrução. A decisão quanto à autorização compete ao ordenador de despesa, nos termos do art. 10."
+        "minuta_despacho": "À unidade solicitante: em exame preliminar, o cadastro funcional atende ao art. 9º da IN SEMA nº 07/2026. Contudo, o pedido não apresenta data de retorno, dado obrigatório para a análise da quantidade e do valor das diárias. Diligencie-se para complementar essa informação. Após a correção, o pedido deverá ser submetido à nova instrução. A presente manifestação é meramente instrutória, cabendo a decisão ao ordenador de despesa, nos termos do art. 10."
       }
     },
     {
@@ -1561,42 +1565,24 @@
         "divergencias": []
       },
       "metricas": {
-        "input_tokens": 13037,
-        "output_tokens": 605,
-        "total_tokens": 13642,
-        "tempo_segundos": 9.5378,
-        "custo_estimado_usd": 0.002319,
-        "num_chamadas_modelo": 5,
+        "input_tokens": 5072,
+        "output_tokens": 435,
+        "total_tokens": 5507,
+        "tempo_segundos": 4.7634,
+        "custo_estimado_usd": 0.001022,
+        "num_chamadas_modelo": 2,
         "chamadas_por_passo": [
           {
             "passo": 1,
-            "input_tokens": 2343,
-            "output_tokens": 22,
-            "total_tokens": 2365
+            "input_tokens": 2447,
+            "output_tokens": 33,
+            "total_tokens": 2480
           },
           {
             "passo": 2,
-            "input_tokens": 2435,
-            "output_tokens": 47,
-            "total_tokens": 2482
-          },
-          {
-            "passo": 3,
-            "input_tokens": 2597,
-            "output_tokens": 60,
-            "total_tokens": 2657
-          },
-          {
-            "passo": 4,
-            "input_tokens": 2795,
-            "output_tokens": 27,
-            "total_tokens": 2822
-          },
-          {
-            "passo": 5,
-            "input_tokens": 2867,
-            "output_tokens": 449,
-            "total_tokens": 3316
+            "input_tokens": 2625,
+            "output_tokens": 402,
+            "total_tokens": 3027
           }
         ]
       },
@@ -1604,40 +1590,10 @@
         {
           "ferramenta": "consultar_servidor",
           "argumentos": {
-            "matricula": "207481"
-          },
-          "resultado": "Matrícula 207481: nome='Rafael Lima Antunes', cargo='Analista de Meio Ambiente', grupo_diaria='B', unidade='CFA', municipio_sede='Cuiabá' (art. 3º e art. 9º).",
-          "erro": false
-        },
-        {
-          "ferramenta": "consultar_historico_diarias",
-          "argumentos": {
             "matricula": "207481",
-            "data_partida": "2026-11-24",
-            "data_retorno": "2026-11-27"
+            "nome_solicitante": "Carla Regina Souza"
           },
-          "resultado": "Prestação de contas: ATENDE - sem prestações pendentes ou vencidas na data da análise 2026-10-09 (art. 7º). Limite mensal (2026-11): ATENDE - 0.0 diárias já concedidas (nenhuma diária anterior no mês) + 3.5 pedidas = 3.5 diárias (limite máximo de 10.0 diárias/mês, art. 6º).",
-          "erro": false
-        },
-        {
-          "ferramenta": "calcular_diarias",
-          "argumentos": {
-            "grupo": "B",
-            "destino_uf": "MT",
-            "data_pedido": "2026-10-09",
-            "data_partida": "2026-11-24",
-            "data_retorno": "2026-11-27"
-          },
-          "resultado": "Quantidade: 3.5 diárias (3 pernoite(s) + 0.5 no retorno = 3.5 diárias, art. 4º). Valor: grupo B, destino MT (interior_mt), R$ 280.00/diária, total = R$ 980.00 (art. 3º, Anexo I). Antecedência: 46 dias corridos entre o pedido (2026-10-09) e a partida (2026-11-24) - ATENDE o mínimo de 10 dias (art. 5º).",
-          "erro": false
-        },
-        {
-          "ferramenta": "consultar_saldo_diarias",
-          "argumentos": {
-            "unidade": "CFA",
-            "valor": 980
-          },
-          "resultado": "Saldo da unidade CFA: R$ 9250.00. Saldo suficiente para R$ 980.00 (art. 8º).",
+          "resultado": "DIVERGÊNCIA CADASTRAL - CADASTRO NÃO ATENDE (art. 9º): Matrícula 207481: nome='Rafael Lima Antunes', cargo='Analista de Meio Ambiente', grupo_diaria='B', unidade='CFA', municipio_sede='Cuiabá' (art. 3º e art. 9º). O nome no cadastro ('Rafael Lima Antunes') DIVERGE do solicitante informado no pedido ('Carla Regina Souza'). PARE AGORA: NÃO consulte histórico, cálculo nem saldo; devolva em diligência com quantidade_diarias=null e valor_total=null.",
           "erro": false
         }
       ],
@@ -1650,41 +1606,41 @@
           {
             "criterio": "cadastro",
             "situacao": "nao_atende",
-            "detalhe": "A matrícula 207481 está cadastrada para Rafael Lima Antunes, enquanto o pedido informa como solicitante Carla Regina Souza. O nome não coincide, conforme art. 9º."
+            "detalhe": "A matrícula 207481 está cadastrada para Rafael Lima Antunes, divergindo do nome do solicitante informado, Carla Regina Souza."
           },
           {
             "criterio": "dados_completos",
             "situacao": "atende",
-            "detalhe": "Todos os dados essenciais do pedido estão preenchidos, inclusive a data de retorno."
+            "detalhe": "Os dados essenciais do pedido, incluindo data de retorno, estão preenchidos."
           },
           {
             "criterio": "antecedencia",
             "situacao": "nao_verificado",
-            "detalhe": "Não verificado por impedimento no exame preliminar."
+            "detalhe": "Não verificado em razão da diligência preliminar."
           },
           {
             "criterio": "prestacao_contas",
             "situacao": "nao_verificado",
-            "detalhe": "Não verificado por impedimento no exame preliminar."
+            "detalhe": "Não verificado em razão da diligência preliminar."
           },
           {
             "criterio": "limite_mensal",
             "situacao": "nao_verificado",
-            "detalhe": "Não verificado por impedimento no exame preliminar."
+            "detalhe": "Não verificado em razão da diligência preliminar."
           },
           {
             "criterio": "saldo_orcamentario",
             "situacao": "nao_verificado",
-            "detalhe": "Não verificado por impedimento no exame preliminar."
+            "detalhe": "Não verificado em razão da diligência preliminar."
           }
         ],
         "recomendacao": "diligencia",
         "exige_autorizacao_superior": false,
         "pendencias": [
-          "Corrigir a matrícula informada ou o nome do solicitante, de modo que ambos correspondam ao cadastro funcional."
+          "Corrigir a matrícula informada ou o nome do solicitante, de modo que haja coincidência exata entre ambos, conforme o cadastro funcional."
         ],
         "alertas": [],
-        "minuta_despacho": "Em exame preliminar, verifica-se divergência entre a matrícula informada e o nome do solicitante: a matrícula 207481 corresponde a Rafael Lima Antunes, e não a Carla Regina Souza. Nos termos do art. 9º da IN SEMA nº 07/2026, restitua-se o pedido para correção/complementação cadastral. Fica prejudicada, nesta etapa, a análise de mérito e a apuração de quantidade e valor de diárias. Após a correção, o pedido deverá ser novamente instruído. A decisão compete ao ordenador de despesa, nos termos do art. 10."
+        "minuta_despacho": "À unidade solicitante, para diligência: constatou-se divergência entre a matrícula 207481 e o nome informado no pedido. A matrícula está vinculada a Rafael Lima Antunes, enquanto o pedido indica Carla Regina Souza. Providencie-se a correção da matrícula ou do nome do solicitante e o reenvio para nova instrução. Não foram realizados os exames de mérito nem emitida recomendação quanto à autorização."
       }
     },
     {
@@ -1706,48 +1662,36 @@
         "divergencias": []
       },
       "metricas": {
-        "input_tokens": 13153,
-        "output_tokens": 722,
-        "total_tokens": 13875,
-        "tempo_segundos": 8.6413,
-        "custo_estimado_usd": 0.002406,
-        "num_chamadas_modelo": 6,
+        "input_tokens": 13563,
+        "output_tokens": 779,
+        "total_tokens": 14342,
+        "tempo_segundos": 8.7255,
+        "custo_estimado_usd": 0.002502,
+        "num_chamadas_modelo": 4,
         "chamadas_por_passo": [
           {
             "passo": 1,
-            "input_tokens": 2345,
-            "output_tokens": 22,
-            "total_tokens": 2367
+            "input_tokens": 3102,
+            "output_tokens": 35,
+            "total_tokens": 3137
           },
           {
             "passo": 2,
-            "input_tokens": 2435,
-            "output_tokens": 510,
-            "total_tokens": 2945
+            "input_tokens": 3222,
+            "output_tokens": 120,
+            "total_tokens": 3342
           },
           {
             "passo": 3,
-            "input_tokens": 3022,
-            "output_tokens": 22,
-            "total_tokens": 3044
+            "input_tokens": 3583,
+            "output_tokens": 27,
+            "total_tokens": 3610
           },
           {
             "passo": 4,
-            "input_tokens": 3112,
-            "output_tokens": 120,
-            "total_tokens": 3232
-          },
-          {
-            "passo": 5,
-            "input_tokens": 3473,
-            "output_tokens": 27,
-            "total_tokens": 3500
-          },
-          {
-            "passo": 6,
-            "input_tokens": 3546,
-            "output_tokens": 553,
-            "total_tokens": 4099
+            "input_tokens": 3656,
+            "output_tokens": 597,
+            "total_tokens": 4253
           }
         ]
       },
@@ -1755,9 +1699,10 @@
         {
           "ferramenta": "consultar_servidor",
           "argumentos": {
-            "matricula": "206689"
+            "matricula": "206689",
+            "nome_solicitante": "Beatriz Moraes Cunha"
           },
-          "resultado": "Matrícula 206689: nome='Beatriz Moraes Cunha', cargo='Fiscal Ambiental', grupo_diaria='B', unidade='CFF', municipio_sede='Cuiabá' (art. 3º e art. 9º).",
+          "resultado": "Matrícula 206689: nome='Beatriz Moraes Cunha', cargo='Fiscal Ambiental', grupo_diaria='B', unidade='CFF', municipio_sede='Cuiabá' (art. 3º e art. 9º). Titularidade cadastral: ATENDE (nome coincide com o solicitante).",
           "erro": false
         },
         {
@@ -1801,17 +1746,17 @@
           {
             "criterio": "cadastro",
             "situacao": "atende",
-            "detalhe": "Matrícula 206689 localizada; nome cadastrado, Beatriz Moraes Cunha, coincide com o nome informado."
+            "detalhe": "Matrícula 206689 localizada; nome cadastral coincidente exatamente com Beatriz Moraes Cunha. Grupo de diária B e unidade CFF."
           },
           {
             "criterio": "dados_completos",
             "situacao": "atende",
-            "detalhe": "Com a complementação, o período está completo: partida em 2026-11-17 e retorno previsto para 2026-11-20."
+            "detalhe": "A complementação informou a data de retorno para 2026-11-20; os dados obrigatórios estão preenchidos."
           },
           {
             "criterio": "antecedencia",
             "situacao": "atende",
-            "detalhe": "Há 39 dias corridos entre a data do pedido, 2026-10-09, e a partida, 2026-11-17, atendendo ao mínimo de 10 dias do art. 5º."
+            "detalhe": "Há 39 dias corridos entre a data do pedido, 2026-10-09, e a partida, 2026-11-17, superando o mínimo de 10 dias do art. 5º."
           },
           {
             "criterio": "prestacao_contas",
@@ -1821,19 +1766,21 @@
           {
             "criterio": "limite_mensal",
             "situacao": "atende",
-            "detalhe": "No mês de novembro de 2026, não há diárias anteriores concedidas; com 3,5 diárias pedidas, o total é 3,5, dentro do limite de 10 diárias mensais do art. 6º."
+            "detalhe": "Com 3,5 diárias solicitadas em novembro de 2026 e nenhuma anteriormente concedida no mês, o total mensal é de 3,5 diárias, dentro do limite de 10,0 previsto no art. 6º."
           },
           {
             "criterio": "saldo_orcamentario",
             "situacao": "atende",
-            "detalhe": "A unidade CFF possui saldo de R$ 18.400,00, suficiente para o valor de R$ 980,00, conforme art. 8º."
+            "detalhe": "A unidade CFF possui saldo de R$ 18.400,00, suficiente para o valor solicitado de R$ 980,00, conforme art. 8º."
           }
         ],
         "recomendacao": "apto_para_autorizacao",
         "exige_autorizacao_superior": false,
         "pendencias": [],
-        "alertas": [],
-        "minuta_despacho": "Considerando a complementação apresentada em 2026-10-09 e a instrução realizada conforme a IN SEMA nº 07/2026, verificam-se atendidos os critérios de cadastro, completude dos dados, antecedência, prestação de contas, limite mensal e saldo orçamentário. O pedido corresponde a 3,5 diárias, no valor total de R$ 980,00, para deslocamento a Colniza/MT, no período de 2026-11-17 a 2026-11-20. Opina-se pela aptidão para autorização, submetendo-se os autos à decisão do ordenador de despesa, nos termos do art. 10."
+        "alertas": [
+          "A data de retorno foi complementada para 2026-11-20. A quantidade calculada corresponde a 3 pernoites mais 0,5 diária no retorno."
+        ],
+        "minuta_despacho": "À consideração do ordenador de despesa: após a complementação da data de retorno para 20/11/2026, o pedido atende aos requisitos cadastrais e aos critérios de completude, antecedência, prestação de contas, limite mensal e disponibilidade orçamentária previstos na IN SEMA nº 07/2026. Foram calculadas 3,5 diárias, no valor total de R$ 980,00, para servidora do grupo B, com destino a Colniza/MT, no período de 17/11/2026 a 20/11/2026. Opina-se pelo prosseguimento para autorização, cabendo a decisão ao ordenador de despesa, nos termos do art. 10."
       }
     },
     {
@@ -1855,66 +1802,36 @@
         "divergencias": []
       },
       "metricas": {
-        "input_tokens": 14649,
-        "output_tokens": 709,
-        "total_tokens": 15358,
-        "tempo_segundos": 8.8811,
-        "custo_estimado_usd": 0.002623,
-        "num_chamadas_modelo": 9,
+        "input_tokens": 13577,
+        "output_tokens": 743,
+        "total_tokens": 14320,
+        "tempo_segundos": 8.1612,
+        "custo_estimado_usd": 0.002482,
+        "num_chamadas_modelo": 4,
         "chamadas_por_passo": [
           {
             "passo": 1,
-            "input_tokens": 2343,
-            "output_tokens": 22,
-            "total_tokens": 2365
+            "input_tokens": 3107,
+            "output_tokens": 33,
+            "total_tokens": 3140
           },
           {
             "passo": 2,
-            "input_tokens": 2435,
-            "output_tokens": 47,
-            "total_tokens": 2482
+            "input_tokens": 3225,
+            "output_tokens": 120,
+            "total_tokens": 3345
           },
           {
             "passo": 3,
-            "input_tokens": 2597,
-            "output_tokens": 60,
-            "total_tokens": 2657
+            "input_tokens": 3586,
+            "output_tokens": 27,
+            "total_tokens": 3613
           },
           {
             "passo": 4,
-            "input_tokens": 2795,
-            "output_tokens": 27,
-            "total_tokens": 2822
-          },
-          {
-            "passo": 5,
-            "input_tokens": 2867,
-            "output_tokens": 449,
-            "total_tokens": 3316
-          },
-          {
-            "passo": 6,
-            "input_tokens": 3396,
-            "output_tokens": 22,
-            "total_tokens": 3418
-          },
-          {
-            "passo": 7,
-            "input_tokens": 3486,
-            "output_tokens": 120,
-            "total_tokens": 3606
-          },
-          {
-            "passo": 8,
-            "input_tokens": 3847,
-            "output_tokens": 27,
-            "total_tokens": 3874
-          },
-          {
-            "passo": 9,
-            "input_tokens": 3920,
-            "output_tokens": 540,
-            "total_tokens": 4460
+            "input_tokens": 3659,
+            "output_tokens": 563,
+            "total_tokens": 4222
           }
         ]
       },
@@ -1922,9 +1839,10 @@
         {
           "ferramenta": "consultar_servidor",
           "argumentos": {
-            "matricula": "207418"
+            "matricula": "207418",
+            "nome_solicitante": "Carla Regina Souza"
           },
-          "resultado": "Matrícula 207418: nome='Carla Regina Souza', cargo='Técnica Ambiental', grupo_diaria='C', unidade='CUC', municipio_sede='Cuiabá' (art. 3º e art. 9º).",
+          "resultado": "Matrícula 207418: nome='Carla Regina Souza', cargo='Técnica Ambiental', grupo_diaria='C', unidade='CUC', municipio_sede='Cuiabá' (art. 3º e art. 9º). Titularidade cadastral: ATENDE (nome coincide com o solicitante).",
           "erro": false
         },
         {
@@ -1968,17 +1886,17 @@
           {
             "criterio": "cadastro",
             "situacao": "atende",
-            "detalhe": "A matrícula 207418 corresponde a Carla Regina Souza, Técnica Ambiental, grupo de diária C, lotada na unidade CUC."
+            "detalhe": "A matrícula 207418 pertence a Carla Regina Souza, coincidindo exatamente com o nome da solicitante."
           },
           {
             "criterio": "dados_completos",
             "situacao": "atende",
-            "detalhe": "Os dados essenciais do pedido estão preenchidos, inclusive a data de retorno, meio de transporte e justificativa."
+            "detalhe": "Os dados obrigatórios do pedido estão preenchidos, incluindo data de retorno, destino, período da viagem, meio de transporte e justificativa."
           },
           {
             "criterio": "antecedencia",
             "situacao": "atende",
-            "detalhe": "Há 46 dias corridos entre 2026-10-09 e 2026-11-24, superando o mínimo de 10 dias previsto no art. 5º."
+            "detalhe": "Há 46 dias corridos entre a data do pedido, 2026-10-09, e a partida, 2026-11-24, superando o mínimo de 10 dias corridos do art. 5º."
           },
           {
             "criterio": "prestacao_contas",
@@ -1988,19 +1906,21 @@
           {
             "criterio": "limite_mensal",
             "situacao": "atende",
-            "detalhe": "No mês de novembro de 2026, não há diárias anteriores concedidas; com as 3,5 diárias solicitadas, o total será 3,5, dentro do limite de 10 diárias, conforme art. 6º."
+            "detalhe": "Com 3,5 diárias solicitadas e nenhuma anteriormente concedida em novembro de 2026, o total mensal será de 3,5 diárias, dentro do limite de 10 diárias do art. 6º."
           },
           {
             "criterio": "saldo_orcamentario",
             "situacao": "atende",
-            "detalhe": "A unidade CUC possui saldo de R$ 7.800,00, suficiente para o valor de R$ 770,00, conforme art. 8º."
+            "detalhe": "A unidade CUC possui saldo de R$ 7.800,00, suficiente para o valor total de R$ 770,00, conforme art. 8º."
           }
         ],
         "recomendacao": "apto_para_autorizacao",
         "exige_autorizacao_superior": false,
         "pendencias": [],
-        "alertas": [],
-        "minuta_despacho": "Em exame preliminar e de mérito, verifica-se que a complementação corrigiu a matrícula para 207418, compatível com o nome de Carla Regina Souza constante do cadastro funcional. O pedido atende aos critérios de completude, antecedência, prestação de contas, limite mensal e disponibilidade orçamentária previstos nos arts. 5º a 8º da IN SEMA nº 07/2026. São devidas 3,5 diárias, no valor total de R$ 770,00, calculadas para o grupo C e destino no interior de Mato Grosso. Opina-se pela aptidão para autorização, submetendo-se o pedido à decisão do ordenador de despesa, nos termos do art. 10."
+        "alertas": [
+          "Complementação aplicada: a matrícula foi corrigida de 207481 para 207418, conforme diligência anterior."
+        ],
+        "minuta_despacho": "À consideração do ordenador de despesa: após a complementação, com correção da matrícula para 207418, foram atendidos os requisitos cadastrais, de completude, antecedência, prestação de contas, limite mensal e disponibilidade orçamentária previstos na IN SEMA nº 07/2026. A viagem, com destino a Alta Floresta/MT, de 2026-11-24 a 2026-11-27, corresponde a 3,5 diárias, no valor total de R$ 770,00. Instrução favorável à autorização, sem exigência de autorização superior, cabendo a decisão ao ordenador de despesa."
       }
     }
   ]

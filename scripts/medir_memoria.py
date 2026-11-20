@@ -207,6 +207,13 @@ def executar_medicao_memoria_e_eliminacao() -> dict[str, Any]:
             "complementacoes_aplicadas_corretamente": f"{acertos_complementacao}/2",
             "casos": casos_cfg,
         }
+        if db is not None:
+            try:
+                db.close()
+                if hasattr(db, "db_engine") and db.db_engine is not None:
+                    db.db_engine.dispose()
+            except Exception:
+                pass
 
     # Gravar medição de memória
     (PASTA_RESULTADOS / "medicao_memoria.json").write_text(
@@ -226,6 +233,12 @@ def executar_medicao_memoria_e_eliminacao() -> dict[str, Any]:
         bancos_por_config["historico_e_memorias_usuario"], "207418", "Carla Regina Souza"
     )
     evidencias_eliminacao["conferencia_cruzada_pos_eliminacao_carla"] = conferencia_cruzada_207481
+    try:
+        db_elim.close()
+        if hasattr(db_elim, "db_engine") and db_elim.db_engine is not None:
+            db_elim.db_engine.dispose()
+    except Exception:
+        pass
 
     (PASTA_RESULTADOS / "evidencia_eliminacao.json").write_text(
         json.dumps(evidencias_eliminacao, ensure_ascii=False, indent=2), encoding="utf-8"

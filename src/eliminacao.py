@@ -12,6 +12,7 @@ Cumpre os requisitos da Etapa 4:
    intactos os arquivos originais do processo administrativo em `dados/`.
 """
 
+from contextlib import closing
 import json
 import sqlite3
 from pathlib import Path
@@ -39,7 +40,7 @@ def conferir_banco_por_tabela(
     resultado_tabelas: dict[str, dict[str, Any]] = {}
     total_ocorrencias = 0
 
-    with sqlite3.connect(str(caminho)) as conn:
+    with closing(sqlite3.connect(str(caminho))) as conn:
         conn.row_factory = sqlite3.Row
         cur = conn.cursor()
         tabelas = [
@@ -117,7 +118,7 @@ def eliminar_dados_servidor(
 
     # 2. Eliminação padrão pelo user_id do titular
     if caminho_db.exists():
-        with sqlite3.connect(str(caminho_db)) as conn:
+        with closing(sqlite3.connect(str(caminho_db))) as conn:
             cur = conn.cursor()
             tabelas_existentes = {
                 r[0]
@@ -166,23 +167,44 @@ def eliminar_dados_servidor(
                     )
 
         # Verificar que cada sessão divergente realmente pertence ao pedido do titular antes de apagar
-        with sqlite3.connect(str(caminho_db)) as conn:
+        with closing(sqlite3.connect(str(caminho_db))) as conn:
             conn.row_factory = sqlite3.Row
             cur = conn.cursor()
+            tabelas_existentes = {
+                r[0]
+                for r in cur.execute("SELECT name FROM sqlite_master WHERE type='table'").fetchall()
+            }
+            nome_low = nome_titular.lower()
             for s_id, u_id in sessoes_divergentes.items():
-                linha_sess = cur.execute(
-                    "SELECT * FROM agno_sessions WHERE session_id = ?", (s_id,)
-                ).fetchone()
-                linhas_runs = cur.execute(
-                    "SELECT * FROM agno_runs WHERE session_id = ?", (s_id,)
-                ).fetchall()
+                linha_sess = (
+                    cur.execute("SELECT * FROM agno_sessions WHERE session_id = ?", (s_id,)).fetchone()
+                    if "agno_sessions" in tabelas_existentes
+                    else None
+                )
+                linhas_runs = (
+                    cur.execute("SELECT * FROM agno_runs WHERE session_id = ?", (s_id,)).fetchall()
+                    if "agno_runs" in tabelas_existentes
+                    else []
+                )
                 texto_completo = " ".join(
                     [json.dumps(dict(linha_sess), ensure_ascii=False) if linha_sess else ""]
                     + [json.dumps(dict(r), ensure_ascii=False) for r in linhas_runs]
                 ).lower()
 
-                # Confirma que o nome ou a matrícula real do titular consta como solicitante na sessão
-                if any(t in texto_completo for t in termos):
+                # Confirma que a matrícula real ou a identificação de solicitante pertence ao titular
+                # (evita apagar sessão de terceiro que apenas mencionou o nome na justificativa)
+                eh_sessao_do_titular = (
+                    (bool(codigo) and codigo.lower() in texto_completo)
+                    or (
+                        bool(nome_low)
+                        and (
+                            f"nome do solicitante: {nome_low}" in texto_completo
+                            or f'"solicitante": "{nome_low}"' in texto_completo
+                            or f"solicitante: {nome_low}" in texto_completo
+                        )
+                    )
+                )
+                if eh_sessao_do_titular:
                     db.delete_session(session_id=s_id)
                     sessoes_removidas_por_conferencia.append(
                         {

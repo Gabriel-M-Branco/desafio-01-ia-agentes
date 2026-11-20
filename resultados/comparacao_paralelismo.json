@@ -1,29 +1,29 @@
 {
   "chamadas_paralelas_desativadas_media_3_rodadas": {
-    "tempo_execucao_segundos": 115.1083,
-    "input_tokens": 174119.7,
-    "output_tokens": 10134.0,
-    "total_tokens": 184253.7,
-    "custo_usd": 0.032199,
+    "tempo_execucao_segundos": 127.2809,
+    "input_tokens": 182563.7,
+    "output_tokens": 9701.0,
+    "total_tokens": 192264.7,
+    "custo_usd": 0.033204,
     "acertos": "14.0/14",
     "falhas": 0.0
   },
   "chamadas_paralelas_desativadas_rodada_1": {
-    "tempo_execucao_segundos": 114.4933,
-    "input_tokens": 174198,
-    "output_tokens": 10173,
-    "total_tokens": 184371,
-    "custo_usd": 0.032234,
+    "tempo_execucao_segundos": 133.9149,
+    "input_tokens": 182562,
+    "output_tokens": 9790,
+    "total_tokens": 192352,
+    "custo_usd": 0.033257,
     "acertos": "14/14",
     "falhas": 0
   },
   "chamadas_paralelas_ativadas": {
-    "tempo_execucao_segundos": 124.0592,
-    "input_tokens": 151205,
-    "output_tokens": 10108,
-    "total_tokens": 161313,
-    "custo_usd": 0.028746,
-    "acertos": "13/14",
+    "tempo_execucao_segundos": 108.8752,
+    "input_tokens": 147875,
+    "output_tokens": 9792,
+    "total_tokens": 157667,
+    "custo_usd": 0.028056,
+    "acertos": "14/14",
     "falhas": 0
   }
 }

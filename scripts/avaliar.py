@@ -12,6 +12,7 @@ Executa:
    comportamento observado, atuação da barreira e evidência.
 """
 
+from contextlib import closing
 import copy
 import json
 import sqlite3
@@ -138,6 +139,18 @@ def executar_rodada(
             except OSError:
                 pass
 
+    # Fallback: se o arquivo não pôde ser removido no Windows por lock anterior, limpa todas as tabelas
+    if caminho_db.exists():
+        with closing(sqlite3.connect(str(caminho_db))) as conn:
+            cur = conn.cursor()
+            for tab in ("agno_runs", "agno_sessions", "agno_memories"):
+                existe = cur.execute(
+                    "SELECT 1 FROM sqlite_master WHERE type='table' AND name=?", (tab,)
+                ).fetchone()
+                if existe:
+                    cur.execute(f'DELETE FROM "{tab}"')
+            conn.commit()
+
     db = criar_banco_memoria(caminho_db)
     agente = criar_agente(
         db=db,
@@ -234,22 +247,42 @@ def executar_rodada(
     tempo_tot = round(sum(c["metricas"]["tempo_segundos"] for c in casos_avaliados), 4)
     custo_tot = round(sum(c["metricas"]["custo_estimado_usd"] for c in casos_avaliados), 6)
 
-    # Auditoria do filtro de PII no banco da rodada para o pedido DIA-2026-0104
+    # Auditoria do filtro de PII em TODAS as tabelas do banco da rodada para o pedido DIA-2026-0104
     cpf_0104_no_banco = False
     conta_0104_no_banco = False
     matricula_0104_preservada = False
     if caminho_db.exists():
-        with sqlite3.connect(str(caminho_db)) as conn:
+        with closing(sqlite3.connect(str(caminho_db))) as conn:
             cur = conn.cursor()
-            linhas_0104 = cur.execute(
-                "SELECT * FROM agno_runs WHERE session_id = 'DIA-2026-0104'"
-            ).fetchall()
-            texto_banco_0104 = " ".join(str(col) for r in linhas_0104 for col in r)
+            tabelas = [
+                r[0]
+                for r in cur.execute(
+                    "SELECT name FROM sqlite_master WHERE type='table' AND name NOT LIKE 'sqlite_%'"
+                ).fetchall()
+            ]
+            blocos_0104: list[str] = []
+            for tab in tabelas:
+                cols = [c[1] for c in cur.execute(f'PRAGMA table_info("{tab}")').fetchall()]
+                if "session_id" in cols:
+                    linhas = cur.execute(
+                        f'SELECT * FROM "{tab}" WHERE session_id = ?', ("DIA-2026-0104",)
+                    ).fetchall()
+                else:
+                    linhas = cur.execute(f'SELECT * FROM "{tab}"').fetchall()
+                blocos_0104.extend(str(col) for r in linhas for col in r)
+            texto_banco_0104 = " ".join(blocos_0104)
             cpf_0104_no_banco = "052.318.947-20" in texto_banco_0104
             conta_0104_no_banco = ("98765-4" in texto_banco_0104) or ("1234-5" in texto_banco_0104)
             matricula_0104_preservada = (
                 "200941" in texto_banco_0104 and "2026-11-16" in texto_banco_0104
             )
+
+    try:
+        db.close()
+        if hasattr(db, "db_engine") and db.db_engine is not None:
+            db.db_engine.dispose()
+    except Exception:
+        pass
 
     resumo = {
         "nome_rodada": nome_rodada,
@@ -461,6 +494,12 @@ def provocar_modos_de_falha(pedidos: list[dict]) -> list[dict[str, Any]]:
         pedido=pedido_0111,
         texto_complementacao=texto_comp_0111,
     )
+    try:
+        db_f4.close()
+        if hasattr(db_f4, "db_engine") and db_f4.db_engine is not None:
+            db_f4.db_engine.dispose()
+    except Exception:
+        pass
     falhas_registradas.append(
         {
             "id": "falha_4_contaminacao_sessao_memoria",

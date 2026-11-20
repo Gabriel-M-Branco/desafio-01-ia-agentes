@@ -63,8 +63,14 @@ def extrair_datas_permitidas(pedido: dict, texto_complementacao: Optional[str] =
     datas_retorno = {str(pedido["data_retorno"]).strip()} if pedido.get("data_retorno") else set()
 
     if texto_complementacao:
-        for dt in re.findall(r"\b\d{4}-\d{2}-\d{2}\b", texto_complementacao):
-            datas_retorno.add(dt.strip())
+        datas_comp = {dt.strip() for dt in re.findall(r"\b\d{4}-\d{2}-\d{2}\b", texto_complementacao)}
+        if not datas_retorno:
+            datas_retorno |= datas_comp
+        elif not datas_partida:
+            datas_partida |= datas_comp
+        else:
+            datas_retorno |= datas_comp
+            datas_partida |= datas_comp
 
     todas = datas_pedido | datas_partida | datas_retorno
     return {
@@ -152,18 +158,20 @@ def verificar_barreira(
         motivos.append("Nenhuma ferramenta foi consultada pelo agente (proibido instruir com dados supostos).")
 
     matriculas_consultadas: set[str] = set()
+    quantidades_calculadas_validas: set[float] = set()
     valores_calculados_validos: set[float] = set()
 
-    # Pré-calcular valores esperados para as combinações válidas do pedido/complementação
+    # Pré-calcular quantidades e valores esperados para as combinações válidas do pedido/complementação
     for mat in matriculas_finais_esperadas:
         srv = SERVIDORES.get(mat)
         if srv and datas_validas["data_partida"] and datas_validas["data_retorno"]:
             for dp in datas_validas["data_partida"]:
                 for dr in datas_validas["data_retorno"]:
                     try:
-                        qtd_esp = calcular_quantidade_diarias(date.fromisoformat(dp), date.fromisoformat(dr))
+                        qtd_esp = round(calcular_quantidade_diarias(date.fromisoformat(dp), date.fromisoformat(dr)), 1)
                         classe_esp = classe_destino(pedido["destino_uf"])
                         val_unit = float(VALORES[srv["grupo_diaria"]][classe_esp])
+                        quantidades_calculadas_validas.add(qtd_esp)
                         valores_calculados_validos.add(round(qtd_esp * val_unit, 2))
                     except ValueError:
                         pass
@@ -190,19 +198,29 @@ def verificar_barreira(
                     f"retificada na complementação ({sorted(matriculas_finais_esperadas)})."
                 )
 
+        if nome_tool == "consultar_servidor" and args.get("nome_solicitante"):
+            nome_arg = str(args["nome_solicitante"]).strip().lower()
+            nome_ped = str(pedido.get("nome", "")).strip().lower()
+            if nome_ped and nome_arg != nome_ped:
+                motivos.append(
+                    f"Nome do solicitante '{args['nome_solicitante']}' passado em 'consultar_servidor' "
+                    f"diverge do pedido ('{pedido.get('nome')}')."
+                )
+
         for campo_dt in ("data_pedido", "data_partida", "data_retorno"):
             if campo_dt in args:
                 val_dt = str(args[campo_dt]).strip()
                 if val_dt and val_dt.lower() not in ("none", "null", ""):
-                    if val_dt not in datas_validas[campo_dt] and val_dt not in datas_validas["todas"]:
+                    if not datas_validas[campo_dt]:
+                        motivos.append(
+                            f"Data '{val_dt}' passada em '{campo_dt}' de '{nome_tool}', "
+                            f"mas o pedido/complementação não possui '{campo_dt}' preenchida."
+                        )
+                    elif val_dt not in datas_validas[campo_dt]:
                         motivos.append(
                             f"Data '{val_dt}' no argumento '{campo_dt}' de '{nome_tool}' não consta "
-                            f"do pedido nem da complementação (permitidas: {sorted(datas_validas['todas'])})."
-                        )
-                    elif campo_dt in datas_validas and datas_validas[campo_dt] and val_dt not in datas_validas[campo_dt]:
-                        motivos.append(
-                            f"Data '{val_dt}' passada em '{campo_dt}' de '{nome_tool}' diverge "
-                            f"da data esperada ({sorted(datas_validas[campo_dt])})."
+                            f"do pedido nem da complementação para '{campo_dt}' "
+                            f"(permitidas: {sorted(datas_validas[campo_dt])})."
                         )
 
         if nome_tool == "calcular_diarias":
@@ -255,7 +273,28 @@ def verificar_barreira(
             f"ou não corresponde à matrícula retificada ({sorted(matriculas_finais_esperadas)})."
         )
 
-    if conteudo.recomendacao != "diligencia":
+    if conteudo.recomendacao == "diligencia":
+        if conteudo.quantidade_diarias is not None or conteudo.valor_total is not None:
+            motivos.append(
+                f"Instrução de diligência deve manter quantidade_diarias e valor_total nulos "
+                f"(obtido: qtd={conteudo.quantidade_diarias}, valor={conteudo.valor_total})."
+            )
+    else:
+        mat_final = conteudo.matricula.strip()
+        srv_final = SERVIDORES.get(mat_final)
+        nome_pedido = str(pedido.get("nome", "")).strip()
+        if srv_final is None:
+            motivos.append(
+                f"Instrução conclusiva ('{conteudo.recomendacao}') emitida para matrícula "
+                f"'{mat_final}' inexistente no cadastro funcional (art. 9º)."
+            )
+        elif nome_pedido and srv_final["nome"].strip().lower() != nome_pedido.lower():
+            motivos.append(
+                f"Instrução conclusiva ('{conteudo.recomendacao}') calculada para servidor errado: "
+                f"matrícula '{mat_final}' pertence a '{srv_final['nome']}', mas o solicitante do pedido é "
+                f"'{nome_pedido}' (art. 9º)."
+            )
+
         nomes_chamados = {c["ferramenta"] for c in consultas}
         obrigatorias = {
             "consultar_servidor",
@@ -269,12 +308,29 @@ def verificar_barreira(
                 f"Instrução conclusiva ('{conteudo.recomendacao}') gerada sem consultar todas as "
                 f"ferramentas obrigatórias. Faltaram: {sorted(faltantes)}."
             )
-        if valores_calculados_validos and conteudo.valor_total is not None:
-            if round(float(conteudo.valor_total), 2) not in valores_calculados_validos:
-                motivos.append(
-                    f"Valor total na instrução (R$ {conteudo.valor_total}) diverge do cálculo das "
-                    f"ferramentas ({sorted(valores_calculados_validos)})."
-                )
+        if not datas_validas["data_retorno"]:
+            motivos.append(
+                f"Instrução conclusiva ('{conteudo.recomendacao}') emitida para pedido sem data_retorno "
+                f"no pedido nem na complementação."
+            )
+        if conteudo.quantidade_diarias is None:
+            motivos.append(
+                f"Instrução conclusiva ('{conteudo.recomendacao}') sem quantidade_diarias preenchida."
+            )
+        elif quantidades_calculadas_validas and round(float(conteudo.quantidade_diarias), 1) not in quantidades_calculadas_validas:
+            motivos.append(
+                f"Quantidade de diárias na instrução ({conteudo.quantidade_diarias}) diverge do cálculo "
+                f"das ferramentas ({sorted(quantidades_calculadas_validas)})."
+            )
+        if conteudo.valor_total is None:
+            motivos.append(
+                f"Instrução conclusiva ('{conteudo.recomendacao}') sem valor_total preenchido."
+            )
+        elif valores_calculados_validos and round(float(conteudo.valor_total), 2) not in valores_calculados_validos:
+            motivos.append(
+                f"Valor total na instrução (R$ {conteudo.valor_total}) diverge do cálculo das "
+                f"ferramentas ({sorted(valores_calculados_validos)})."
+            )
 
     if motivos:
         return ResultadoBarreira(

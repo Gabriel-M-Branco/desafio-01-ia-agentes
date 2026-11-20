@@ -27,13 +27,13 @@ Com a introdução do agente construído no framework **Agno**, o fluxo passa a 
 
 1. **Entrada e Filtro de Dados Pessoais (`PIIDetectionGuardrail`)**: O pedido protocolado (ou a complementação de diligência) é recebido pela aplicação. Antes de qualquer chamada à API do modelo ou gravação no banco SQLite, o `PIIDetectionGuardrail` (com padrões norte-americanos desligados e `mask_pii=True`) mascara ocorrências de máscara de CPF (`\d{3}\.\d{3}\.\d{3}-\d{2}`) e dados de conta/agência bancária colados na justificativa, preservando intactos matrículas, datas e números de pedido.
 2. **Recuperação de Contexto por Sessão (`SqliteDb`)**: A execução é invocada com `session_id = numero_pedido` e `user_id = matricula` diretamente em `agent.run()`, mantendo um único agente em cache. Quando se trata de retorno de diligência, o histórico da sessão (`add_history_to_context=True`, `num_history_runs=3`) permite ao agente recuperar os dados do pedido original do 1º turno e aplicar a complementação.
-3. **Exame Preliminar Automatizado via Ferramenta Cadastral**: No 1º passo de chamada ao modelo (`gpt-5.6-luna`, `reasoning_effort="none"`), o agente invoca `consultar_servidor(matricula)` — que aplica minimização de dados e jamais retorna CPF ou e-mail — e verifica a titularidade cadastral e a presença de `data_retorno`. Havendo divergência ou ausência de dado obrigatório, encerra as consultas e emite `Instrucao` com `recomendacao="diligencia"` no 2º passo (sem análise de mérito, conforme art. 9º).
+3. **Exame Preliminar Automatizado via Ferramenta Cadastral**: No 1º passo de chamada ao modelo (`gpt-5.6-luna`, `reasoning_effort="none"`), o agente invoca `consultar_servidor(matricula, nome_solicitante)` — que aplica minimização de dados (jamais retorna CPF ou e-mail) e já sinaliza determinísticamente se há coincidência ou divergência cadastral — e verifica a presença de `data_retorno`. Havendo divergência ou ausência de dado obrigatório, encerra as consultas e emite `Instrucao` com `recomendacao="diligencia"` no 2º passo (sem análise de mérito, conforme art. 9º).
 4. **Execução das Ferramentas Determinísticas de Mérito**: Quando cadastro e completude estão atendidos, o agente invoca as demais ferramentas Python onde **todas as contas saem prontas do código**:
    - `consultar_historico_diarias(matricula, data_partida, data_retorno)`: calcula o prazo de 5 dias úteis das prestações pendentes contra `2026-10-09` e soma as diárias do mês frente ao limite de 10,0.
    - `calcular_diarias(grupo, destino_uf, data_pedido, data_partida, data_retorno)`: calcula pernoites, meia diária, valor pelo Anexo I e antecedência em dias corridos.
    - `consultar_saldo_diarias(unidade, valor)`: compara o saldo da dotação da unidade com o valor calculado.
 5. **Saída Estruturada (`output_schema=Instrucao`)**: No 5º passo, o modelo consolida o resultado das ferramentas, avalia a justificativa quanto à urgência legítima (art. 5º, §§ 1º e 2º) e eventuais tentativas de injeção de prompt, e devolve um objeto Pydantic `Instrucao` validado, acompanhado da minuta do despacho.
-6. **Barreira Determinística de Código (`verificar_barreira`)**: Antes de exibir qualquer dado na interface, o código Python verifica `resposta.status == RunStatus.completed` e audita os argumentos reais de todas as ferramentas chamadas (`resposta.tools`) contra o pedido/complementação em mãos. Se qualquer matrícula, data, grupo, unidade ou valor não vier estritamente do pedido/complementação e das ferramentas, a instrução é descartada e o pedido é desviado para análise manual com mensagem padrão.
+6. **Barreira Determinística de Código (`verificar_barreira`)**: Antes de exibir qualquer dado na interface, o código Python verifica `resposta.status == RunStatus.completed`, audita os argumentos reais de todas as ferramentas chamadas (`resposta.tools`) contra o pedido/complementação em mãos e confirma que toda instrução conclusiva corresponde exatamente ao titular do pedido (impedindo cálculo para servidor errado). Se qualquer matrícula, nome, data, grupo, unidade, quantidade ou valor divergir, a instrução é descartada e o pedido é desviado para análise manual com mensagem padrão.
 7. **Conferência Humana e Decisão do Ordenador**: No formulário Streamlit, o servidor conferente visualiza as verificações fundamentadas, alertas e consultas, edita a minuta do despacho e **registra obrigatoriamente sua decisão ao lado da sugestão do agente** (com justificativa quando divergirem), encaminhando o processo ao ordenador de despesa.
 
 ---
@@ -105,40 +105,40 @@ $$E_k = E_1 + (k - 1)\cdot \Delta \implies \text{Entrada Total (5 passos)} = \su
 - **Total estimado de entrada (referência)**: $5 \times 2.060 + 10 \times 120 = 10.300 + 1.200 = \mathbf{11.500\text{ tokens de entrada}}$.
 
 #### B) Conta Estimada para a Nossa Implementação vs. Valor Real Medido (5 Passos)
-Na nossa implementação (com a instrução de sistema completa incluindo regras detalhadas de urgência legítima, prompt injection e diligência):
-- **Estimativa pré-execução**:
-  - Entrada da 1ª chamada ($E_1$): **$2.357$ tokens** (Instrução de sistema $\approx 702$ tokens + Esquemas das 4 ferramentas $\approx 780$ tokens + Esquema `Instrucao` $\approx 715$ tokens + Pedido protocolado $\approx 160$ tokens).
-  - Incremento médio por passo ($\Delta$): **$135$ tokens** por ferramenta consultada ($\Delta_1 \approx 90$, $\Delta_2 \approx 162$, $\Delta_3 \approx 198$, $\Delta_4 \approx 73$).
+Na nossa implementação (com instrução de sistema completa cobrindo exame preliminar, urgência legítima, prompt injection e diligência, além das docstrings completas das 4 ferramentas):
+- **Estimativa analítica (por componente)**:
+  - Entrada da 1ª chamada ($E_1$): **$2.460$ tokens** (Instrução de sistema $\approx 740$ tokens + Esquemas das 4 ferramentas $\approx 840$ tokens + Esquema `Instrucao` $\approx 720$ tokens + Pedido protocolado $\approx 160$ tokens).
+  - Incremento médio estimado por passo ($\Delta$): **$140$ tokens** por ferramenta consultada (faixa de $70$ a $200$ tokens conforme o tamanho da resposta da ferramenta).
   - Entrada estimada por passo:
-    - Passo 1: $2.357$ tokens
-    - Passo 2: $2.357 + 135 = 2.492$ tokens
-    - Passo 3: $2.357 + 270 = 2.627$ tokens
-    - Passo 4: $2.357 + 405 = 2.762$ tokens
-    - Passo 5: $2.357 + 540 = 2.897$ tokens
-  - **Total estimado de entrada para 5 passos**: $5 \times 2.357 + 10 \times 135 = 11.785 + 1.350 = \mathbf{13.135\text{ tokens de entrada}}$ (mais $\approx 740$ tokens de saída totalizando **$13.875$ tokens totais** por pedido de 5 passos).
-- **Confronto com o medido na Etapa 6 (Pedido regular `DIA-2026-0101`, Rodada 1, 5 passos)**:
-  - Valor real medido de entrada (5 passos): **$13.100$ tokens de entrada** (Passo 1: $2.357$, Passo 2: $2.447$, Passo 3: $2.609$, Passo 4: $2.807$, Passo 5: $2.880$; saída: $738$ tokens; total: $13.838$ tokens).
-  - **Desvio entre estimado ($13.135$) e medido ($13.100$)**: **$+0{,}27\%$** (muito abaixo do limite de $3\%$ exigido pela Etapa 1).
+    - Passo 1: $2.460$ tokens
+    - Passo 2: $2.460 + 140 = 2.600$ tokens
+    - Passo 3: $2.460 + 280 = 2.740$ tokens
+    - Passo 4: $2.460 + 420 = 2.880$ tokens
+    - Passo 5: $2.460 + 560 = 3.020$ tokens
+  - **Total estimado de entrada para 5 passos**: $5 \times 2.460 + 10 \times 140 = 12.300 + 1.400 = \mathbf{13.700\text{ tokens de entrada}}$ (mais $\approx 740$ tokens de saída, totalizando **$14.440$ tokens totais** por pedido de 5 passos).
+- **Confronto com o medido na Etapa 6 (Pedido regular `DIA-2026-0101`, Rodadas 1 a 3, 5 passos)**:
+  - Valor real medido de entrada (5 passos): **$13.740$ tokens de entrada** (Passo 1: $2.461$, Passo 2: $2.581$, Passo 3: $2.743$, Passo 4: $2.941$, Passo 5: $3.014$; saída na Rodada 1: $743$ tokens; total: $14.483$ tokens).
+  - **Desvio entre estimado ($13.700$) e medido ($13.740$)**: **$-0{,}29\%$** ($40$ tokens de diferença em 5 passos, muito abaixo do limite de $3\%$ da Etapa 1).
 
 ### 5.2. Volume Mensal Adotado e Projeção de Custo
 
 Adotando um volume operacional realista para a Coordenadoria de Diárias e Passagens da SEMA-MT de **300 pedidos protocolados por mês**, com uma taxa histórica de **20% de pedidos devolvidos em diligência** (60 complementações/mês, totalizando **360 turnos de instrução/mês**):
 
 - **240 pedidos completos no 1º turno (5 passos)**:
-  - Entrada: $240 \times 13.135 = 3.152.400$ tokens
+  - Entrada: $240 \times 13.700 = 3.288.000$ tokens
   - Saída: $240 \times 740 = 177.600$ tokens
 - **60 pedidos devolvidos em diligência no 1º turno (2 passos)**:
-  - Entrada: $60 \times 4.780 = 286.800$ tokens
+  - Entrada: $60 \times 5.050 = 303.000$ tokens
   - Saída: $60 \times 500 = 30.000$ tokens
-- **60 complementações no 2º turno com histórico da sessão (6 a 7 passos)**:
-  - Entrada: $60 \times 16.200 = 972.000$ tokens
-  - Saída: $60 \times 710 = 42.600$ tokens
+- **60 complementações no 2º turno com histórico da sessão (5 passos)**:
+  - Entrada: $60 \times 17.150 = 1.029.000$ tokens
+  - Saída: $60 \times 740 = 44.400$ tokens
 - **Consumo Mensal Total (300 pedidos + 60 complementações)**:
-  - **Tokens de entrada/mês**: $\mathbf{4.411.200\text{ tokens}}$ ($\approx 4{,}41\text{ M tokens}$)
-  - **Tokens de saída/mês**: $\mathbf{250.200\text{ tokens}}$ ($\approx 0{,}25\text{ M tokens}$)
-  - **Tokens totais/mês**: $\mathbf{4.661.400\text{ tokens}}$ ($\approx 4{,}66\text{ M tokens}$)
+  - **Tokens de entrada/mês**: $\mathbf{4.620.000\text{ tokens}}$ ($\approx 4{,}62\text{ M tokens}$)
+  - **Tokens de saída/mês**: $\mathbf{252.000\text{ tokens}}$ ($\approx 0{,}252\text{ M tokens}$)
+  - **Tokens totais/mês**: $\mathbf{4.872.000\text{ tokens}}$ ($\approx 4{,}87\text{ M tokens}$)
   - **Custo mensal estimado** (`gpt-5.6-luna` a $\text{US\$ }0{,}15 / 1\text{M input}$ e $\text{US\$ }0{,}60 / 1\text{M output}$):
-    $$\text{Custo Mensal} = 4{,}4112 \times \text{US\$ }0{,}15 + 0{,}2502 \times \text{US\$ }0{,}60 = \text{US\$ }0{,}6617 + \text{US\$ }0{,}1501 = \mathbf{\text{US\$ }0{,}81/\text{mês}}$$
+    $$\text{Custo Mensal} = 4{,}620 \times \text{US\$ }0{,}15 + 0{,}252 \times \text{US\$ }0{,}60 = \text{US\$ }0{,}6930 + \text{US\$ }0{,}1512 = \mathbf{\text{US\$ }0{,}84/\text{mês}}$$
 
 ---
 

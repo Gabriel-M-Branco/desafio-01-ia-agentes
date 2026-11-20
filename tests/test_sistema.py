@@ -3,10 +3,12 @@
 import json
 from pathlib import Path
 
+from agno.metrics import MessageMetrics, RunMetrics
+from agno.models.message import Message
 from agno.models.response import ToolExecution
 from agno.run.agent import RunInput, RunOutput, RunStatus
 
-from src.agente import criar_banco_memoria, criar_guardrail_pii, formatar_entrada_pedido
+from src.agente import _extrair_metricas, criar_banco_memoria, criar_guardrail_pii, formatar_entrada_pedido
 from src.barreira import MENSAGEM_PADRAO_ERRO, verificar_barreira
 from src.eliminacao import conferir_banco_por_tabela, eliminar_dados_servidor
 from src.modelos import Instrucao, Verificacao
@@ -43,6 +45,18 @@ def test_guardrail_pii_mascara_cpf_e_conta_sem_afetar_matriculas_e_datas():
             assert "98765-4" not in mascarado
             assert "1234-5" not in mascarado
             assert "**************" in mascarado
+
+    # Variações comuns de pontuação e abreviação para conta/agência
+    variacoes = [
+        ("CPF: 052.318.947-20, conta corrente: 98765-4, agência: 1234-5.", ["052.318.947-20", "98765-4", "1234-5"]),
+        ("Ag. 1234-5 C/C 98765-4 Agência 4321.", ["1234-5", "98765-4", "4321"]),
+    ]
+    for texto, bloqueados in variacoes:
+        ri = RunInput(input_content=texto)
+        guard.check(ri)
+        saida = ri.input_content_string()
+        for dado in bloqueados:
+            assert dado not in saida, f"Dado sensível '{dado}' não foi mascarado em: {saida}"
 
 
 def _criar_instrucao_valida_0101() -> Instrucao:
@@ -205,6 +219,115 @@ def test_barreira_aprova_execucao_ancorada_e_bloqueia_adulteracoes():
     assert res_0112.instrucao is None
     assert any("207418" in m for m in res_0112.motivos_recusa)
 
+    # 6. Pedido sem data_retorno (DIA-2026-0111) em que o agente inventa data_retorno=data_partida
+    p_0111 = pedidos["DIA-2026-0111"]
+    inst_0111_falsa = _criar_instrucao_valida_0101().model_copy(
+        update={
+            "numero_pedido": "DIA-2026-0111",
+            "matricula": "206689",
+            "quantidade_diarias": 0.5,
+            "valor_total": 140.0,
+        }
+    )
+    tools_0111_falsas = [
+        ToolExecution(tool_name="consultar_servidor", tool_args={"matricula": "206689"}, result="OK"),
+        ToolExecution(
+            tool_name="consultar_historico_diarias",
+            tool_args={"matricula": "206689", "data_partida": "2026-11-17", "data_retorno": "2026-11-17"},
+            result="OK",
+        ),
+        ToolExecution(
+            tool_name="calcular_diarias",
+            tool_args={
+                "grupo": "B",
+                "destino_uf": "MT",
+                "data_pedido": "2026-10-09",
+                "data_partida": "2026-11-17",
+                "data_retorno": "2026-11-17",
+            },
+            result="0.5 diárias, R$ 140.00",
+        ),
+        ToolExecution(tool_name="consultar_saldo_diarias", tool_args={"unidade": "CFF", "valor": 140.0}, result="OK"),
+    ]
+    res_0111_falsa = verificar_barreira(
+        RunOutput(status=RunStatus.completed, content=inst_0111_falsa, tools=tools_0111_falsas),
+        p_0111,
+    )
+    assert res_0111_falsa.aprovado is False
+    assert res_0111_falsa.instrucao is None
+    assert any("data_retorno" in m for m in res_0111_falsa.motivos_recusa)
+
+    # 7. Quantidade de diárias adulterada na Instrucao (com valor_total inalterado)
+    inst_qtd_errada = _criar_instrucao_valida_0101().model_copy(update={"quantidade_diarias": 99.5})
+    res_qtd_err = verificar_barreira(
+        RunOutput(status=RunStatus.completed, content=inst_qtd_errada, tools=_tools_validas_0101()),
+        p_0101,
+    )
+    assert res_qtd_err.aprovado is False
+    assert res_qtd_err.instrucao is None
+    assert any("Quantidade de diárias" in m for m in res_qtd_err.motivos_recusa)
+
+    # 8. Instrucao conclusiva com quantidade_diarias/valor_total nulos
+    inst_nulos = _criar_instrucao_valida_0101().model_copy(
+        update={"quantidade_diarias": None, "valor_total": None}
+    )
+    res_nulos = verificar_barreira(
+        RunOutput(status=RunStatus.completed, content=inst_nulos, tools=_tools_validas_0101()),
+        p_0101,
+    )
+    assert res_nulos.aprovado is False
+    assert res_nulos.instrucao is None
+
+    # 9. Diligência com quantidade_diarias ou valor_total preenchidos indevidamente
+    inst_dil_preenchida = _criar_instrucao_valida_0101().model_copy(update={"recomendacao": "diligencia"})
+    res_dil_err = verificar_barreira(
+        RunOutput(status=RunStatus.completed, content=inst_dil_preenchida, tools=_tools_validas_0101()[:1]),
+        p_0101,
+    )
+    assert res_dil_err.aprovado is False
+    assert res_dil_err.instrucao is None
+
+    # 10. Pedido DIA-2026-0112 (1º turno, sem complementação): agente tenta aprovar calculando para o servidor errado (Rafael 207481 em nome de Carla)
+    res_0112_servidor_errado = verificar_barreira(resp_0112_errada, p_0112)
+    assert res_0112_servidor_errado.aprovado is False
+    assert res_0112_servidor_errado.instrucao is None
+    assert any("servidor errado" in m for m in res_0112_servidor_errado.motivos_recusa)
+
+
+def test_extrair_metricas_ignora_mensagens_de_historico():
+    resp = RunOutput(
+        status=RunStatus.completed,
+        metrics=RunMetrics(input_tokens=6100, output_tokens=600, total_tokens=6700),
+        messages=[
+            Message(role="system", content="Regras"),
+            Message(role="user", content="Pedido turno 1", from_history=True),
+            Message(
+                role="assistant",
+                content="Chamada turno 1",
+                from_history=True,
+                metrics=MessageMetrics(input_tokens=2345, output_tokens=22),
+            ),
+            Message(role="user", content="Complementação turno 2", from_history=False),
+            Message(
+                role="assistant",
+                content="Chamada 1 turno 2",
+                from_history=False,
+                metrics=MessageMetrics(input_tokens=3000, output_tokens=30),
+            ),
+            Message(
+                role="assistant",
+                content="Chamada 2 turno 2",
+                from_history=False,
+                metrics=MessageMetrics(input_tokens=3100, output_tokens=570),
+            ),
+        ],
+    )
+    in_tok, out_tok, tot_tok, _, chamadas = _extrair_metricas(resp, 1.0)
+    assert in_tok == 6100 and out_tok == 600 and tot_tok == 6700
+    assert len(chamadas) == 2
+    assert chamadas[0]["input_tokens"] == 3000
+    assert chamadas[1]["input_tokens"] == 3100
+
 
 def test_rotina_eliminacao_caso_especial_dia_2026_0112(tmp_path):
     import sqlite3
@@ -265,4 +388,11 @@ def test_streamlit_app_carrega_e_simula_barreira():
     assert not at.exception
     assert len(at.error) >= 1
     assert "análise manual" in at.error[0].value.lower()
+    # Nada do conteúdo recusado (ex.: matrícula '999999' da ferramenta recusada) aparece na tela
+    textos_tela = " ".join(
+        [e.value for e in at.error]
+        + [w.value for w in at.warning]
+        + [m.value for m in at.markdown]
+    )
+    assert "999999" not in textos_tela
 

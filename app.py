@@ -20,12 +20,15 @@ Funcionalidades:
 from datetime import datetime
 import html
 import json
+import logging
 from pathlib import Path
 from typing import Any
 
 from agno.models.response import ToolExecution
 from agno.run.agent import RunOutput, RunStatus
 import streamlit as st
+
+logger = logging.getLogger(__name__)
 
 from src.agente import (
     CAMINHO_DB_PADRAO,
@@ -266,17 +269,21 @@ def renderizar_resultado_instrucao(
     """Renderiza o resultado validado pela barreira ou a mensagem padrão de erro."""
     st.markdown("### 2. Resultado da Instrução e Barreira de Verificação")
 
-    # 8.7 Falhas: exibir apenas mensagem padrão e encaminhar para análise manual
+    # 8.7 Falhas: exibir exclusivamente a mensagem padrão e encaminhar para análise manual
+    # Nada do conteúdo recusado nem detalhes de valores/matrículas recusados aparece ao servidor.
     if not res.aprovado_barreira or res.instrucao is None:
+        logger.warning(
+            "Barreira bloqueou pedido %s (status=%s): %s",
+            res.numero_pedido,
+            res.barreira.status_execucao,
+            "; ".join(res.barreira.motivos_recusa),
+        )
         st.error(res.barreira.mensagem_usuario or MENSAGEM_PADRAO_ERRO)
         st.warning(
             "**Encaminhamento obrigatório:** Este pedido foi bloqueado pela barreira de segurança "
             "no código e encaminhado para **análise manual**. Nenhum conteúdo recusado ou parcial "
             "é exibido para evitar viés de ancoragem."
         )
-        with st.expander("Detalhes técnicos do bloqueio (Auditoria da Barreira)"):
-            for m in res.barreira.motivos_recusa:
-                st.write(f"- {m}")
         return
 
     inst = res.instrucao
@@ -384,8 +391,16 @@ def renderizar_resultado_instrucao(
                             data_complementacao="2026-10-09",
                         )
                         st.write("4. Validando argumentos na barreira determinística de código...")
-                        status_box.update(label="Complementação processada!", state="complete")
+                        if res_comp.aprovado_barreira:
+                            status_box.update(label="Complementação processada e validada!", state="complete")
+                        else:
+                            status_box.update(
+                                label="Complementação bloqueada pela barreira — encaminhada para análise manual.",
+                                state="error",
+                            )
                     st.session_state[f"resultado_{pedido['numero']}"] = res_comp
+                    seq_key = f"exec_seq_{pedido['numero']}"
+                    st.session_state[seq_key] = st.session_state.get(seq_key, 0) + 1
                     st.rerun()
 
     # 8.3 e 8.4 Minuta do Despacho Editável e Conferência Humana lado a lado (otimiza tela wide)
@@ -395,6 +410,7 @@ def renderizar_resultado_instrucao(
         "Revise a minuta e registre o encaminhamento decidido pelo servidor conferente."
     )
 
+    exec_seq = st.session_state.get(f"exec_seq_{pedido['numero']}", 0)
     col_minuta, col_conf = st.columns([1.3, 1.0], gap="medium")
 
     with col_minuta:
@@ -403,7 +419,7 @@ def renderizar_resultado_instrucao(
                 "Minuta do Despacho (Editável):",
                 value=inst.minuta_despacho,
                 height=245,
-                key=f"minuta_{inst.numero_pedido}_{inst.recomendacao}",
+                key=f"minuta_{inst.numero_pedido}_{inst.recomendacao}_{exec_seq}",
             )
 
     with col_conf:
@@ -415,28 +431,28 @@ def renderizar_resultado_instrucao(
                 "Encaminhamento sugerido pelo agente:",
                 value=f"{rotulo_rec} ({inst.recomendacao})",
                 disabled=True,
-                key=f"sug_{inst.numero_pedido}_{inst.recomendacao}",
+                key=f"sug_{inst.numero_pedido}_{inst.recomendacao}_{exec_seq}",
             )
             decisao_servidor = st.selectbox(
                 "Encaminhamento decidido pelo servidor conferente:",
                 options=opcoes_enc,
                 index=idx_sugerido,
                 format_func=lambda x: f"{ROTULOS_RECOMENDACAO.get(x, x)} ({x})",
-                key=f"dec_{inst.numero_pedido}_{inst.recomendacao}",
+                key=f"dec_{inst.numero_pedido}_{inst.recomendacao}_{exec_seq}",
             )
             divergiu = decisao_servidor != inst.recomendacao
             justificativa_divergencia = st.text_area(
                 "Justificativa (obrigatória se houver divergência):",
                 placeholder="Descreva o motivo técnico ou normativo da divergência...",
                 height=85,
-                key=f"just_div_{inst.numero_pedido}_{inst.recomendacao}",
+                key=f"just_div_{inst.numero_pedido}_{inst.recomendacao}_{exec_seq}",
             )
 
             if st.button(
                 "Registrar Conferência Humana",
                 type="primary",
-                use_container_width=True,
-                key=f"btn_conf_{inst.numero_pedido}_{inst.recomendacao}",
+                width="stretch",
+                key=f"btn_conf_{inst.numero_pedido}_{inst.recomendacao}_{exec_seq}",
             ):
                 if divergiu and not justificativa_divergencia.strip():
                     st.error(
@@ -519,12 +535,12 @@ def main() -> None:
                 acionar_instrucao = st.button(
                     "Instruir Pedido com Agente Agno",
                     type="primary",
-                    use_container_width=True,
+                    width="stretch",
                 )
             with col_btn2:
                 simular_bloqueio = st.button(
                     "Simular Recusa da Barreira de Segurança (Teste de Falha)",
-                    use_container_width=True,
+                    width="stretch",
                 )
 
         if acionar_instrucao:
@@ -535,8 +551,16 @@ def main() -> None:
                 )
                 resultado = instruir_pedido(agente, pedido_atual)
                 st.write("3. Verificando `resposta.status` e auditando argumentos das ferramentas na barreira de código...")
-                status_box.update(label="Processamento concluído!", state="complete")
+                if resultado.aprovado_barreira:
+                    status_box.update(label="Instrução concluída e validada pela barreira!", state="complete")
+                else:
+                    status_box.update(
+                        label="Instrução bloqueada pela barreira — encaminhada para análise manual.",
+                        state="error",
+                    )
             st.session_state[f"resultado_{numero_selecionado}"] = resultado
+            seq_key = f"exec_seq_{numero_selecionado}"
+            st.session_state[seq_key] = st.session_state.get(seq_key, 0) + 1
 
         if simular_bloqueio:
             resposta_invalida = RunOutput(
@@ -600,14 +624,19 @@ def main() -> None:
             )
             nome_elim = SERVIDORES[mat_elim]["nome"]
 
+            if st.session_state.get("ultimo_mat_elim") != mat_elim:
+                st.session_state["ultimo_mat_elim"] = mat_elim
+                st.session_state.pop("ultimo_relatorio_eliminacao", None)
+                st.session_state.pop("ultima_auditoria_banco", None)
+
             col_aud, col_del = st.columns(2)
             with col_aud:
-                if st.button("Conferir Banco Tabela por Tabela (Antes da Exclusão)", use_container_width=True):
+                if st.button("Conferir Banco Tabela por Tabela (Antes da Exclusão)", width="stretch"):
                     auditoria_atual = conferir_banco_por_tabela(CAMINHO_DB_PADRAO, mat_elim, nome_elim)
                     st.session_state["ultima_auditoria_banco"] = auditoria_atual
 
             with col_del:
-                if st.button("Executar Rotina de Eliminação Verificável (LGPD)", type="primary", use_container_width=True):
+                if st.button("Executar Rotina de Eliminação Verificável (LGPD)", type="primary", width="stretch"):
                     relatorio_elim = eliminar_dados_servidor(db, matricula=mat_elim, nome=nome_elim)
                     st.session_state["ultimo_relatorio_eliminacao"] = relatorio_elim
                     st.session_state["ultima_auditoria_banco"] = relatorio_elim["auditoria_final_tabela_por_tabela"]
@@ -643,7 +672,7 @@ def main() -> None:
                         }
                         for nome_tab, info in aud["tabelas"].items()
                     ]
-                    st.dataframe(linhas_tab, use_container_width=True, hide_index=True)
+                    st.dataframe(linhas_tab, width="stretch", hide_index=True)
                 with st.expander("Inspeção Bruta das Tabelas (JSON)", expanded=False):
                     st.json(aud)
 
