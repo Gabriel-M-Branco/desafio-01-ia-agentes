@@ -119,6 +119,7 @@ exemplos/
 ├── gerar_dados.py              # Gerador determinístico do acervo e do gabarito
 ├── gabarito.json               # Respostas esperadas (uso exclusivo de scripts/avaliar.py)
 ├── dados/                      # Acervo hipotético (CSV, JSON e normas.md)
+├── db/                         # Bancos SQLite locais de trabalho (não versionados)
 ├── resultados/                 # Saídas das medições, testes e evidências
 ├── src/                        # Pacote principal do agente
 │   ├── agente.py               # Agente Agno, prompt, PIIDetectionGuardrail e SqliteDb
@@ -136,7 +137,7 @@ exemplos/
 
 ---
 
-## 7. Decisões Técnicas (Respostas Obrigatórias)
+## 7. As 3 Perguntas do Entregáveis - Decisões Técnicas
 
 1. **Que configuração de chamadas paralelas, teto de chamadas e memória foi escolhida, e com base em quais números?**
    - **Chamadas paralelas desativadas (`parallel_tool_calls=False`)**: O cálculo das diárias depende do `grupo_diaria` retornado por `consultar_servidor`, e a consulta de saldo depende da `unidade` e do `valor_total` calculado por `calcular_diarias`. Desativar o paralelismo garante a ordem causal das consultas em 5 passos determinísticos.
