@@ -334,46 +334,33 @@ def provocar_modos_de_falha(pedidos: list[dict]) -> list[dict[str, Any]]:
     )
 
     # ------------------------------------------------------------------
-    # Modo de Falha 2: Argumento de ferramenta incompatível com o pedido (Alucinação de data/matrícula)
+    # Modo de Falha 2: Argumento de ferramenta incompatível com o pedido (Alucinação/Desvio de data e matrícula)
     # ------------------------------------------------------------------
     pedido_0101 = copy.deepcopy(por_numero["DIA-2026-0101"])
-    # Simula uma resposta do modelo onde a ferramenta calcular_diarias foi chamada com data de retorno
-    # inventada (2026-11-15 em vez de 2026-11-12) e consultar_servidor com matrícula de terceiro (207481).
-    resposta_adulterada = RunOutput(
-        status=RunStatus.completed,
-        content=res_inj.instrucao,  # Objeto Instrucao válido no schema Pydantic, porém desancorado
-        tools=[
-            ToolExecution(
-                tool_name="consultar_servidor",
-                tool_args={"matricula": "207481"},
-                result="Matrícula 207481: nome='Rafael Lima Antunes', grupo_diaria='B', unidade='CFA'",
-            ),
-            ToolExecution(
-                tool_name="calcular_diarias",
-                tool_args={
-                    "grupo": "B",
-                    "destino_uf": "MT",
-                    "data_pedido": "2026-10-08",
-                    "data_partida": "2026-11-09",
-                    "data_retorno": "2026-11-15",  # Data inventada (pedido tem 2026-11-12)
-                },
-                result="Quantidade: 6.5 diárias, total = R$ 1820.00",
-            ),
-        ],
-    )
-    barreira_f2 = verificar_barreira(resposta_adulterada, pedido_0101)
+    # Provoca uma execução real do agente onde o prompt enviado ao modelo contém matrícula de terceiro
+    # (207481) e data_retorno adulterada (2026-11-15), divergindo do pedido autêntico em mãos (DIA-2026-0101:
+    # matrícula 204317, retorno 2026-11-12). O agente chama as ferramentas com 207481 e 2026-11-15, e a
+    # barreira determinística de código audita `resposta.tools` contra `pedido_0101` e bloqueia a instrução.
+    pedido_desancorado = copy.deepcopy(pedido_0101)
+    pedido_desancorado["matricula"] = "207481"
+    pedido_desancorado["nome"] = "Rafael Lima Antunes"
+    pedido_desancorado["data_retorno"] = "2026-11-15"
+    ag_f2 = criar_agente(usar_memoria_sessao=False, chamadas_paralelas=False)
+    res_f2_exec = instruir_pedido(ag_f2, pedido_desancorado)
+    barreira_f2 = verificar_barreira(res_f2_exec.resposta_bruta, pedido_0101)
     falhas_registradas.append(
         {
             "id": "falha_2_argumento_ferramenta_incompativel",
-            "titulo": "Argumentos de ferramentas incompatíveis com o pedido (Matrícula e Data inventadas)",
+            "titulo": "Argumentos de ferramentas incompatíveis com o pedido (Matrícula e Data divergentes)",
             "cenario_utilizado": (
-                "Durante a instrução do pedido DIA-2026-0101 (matrícula 204317, retorno 2026-11-12), "
-                "as ferramentas são invocadas com matrícula '207481' e data_retorno '2026-11-15', "
-                "que não constam do pedido nem de complementação."
+                "Execução real do agente para o pedido DIA-2026-0101 (matrícula 204317, retorno 2026-11-12) "
+                "em que o modelo recebe contexto corrompido e invoca as ferramentas reais com matrícula "
+                "'207481' e data_retorno '2026-11-15', que não constam do pedido autêntico em mãos."
             ),
             "comportamento_esperado": (
-                "A barreira de código (`verificar_barreira`) deve recusar a instrução, descartar "
-                "o objeto `Instrucao` e devolver apenas a mensagem padrão para análise manual."
+                "A barreira de código (`verificar_barreira`) deve auditar `resposta.tools` contra o pedido "
+                "autêntico DIA-2026-0101, recusar a instrução, descartar o objeto `Instrucao` e devolver "
+                "apenas a mensagem padrão para análise manual."
             ),
             "comportamento_observado": (
                 f"aprovado={barreira_f2.aprovado}; instrucao_entregue={barreira_f2.instrucao}; "
@@ -384,6 +371,7 @@ def provocar_modos_de_falha(pedidos: list[dict]) -> list[dict[str, Any]]:
                 "aprovado": barreira_f2.aprovado,
                 "mensagem_usuario": barreira_f2.mensagem_usuario,
                 "motivos_recusa": barreira_f2.motivos_recusa,
+                "consultas_interceptadas": barreira_f2.consultas_realizadas,
             },
         }
     )
@@ -432,41 +420,63 @@ def provocar_modos_de_falha(pedidos: list[dict]) -> list[dict[str, Any]]:
     # ------------------------------------------------------------------
     # Modo de Falha 4: Falha de isolamento de sessão / vazamento de memória na complementação
     # ------------------------------------------------------------------
-    # Cenário: O pedido DIA-2026-0111 (Beatriz, 206689, partida 2026-11-17, sem data_retorno)
-    # recebe uma complementação na sessão errada (ou com histórico contaminado pelo DIA-2026-0101),
-    # levando o agente a consultar os dados da sessão contaminada contra o pedido DIA-2026-0111.
+    # Cenário real de 2 turnos no SqliteDb:
+    # 1º Turno: Grava no banco a sessão DIA-2026-0101 (Ana Paula, 204317, partida 2026-11-09, retorno 2026-11-12).
+    # 2º Turno: Ao enviar a complementação do pedido DIA-2026-0111 (Beatriz, 206689, partida 2026-11-17,
+    #           complementando retorno 2026-11-20), provoca-se uma troca de `session_id` passando
+    #           `session_id='DIA-2026-0101'` para `ag_f4.run()`. O agente recupera da memória o histórico
+    #           de Ana Paula (204317) e calcula as diárias para ela com retorno em 2026-11-20, mas a
+    #           barreira de código confronta a resposta real contra `pedido_0111` e bloqueia a instrução.
     PASTA_DB.mkdir(parents=True, exist_ok=True)
     caminho_db_f4 = PASTA_DB / "db_falha_4_isolamento.db"
-    if caminho_db_f4.exists():
-        caminho_db_f4.unlink()
+    for sufixo in ("", "-wal", "-shm"):
+        arq_f4 = Path(str(caminho_db_f4) + sufixo)
+        if arq_f4.exists():
+            try:
+                arq_f4.unlink()
+            except OSError:
+                pass
     db_f4 = criar_banco_memoria(caminho_db_f4)
     ag_f4 = criar_agente(db=db_f4, usar_memoria_sessao=True, chamadas_paralelas=False)
 
-    # Grava no banco a sessão DIA-2026-0101 (Ana Paula, 204317, retorno 2026-11-12)
-    res_0101 = instruir_pedido(ag_f4, pedido_0101)
-    # Agora verificamos na barreira o que acontece se a resposta gerada na sessão do DIA-2026-0101
-    # for entregue ao conferente como resposta à complementação do pedido DIA-2026-0111 (Beatriz, 206689).
+    # 1º Turno: grava sessão DIA-2026-0101
+    instruir_pedido(ag_f4, pedido_0101)
+
+    # 2º Turno: envia a complementação do DIA-2026-0111 reutilizando indevidamente session_id e user_id do DIA-2026-0101
+    # (simula o erro arquitetural alertado na Etapa 4 de fixar session_id/user_id no agente em cache)
     pedido_0111 = copy.deepcopy(por_numero["DIA-2026-0111"])
+    texto_comp_0111 = "Complementação ao pedido em diligência: o retorno está previsto para 2026-11-20."
+    prompt_comp_contaminado = (
+        "Complementação enviada pelo solicitante: o retorno está previsto para 2026-11-20. "
+        "Recupere os dados do pedido original gravado no histórico desta sessão, aplique a nova data "
+        "de retorno 2026-11-20 e realize a instrução completa."
+    )
+    resposta_f4_contaminada = ag_f4.run(
+        prompt_comp_contaminado,
+        session_id="DIA-2026-0101",
+        user_id=pedido_0101["matricula"],
+    )
     barreira_f4 = verificar_barreira(
-        resposta=res_0101.resposta_bruta,
+        resposta=resposta_f4_contaminada,
         pedido=pedido_0111,
-        texto_complementacao="Complementação ao pedido em diligência: o retorno está previsto para 2026-11-20.",
+        texto_complementacao=texto_comp_0111,
     )
     falhas_registradas.append(
         {
             "id": "falha_4_contaminacao_sessao_memoria",
             "titulo": "Falha de isolamento de sessão / recuperação de memória de outro pedido",
             "cenario_utilizado": (
-                "Na complementação do pedido DIA-2026-0111 (Beatriz Moraes Cunha, matrícula 206689, "
-                "partida 2026-11-17, retorno complementado 2026-11-20), o histórico/execução recupera "
-                "indevidamente a sessão do pedido DIA-2026-0101 (Ana Paula Figueiredo, matrícula 204317, "
-                "partida 2026-11-09, retorno 2026-11-12)."
+                "Execução real em 2 turnos no SqliteDb: após gravar a sessão DIA-2026-0101 (Ana Paula "
+                "Figueiredo, matrícula 204317, partida 2026-11-09), a complementação do pedido DIA-2026-0111 "
+                "(Beatriz Moraes Cunha, matrícula 206689, partida 2026-11-17, retorno 2026-11-20) é enviada "
+                "com `session_id='DIA-2026-0101'`, fazendo o agente recuperar da memória os dados de Ana Paula "
+                "e instruir o processo para a servidora errada."
             ),
             "comportamento_esperado": (
                 "A verificação de ancoragem na barreira de código passa a ser a única defesa (conforme "
-                "destacado na Etapa 3/4 do enunciado): deve detectar que a matrícula (204317) e as datas "
-                "(2026-10-08, 2026-11-09, 2026-11-12) consultadas nas ferramentas não pertencem ao pedido "
-                "DIA-2026-0111 nem à sua complementação, bloqueando a instrução."
+                "destacado nas Etapas 3 e 4 do enunciado): deve detectar que a matrícula (204317) e as datas "
+                "(2026-10-08, 2026-11-09) consultadas nas ferramentas pelo agente ao ler a memória contaminada "
+                "não pertencem ao pedido DIA-2026-0111, bloqueando a instrução."
             ),
             "comportamento_observado": (
                 f"aprovado={barreira_f4.aprovado}; instrucao_entregue={barreira_f4.instrucao}; "
@@ -477,6 +487,7 @@ def provocar_modos_de_falha(pedidos: list[dict]) -> list[dict[str, Any]]:
                 "aprovado": barreira_f4.aprovado,
                 "mensagem_usuario": barreira_f4.mensagem_usuario,
                 "motivos_recusa": barreira_f4.motivos_recusa,
+                "consultas_interceptadas": barreira_f4.consultas_realizadas,
             },
         }
     )
@@ -487,26 +498,42 @@ def provocar_modos_de_falha(pedidos: list[dict]) -> list[dict[str, Any]]:
     return falhas_registradas
 
 
-def executar_avaliacao_completa() -> dict[str, Any]:
+def executar_avaliacao_completa(reusar_rodadas_existentes: bool = False) -> dict[str, Any]:
     PASTA_RESULTADOS.mkdir(parents=True, exist_ok=True)
     pedidos = json.loads((PASTA_BASE / "dados" / "pedidos.json").read_text(encoding="utf-8"))
     complementacoes = json.loads((PASTA_BASE / "dados" / "complementacoes.json").read_text(encoding="utf-8"))
     gabarito = json.loads((PASTA_BASE / "gabarito.json").read_text(encoding="utf-8"))
 
-    print("Iniciando Rodada 1 (parallel_tool_calls=False)...")
-    r1 = executar_rodada("rodada_1", False, pedidos, complementacoes, gabarito)
+    if reusar_rodadas_existentes and (PASTA_RESULTADOS / "rodada_1.json").exists():
+        print("Reutilizando rodada_1.json existente...")
+        r1 = json.loads((PASTA_RESULTADOS / "rodada_1.json").read_text(encoding="utf-8"))
+    else:
+        print("Iniciando Rodada 1 (parallel_tool_calls=False)...")
+        r1 = executar_rodada("rodada_1", False, pedidos, complementacoes, gabarito)
     print(f"Rodada 1 concluída: {r1['acertos']}/{r1['total_casos']} acertos, {r1['total_tokens']} tokens, {r1['tempo_total_segundos']}s")
 
-    print("Iniciando Rodada 2 (parallel_tool_calls=False)...")
-    r2 = executar_rodada("rodada_2", False, pedidos, complementacoes, gabarito)
+    if reusar_rodadas_existentes and (PASTA_RESULTADOS / "rodada_2.json").exists():
+        print("Reutilizando rodada_2.json existente...")
+        r2 = json.loads((PASTA_RESULTADOS / "rodada_2.json").read_text(encoding="utf-8"))
+    else:
+        print("Iniciando Rodada 2 (parallel_tool_calls=False)...")
+        r2 = executar_rodada("rodada_2", False, pedidos, complementacoes, gabarito)
     print(f"Rodada 2 concluída: {r2['acertos']}/{r2['total_casos']} acertos, {r2['total_tokens']} tokens, {r2['tempo_total_segundos']}s")
 
-    print("Iniciando Rodada 3 (parallel_tool_calls=False)...")
-    r3 = executar_rodada("rodada_3", False, pedidos, complementacoes, gabarito)
+    if reusar_rodadas_existentes and (PASTA_RESULTADOS / "rodada_3.json").exists():
+        print("Reutilizando rodada_3.json existente...")
+        r3 = json.loads((PASTA_RESULTADOS / "rodada_3.json").read_text(encoding="utf-8"))
+    else:
+        print("Iniciando Rodada 3 (parallel_tool_calls=False)...")
+        r3 = executar_rodada("rodada_3", False, pedidos, complementacoes, gabarito)
     print(f"Rodada 3 concluída: {r3['acertos']}/{r3['total_casos']} acertos, {r3['total_tokens']} tokens, {r3['tempo_total_segundos']}s")
 
-    print("Iniciando Rodada com Chamadas Paralelas Ativadas (parallel_tool_calls=True)...")
-    r_par = executar_rodada("rodada_paralela", True, pedidos, complementacoes, gabarito)
+    if reusar_rodadas_existentes and (PASTA_RESULTADOS / "rodada_paralela.json").exists():
+        print("Reutilizando rodada_paralela.json existente...")
+        r_par = json.loads((PASTA_RESULTADOS / "rodada_paralela.json").read_text(encoding="utf-8"))
+    else:
+        print("Iniciando Rodada com Chamadas Paralelas Ativadas (parallel_tool_calls=True)...")
+        r_par = executar_rodada("rodada_paralela", True, pedidos, complementacoes, gabarito)
     print(f"Rodada Paralela concluída: {r_par['acertos']}/{r_par['total_casos']} acertos, {r_par['total_tokens']} tokens, {r_par['tempo_total_segundos']}s")
 
     comparacao_paralelismo = {
@@ -566,4 +593,5 @@ def executar_avaliacao_completa() -> dict[str, Any]:
 
 
 if __name__ == "__main__":
-    executar_avaliacao_completa()
+    reusar = "--reusar-rodadas" in sys.argv
+    executar_avaliacao_completa(reusar_rodadas_existentes=reusar)

@@ -1,0 +1,29 @@
+{
+  "chamadas_paralelas_desativadas_media_3_rodadas": {
+    "tempo_execucao_segundos": 115.1083,
+    "input_tokens": 174119.7,
+    "output_tokens": 10134.0,
+    "total_tokens": 184253.7,
+    "custo_usd": 0.032199,
+    "acertos": "14.0/14",
+    "falhas": 0.0
+  },
+  "chamadas_paralelas_desativadas_rodada_1": {
+    "tempo_execucao_segundos": 114.4933,
+    "input_tokens": 174198,
+    "output_tokens": 10173,
+    "total_tokens": 184371,
+    "custo_usd": 0.032234,
+    "acertos": "14/14",
+    "falhas": 0
+  },
+  "chamadas_paralelas_ativadas": {
+    "tempo_execucao_segundos": 124.0592,
+    "input_tokens": 151205,
+    "output_tokens": 10108,
+    "total_tokens": 161313,
+    "custo_usd": 0.028746,
+    "acertos": "13/14",
+    "falhas": 0
+  }
+}

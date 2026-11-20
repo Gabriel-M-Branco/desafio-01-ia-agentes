@@ -139,6 +139,12 @@ def verificar_barreira(
         )
 
     matriculas_validas = extrair_matriculas_permitidas(pedido, texto_complementacao)
+    matriculas_comp = (
+        {m.strip() for m in re.findall(r"\b\d{6}\b", texto_complementacao)}
+        if texto_complementacao
+        else set()
+    )
+    matriculas_finais_esperadas = matriculas_comp if matriculas_comp else matriculas_validas
     datas_validas = extrair_datas_permitidas(pedido, texto_complementacao)
 
     # 2. Exigir que ao menos o cadastro tenha sido consultado via ferramenta
@@ -149,7 +155,7 @@ def verificar_barreira(
     valores_calculados_validos: set[float] = set()
 
     # Pré-calcular valores esperados para as combinações válidas do pedido/complementação
-    for mat in matriculas_validas:
+    for mat in matriculas_finais_esperadas:
         srv = SERVIDORES.get(mat)
         if srv and datas_validas["data_partida"] and datas_validas["data_retorno"]:
             for dp in datas_validas["data_partida"]:
@@ -178,6 +184,11 @@ def verificar_barreira(
                     f"Matrícula '{mat_arg}' consultada em '{nome_tool}' não consta do pedido "
                     f"nem da complementação (permitidas: {sorted(matriculas_validas)})."
                 )
+            elif nome_tool != "consultar_servidor" and mat_arg not in matriculas_finais_esperadas:
+                motivos.append(
+                    f"Matrícula '{mat_arg}' consultada em '{nome_tool}' não corresponde à matrícula "
+                    f"retificada na complementação ({sorted(matriculas_finais_esperadas)})."
+                )
 
         for campo_dt in ("data_pedido", "data_partida", "data_retorno"):
             if campo_dt in args:
@@ -203,7 +214,7 @@ def verificar_barreira(
                 )
             grp_arg = str(args.get("grupo", "")).strip().upper()
             grupos_permitidos = {
-                SERVIDORES[m]["grupo_diaria"] for m in matriculas_validas if m in SERVIDORES
+                SERVIDORES[m]["grupo_diaria"] for m in matriculas_finais_esperadas if m in SERVIDORES
             }
             if grupos_permitidos and grp_arg not in grupos_permitidos:
                 motivos.append(
@@ -214,7 +225,7 @@ def verificar_barreira(
         if nome_tool == "consultar_saldo_diarias":
             unid_arg = str(args.get("unidade", "")).strip().upper()
             unidades_permitidas = {
-                SERVIDORES[m]["unidade"] for m in matriculas_validas if m in SERVIDORES
+                SERVIDORES[m]["unidade"] for m in matriculas_finais_esperadas if m in SERVIDORES
             }
             if unidades_permitidas and unid_arg not in unidades_permitidas:
                 motivos.append(
@@ -238,10 +249,10 @@ def verificar_barreira(
             f"Número do pedido na instrução ('{conteudo.numero_pedido}') diverge do pedido ('{pedido['numero']}')."
         )
 
-    if conteudo.matricula.strip() not in matriculas_validas:
+    if conteudo.matricula.strip() not in matriculas_finais_esperadas:
         motivos.append(
-            f"Matrícula na instrução ('{conteudo.matricula}') não consta do pedido nem da complementação "
-            f"({sorted(matriculas_validas)})."
+            f"Matrícula na instrução ('{conteudo.matricula}') não consta do pedido/complementação "
+            f"ou não corresponde à matrícula retificada ({sorted(matriculas_finais_esperadas)})."
         )
 
     if conteudo.recomendacao != "diligencia":

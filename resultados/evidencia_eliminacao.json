@@ -4,7 +4,7 @@
     "nome_titular": "Beatriz Moraes Cunha",
     "auditoria_antes": {
       "banco_existe": true,
-      "caminho_db": "C:\\Users\\branco\\Downloads\\exemplos-20261119T193257Z-1-001\\exemplos\\resultados\\memoria_historico_e_memorias_usuario.db",
+      "caminho_db": "C:\\Users\\branco\\Downloads\\exemplos-20261119T193257Z-1-001\\exemplos\\db\\memoria_historico_e_memorias_usuario.db",
       "matricula_procurada": "206689",
       "nome_procurado": "Beatriz Moraes Cunha",
       "tabelas": {
@@ -83,7 +83,7 @@
     },
     "auditoria_apos_busca_apenas_user_id": {
       "banco_existe": true,
-      "caminho_db": "C:\\Users\\branco\\Downloads\\exemplos-20261119T193257Z-1-001\\exemplos\\resultados\\memoria_historico_e_memorias_usuario.db",
+      "caminho_db": "C:\\Users\\branco\\Downloads\\exemplos-20261119T193257Z-1-001\\exemplos\\db\\memoria_historico_e_memorias_usuario.db",
       "matricula_procurada": "206689",
       "nome_procurado": "Beatriz Moraes Cunha",
       "tabelas": {
@@ -116,7 +116,7 @@
     },
     "auditoria_final_tabela_por_tabela": {
       "banco_existe": true,
-      "caminho_db": "C:\\Users\\branco\\Downloads\\exemplos-20261119T193257Z-1-001\\exemplos\\resultados\\memoria_historico_e_memorias_usuario.db",
+      "caminho_db": "C:\\Users\\branco\\Downloads\\exemplos-20261119T193257Z-1-001\\exemplos\\db\\memoria_historico_e_memorias_usuario.db",
       "matricula_procurada": "206689",
       "nome_procurado": "Beatriz Moraes Cunha",
       "tabelas": {
@@ -150,7 +150,7 @@
     "nome_titular": "Carla Regina Souza",
     "auditoria_antes": {
       "banco_existe": true,
-      "caminho_db": "C:\\Users\\branco\\Downloads\\exemplos-20261119T193257Z-1-001\\exemplos\\resultados\\memoria_historico_e_memorias_usuario.db",
+      "caminho_db": "C:\\Users\\branco\\Downloads\\exemplos-20261119T193257Z-1-001\\exemplos\\db\\memoria_historico_e_memorias_usuario.db",
       "matricula_procurada": "207418",
       "nome_procurado": "Carla Regina Souza",
       "tabelas": {
@@ -203,7 +203,7 @@
     },
     "auditoria_apos_busca_apenas_user_id": {
       "banco_existe": true,
-      "caminho_db": "C:\\Users\\branco\\Downloads\\exemplos-20261119T193257Z-1-001\\exemplos\\resultados\\memoria_historico_e_memorias_usuario.db",
+      "caminho_db": "C:\\Users\\branco\\Downloads\\exemplos-20261119T193257Z-1-001\\exemplos\\db\\memoria_historico_e_memorias_usuario.db",
       "matricula_procurada": "207418",
       "nome_procurado": "Carla Regina Souza",
       "tabelas": {
@@ -262,7 +262,7 @@
     },
     "auditoria_final_tabela_por_tabela": {
       "banco_existe": true,
-      "caminho_db": "C:\\Users\\branco\\Downloads\\exemplos-20261119T193257Z-1-001\\exemplos\\resultados\\memoria_historico_e_memorias_usuario.db",
+      "caminho_db": "C:\\Users\\branco\\Downloads\\exemplos-20261119T193257Z-1-001\\exemplos\\db\\memoria_historico_e_memorias_usuario.db",
       "matricula_procurada": "207418",
       "nome_procurado": "Carla Regina Souza",
       "tabelas": {
@@ -293,7 +293,7 @@
   },
   "conferencia_cruzada_pos_eliminacao_carla": {
     "banco_existe": true,
-    "caminho_db": "C:\\Users\\branco\\Downloads\\exemplos-20261119T193257Z-1-001\\exemplos\\resultados\\memoria_historico_e_memorias_usuario.db",
+    "caminho_db": "C:\\Users\\branco\\Downloads\\exemplos-20261119T193257Z-1-001\\exemplos\\db\\memoria_historico_e_memorias_usuario.db",
     "matricula_procurada": "207418",
     "nome_procurado": "Carla Regina Souza",
     "tabelas": {
