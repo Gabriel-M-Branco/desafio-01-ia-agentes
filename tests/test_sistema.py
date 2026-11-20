@@ -166,6 +166,45 @@ def test_barreira_aprova_execucao_ancorada_e_bloqueia_adulteracoes():
     assert res_dt.instrucao is None
     assert any("2026-11-25" in m for m in res_dt.motivos_recusa)
 
+    # 5. Caso de complementação de matrícula (DIA-2026-0112) em que o agente mantém a matrícula errada 207481
+    p_0112 = pedidos["DIA-2026-0112"]
+    inst_0112_nao_retificada = _criar_instrucao_valida_0101().model_copy(
+        update={"numero_pedido": "DIA-2026-0112", "matricula": "207481", "valor_total": 980.0}
+    )
+    tools_0112_erradas = [
+        ToolExecution(tool_name="consultar_servidor", tool_args={"matricula": "207481"}, result="Rafael"),
+        ToolExecution(
+            tool_name="consultar_historico_diarias",
+            tool_args={"matricula": "207481", "data_partida": "2026-11-24", "data_retorno": "2026-11-27"},
+            result="Regular",
+        ),
+        ToolExecution(
+            tool_name="calcular_diarias",
+            tool_args={
+                "grupo": "B",
+                "destino_uf": "MT",
+                "data_pedido": "2026-10-09",
+                "data_partida": "2026-11-24",
+                "data_retorno": "2026-11-27",
+            },
+            result="3.5 diárias, R$ 980.00",
+        ),
+        ToolExecution(tool_name="consultar_saldo_diarias", tool_args={"unidade": "CFA", "valor": 980.0}, result="OK"),
+    ]
+    resp_0112_errada = RunOutput(
+        status=RunStatus.completed,
+        content=inst_0112_nao_retificada,
+        tools=tools_0112_erradas,
+    )
+    res_0112 = verificar_barreira(
+        resp_0112_errada,
+        p_0112,
+        texto_complementacao="Complementação ao pedido em diligência: houve erro de digitação, e a minha matrícula correta é 207418.",
+    )
+    assert res_0112.aprovado is False
+    assert res_0112.instrucao is None
+    assert any("207418" in m for m in res_0112.motivos_recusa)
+
 
 def test_rotina_eliminacao_caso_especial_dia_2026_0112(tmp_path):
     import sqlite3
