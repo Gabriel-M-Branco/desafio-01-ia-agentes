@@ -30,6 +30,7 @@ from src.agente import criar_agente, criar_banco_memoria, instruir_pedido
 from src.eliminacao import conferir_banco_por_tabela, eliminar_dados_servidor
 
 PASTA_RESULTADOS = PASTA_BASE / "resultados"
+PASTA_DB = PASTA_BASE / "db"
 
 
 def _avaliar_contra_gabarito(instrucao: Any, esperado: dict, matricula_esperada: str, numero_esperado: str) -> bool:
@@ -49,6 +50,7 @@ def _avaliar_contra_gabarito(instrucao: Any, esperado: dict, matricula_esperada:
 
 def executar_medicao_memoria_e_eliminacao() -> dict[str, Any]:
     PASTA_RESULTADOS.mkdir(parents=True, exist_ok=True)
+    PASTA_DB.mkdir(parents=True, exist_ok=True)
     pedidos = {
         p["numero"]: p
         for p in json.loads((PASTA_BASE / "dados" / "pedidos.json").read_text(encoding="utf-8"))
@@ -90,7 +92,7 @@ def executar_medicao_memoria_e_eliminacao() -> dict[str, Any]:
 
     for cfg in configuracoes:
         cfg_id = cfg["id"]
-        caminho_db = PASTA_RESULTADOS / f"memoria_{cfg_id}.db"
+        caminho_db = PASTA_DB / f"memoria_{cfg_id}.db"
         if caminho_db.exists():
             caminho_db.unlink()
         bancos_por_config[cfg_id] = caminho_db

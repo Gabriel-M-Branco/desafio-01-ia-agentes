@@ -105,7 +105,7 @@ def eliminar_dados_servidor(
     """Elimina sessões, execuções e memórias de um servidor e audita o banco tabela por tabela."""
     codigo = str(matricula).strip()
     nome_titular = (nome or SERVIDORES.get(codigo, {}).get("nome", "")).strip()
-    caminho_db = Path(db.db_file) if getattr(db, "db_file", None) else PASTA_BASE / "memoria_agente.db"
+    caminho_db = Path(db.db_file) if getattr(db, "db_file", None) else PASTA_BASE / "db" / "memoria_agente.db"
 
     # 1. Auditoria antes da eliminação
     antes = conferir_banco_por_tabela(caminho_db, codigo, nome_titular)

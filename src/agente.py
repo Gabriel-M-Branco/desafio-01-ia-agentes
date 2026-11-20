@@ -19,7 +19,8 @@ from src.modelos import Instrucao
 load_dotenv()
 
 PASTA_BASE = Path(__file__).resolve().parent.parent
-CAMINHO_DB_PADRAO = PASTA_BASE / "memoria_agente.db"
+PASTA_DB = PASTA_BASE / "db"
+CAMINHO_DB_PADRAO = PASTA_DB / "memoria_agente.db"
 MODELO_PADRAO = os.getenv("OPENAI_MODEL", "gpt-5.6-luna")
 TOOL_CALL_LIMIT_PADRAO = 8
 NUM_HISTORY_RUNS_PADRAO = 3
@@ -73,6 +74,7 @@ def criar_guardrail_pii() -> PIIDetectionGuardrail:
 def criar_banco_memoria(caminho_db: Optional[Path | str] = CAMINHO_DB_PADRAO) -> SqliteDb:
     """Instancia o SqliteDb do Agno para persistência de sessões, execuções e memórias."""
     caminho = Path(caminho_db) if caminho_db else CAMINHO_DB_PADRAO
+    caminho.parent.mkdir(parents=True, exist_ok=True)
     return SqliteDb(db_file=str(caminho))
 
 

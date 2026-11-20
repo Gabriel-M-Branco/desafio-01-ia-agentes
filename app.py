@@ -578,7 +578,7 @@ def main() -> None:
         with st.container(border=True):
             st.markdown("### Rotina de Eliminação de Dados do Servidor no Banco do Agente (Etapa 4 — LGPD)")
             st.markdown(
-                "Esta rotina atua **exclusivamente no banco SQLite de memória do agente (`memoria_agente.db`)**, "
+                "Esta rotina atua **exclusivamente no banco SQLite de memória do agente (`db/memoria_agente.db`)**, "
                 "preservando intactos os registros administrativos originais em `dados/`. "
                 "Ela apaga sessões, execuções e memórias (`delete_user_memories`) e audita o banco **tabela por tabela** "
                 "procurando matrícula e nome (inclusive sessões gravadas sob matrícula trocada, como no pedido `DIA-2026-0112`)."
@@ -633,7 +633,7 @@ def main() -> None:
         if "ultima_auditoria_banco" in st.session_state:
             aud = st.session_state["ultima_auditoria_banco"]
             with st.container(border=True):
-                st.markdown("**Estado Atual das Tabelas no Banco SQLite (`memoria_agente.db`)**")
+                st.markdown("**Estado Atual das Tabelas no Banco SQLite (`db/memoria_agente.db`)**")
                 if aud.get("tabelas"):
                     linhas_tab = [
                         {

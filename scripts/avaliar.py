@@ -35,6 +35,7 @@ from src.agente import (
 from src.barreira import verificar_barreira
 
 PASTA_RESULTADOS = PASTA_BASE / "resultados"
+PASTA_DB = PASTA_BASE / "db"
 
 
 def comparar_com_gabarito(
@@ -127,7 +128,8 @@ def executar_rodada(
 ) -> dict[str, Any]:
     """Executa uma rodada completa de 12 pedidos + 2 complementações (14 casos)."""
     PASTA_RESULTADOS.mkdir(parents=True, exist_ok=True)
-    caminho_db = PASTA_RESULTADOS / f"db_{nome_rodada}.db"
+    PASTA_DB.mkdir(parents=True, exist_ok=True)
+    caminho_db = PASTA_DB / f"db_{nome_rodada}.db"
     for sufixo in ("", "-wal", "-shm"):
         arq = Path(str(caminho_db) + sufixo)
         if arq.exists():
@@ -433,7 +435,8 @@ def provocar_modos_de_falha(pedidos: list[dict]) -> list[dict[str, Any]]:
     # Cenário: O pedido DIA-2026-0111 (Beatriz, 206689, partida 2026-11-17, sem data_retorno)
     # recebe uma complementação na sessão errada (ou com histórico contaminado pelo DIA-2026-0101),
     # levando o agente a consultar os dados da sessão contaminada contra o pedido DIA-2026-0111.
-    caminho_db_f4 = PASTA_RESULTADOS / "db_falha_4_isolamento.db"
+    PASTA_DB.mkdir(parents=True, exist_ok=True)
+    caminho_db_f4 = PASTA_DB / "db_falha_4_isolamento.db"
     if caminho_db_f4.exists():
         caminho_db_f4.unlink()
     db_f4 = criar_banco_memoria(caminho_db_f4)
